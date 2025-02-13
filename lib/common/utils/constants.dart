@@ -1,0 +1,12 @@
+const String emptyString = '';
+const String X = 'x';
+const String plus = '+';
+const String verticalLine = '|';
+const String zero = '0';
+const String armenianCode = 'AM';
+const phoneRegex = r'^\+[0-9]{7,15}$';
+const onlyDigitsRegex = r'^\d+$';
+const String sharp = '#';
+const String semicolon = ',';
+const String flagIconsPath = 'assets/icons/flags/';
+const String svgType = '.svg';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/navigation/main/enums/bottom_navbar_enum.dart';
-import 'package:heal_v/theme/ext/extension.dart';
+import 'package:heal_v/res/images/app_icons.dart';
 
 class MainPage extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -34,51 +34,37 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.navigationShell,
-      bottomNavigationBar: NavigationBar(
-        destinations: [
-          NavigationDestination(
-            icon: BottomNavBarEnum.home.svgAsset(context.onBackground),
-            selectedIcon: BottomNavBarEnum.home.svgAsset(context.primary),
-            label: tr(BottomNavBarEnum.home.labelKey),
-          ),
-          NavigationDestination(
-            icon: BottomNavBarEnum.meditation.svgAsset(context.onBackground),
-            selectedIcon: BottomNavBarEnum.meditation.svgAsset(context.primary),
-            label: tr(BottomNavBarEnum.meditation.labelKey),
-          ),
-          NavigationDestination(
-            icon: BottomNavBarEnum.stretching.svgAsset(context.onBackground),
-            selectedIcon: BottomNavBarEnum.stretching.svgAsset(context.primary),
-            label: tr(BottomNavBarEnum.stretching.labelKey),
-          ),
-          NavigationDestination(
-            icon: BottomNavBarEnum.breathing.svgAsset(context.onBackground),
-            selectedIcon: BottomNavBarEnum.breathing.svgAsset(context.primary),
-            label: tr(BottomNavBarEnum.breathing.labelKey),
-          ),
-          NavigationDestination(
-            icon: BottomNavBarEnum.profile.svgAsset(context.onBackground),
-            selectedIcon: BottomNavBarEnum.profile.svgAsset(context.primary),
-            label: tr(BottomNavBarEnum.profile.labelKey),
-          )
-        ],
-        elevation: 0,
-        height: 64,
-        overlayColor: WidgetStateProperty.all(Colors.transparent),
-        backgroundColor: context.background,
-        selectedIndex: widget.navigationShell.currentIndex,
-        onDestinationSelected: _onNavigationDestinationSelected,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        indicatorColor: Colors.transparent,
-        animationDuration: Duration.zero,
-      ),
+      bottomNavigationBar: _bottomNavigationBar(),
     );
   }
 
-  void _onNavigationDestinationSelected(int index) {
-    if (index != widget.navigationShell.currentIndex) {
-      widget.navigationShell.goBranch(index, initialLocation: false);
-    }
+  Widget _bottomNavigationBar() {
+    return BottomNavigationBar(
+      items: [
+        BottomNavigationBarItem(
+          icon: AppIcons.home.svgAsset(),
+          label: tr(BottomNavBarEnum.home.labelKey),
+        ),
+        BottomNavigationBarItem(
+          icon: AppIcons.meditation.svgAsset(),
+          label: tr(BottomNavBarEnum.meditation.labelKey),
+        ),
+        BottomNavigationBarItem(
+          icon: AppIcons.stretching.svgAsset(),
+          label: tr(BottomNavBarEnum.stretching.labelKey),
+        ),
+        BottomNavigationBarItem(
+          icon: AppIcons.breathing.svgAsset(),
+          label: tr(BottomNavBarEnum.breathing.labelKey),
+        ),
+        BottomNavigationBarItem(
+          icon: AppIcons.profile.svgAsset(),
+          label: tr(BottomNavBarEnum.profile.labelKey),
+        ),
+      ],
+      currentIndex: widget.navigationShell.currentIndex,
+      onTap: (index) => widget.navigationShell.goBranch(index),
+    );
   }
 
   @override

@@ -4,5 +4,9 @@
   "meditation": "Meditation",
   "stretching": "Stretching",
   "breathing": "Breathing",
-  "profile": "Profile"
+  "profile": "Profile",
+  "settings": "Settings",
+  "edit_profile": "Edit Profile",
+  "progress": "Progress",
+  "journal_history": "Journal History"
 }

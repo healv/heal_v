@@ -3,6 +3,6 @@ import 'package:heal_v/theme/app_colors_palette.dart';
 
 const AppColorsPalette lightPalette = AppColorsPalette(
   onBackground: Color(0xFF000000),
-  background: Color(0xFFFFF8F5),
+  background: Color(0xFFFCFFF5),
   primary: Color(0xFFF7618C),
 );

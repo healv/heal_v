@@ -8,5 +8,9 @@
   "settings": "Settings",
   "edit_profile": "Edit Profile",
   "progress": "Progress",
-  "journal_history": "Journal History"
+  "journal_history": "Journal History",
+  "general": "General",
+  "notifications": "Notifications",
+  "sounds": "Sounds",
+  "app_language": "App Language"
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
+import 'package:heal_v/navigation/main/main_graph.dart';
+import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
@@ -10,7 +12,6 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.background,
       appBar: HealVAppBar(
         title: tr('profile'),
         isBackEnable: false,
@@ -39,10 +40,13 @@ class ProfilePage extends StatelessWidget {
           ),
           _settings(context),
           _editProfile(context),
+          const SizedBox(height: 12.0),
           _divider(),
           _progress(context),
+          const SizedBox(height: 12.0),
           _divider(),
           _settingsRow(context),
+          const SizedBox(height: 12.0),
           _divider(),
           _journalHistory(context),
         ],
@@ -100,7 +104,8 @@ class ProfilePage extends StatelessWidget {
   Widget _editProfile(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-      child: GestureDetector(
+      child: InkWell(
+        onTap: () => ProfileNestedEditProfileRoute().go(context),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -118,7 +123,8 @@ class ProfilePage extends StatelessWidget {
   Widget _progress(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-      child: GestureDetector(
+      child: InkWell(
+        onTap: () => ProfileProgressRoute().push(context),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -136,7 +142,8 @@ class ProfilePage extends StatelessWidget {
   Widget _settingsRow(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-      child: GestureDetector(
+      child: InkWell(
+        onTap: () => ProfileSettingsRoute().push(context),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -154,7 +161,8 @@ class ProfilePage extends StatelessWidget {
   Widget _journalHistory(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-      child: GestureDetector(
+      child: InkWell(
+        onTap: () => ProfileJournalHistoryRoute().push(context),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

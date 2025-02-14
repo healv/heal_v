@@ -50,6 +50,12 @@ RouteBase get $mainShellRoute => StatefulShellRouteData.$route(
             GoRouteData.$route(
               path: '/mainProfile',
               factory: $ProfileRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'profileEditProfile',
+                  factory: $ProfileNestedEditProfileRouteExtension._fromState,
+                ),
+              ],
             ),
           ],
         ),
@@ -134,6 +140,25 @@ extension $ProfileRouteExtension on ProfileRoute {
 
   String get location => GoRouteData.$location(
         '/mainProfile',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ProfileNestedEditProfileRouteExtension
+    on ProfileNestedEditProfileRoute {
+  static ProfileNestedEditProfileRoute _fromState(GoRouterState state) =>
+      ProfileNestedEditProfileRoute();
+
+  String get location => GoRouteData.$location(
+        '/mainProfile/profileEditProfile',
       );
 
   void go(BuildContext context) => context.go(location);

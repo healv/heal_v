@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/navigation/main/enums/bottom_navbar_enum.dart';
 import 'package:heal_v/res/images/app_icons.dart';
+import 'package:heal_v/theme/ext/extension.dart';
 
 class MainPage extends StatefulWidget {
   final StatefulNavigationShell navigationShell;

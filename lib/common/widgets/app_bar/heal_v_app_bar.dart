@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
@@ -56,7 +57,7 @@ class HealVAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: isBackEnable
                   ? IconButton(
                       icon: AppIcons.arrowLeft.svgAsset(colorFilter: ColorFilter.mode(context.onBackground, BlendMode.srcIn)),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => context.pop(),
                     )
                   : const SizedBox(),
             ),

@@ -24,7 +24,11 @@ part 'main_graph.g.dart';
   TypedStatefulShellBranch<BreathingShellRoute>(routes: <TypedRoute<RouteData>>[
     TypedGoRoute<BreathingRoute>(path: MainRoutes.breathing),
   ]),
-  TypedStatefulShellBranch<ProfileShellRoute>(routes: <TypedRoute<RouteData>>[TypedGoRoute<ProfileRoute>(path: MainRoutes.profile)]),
+  TypedStatefulShellBranch<ProfileShellRoute>(routes: <TypedRoute<RouteData>>[
+    TypedGoRoute<ProfileRoute>(path: MainRoutes.profile, routes: [
+      TypedGoRoute<ProfileNestedEditProfileRoute>(path: ProfileRoutes.nestedEditProfile),
+    ]),
+  ]),
 ])
 class MainShellRoute extends StatefulShellRouteData {
   const MainShellRoute();

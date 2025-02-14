@@ -17,13 +17,10 @@ abstract final class MainRoutes {
 
 abstract final class ProfileRoutes {
   /// Nested routes
-  static const String nestedEditProfile = 'settingsEditProfile';
+  static const String nestedEditProfile = 'profileEditProfile';
 
   /// Non-nested routes
-  static const String appearance = '/settingsAppearance';
-  static const String autoNightMode = '/settingsAutoNightMode';
-  static const String dataAndStorage = '/settingsDataAndStorage';
-  static const String privacyAndSecurity = '/settingsPrivacyAndSecurity';
-  static const String notifications = '/settingsNotifications';
-  static const String devices = '/settingsDevices';
+  static const String settings = '/profileSettings';
+  static const String progress = '/profileProgress';
+  static const String journalHistory = '/profileJournalHistory';
 }

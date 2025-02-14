@@ -5,5 +5,5 @@ class EasyLocalizationConfig {
 
   static const fallbackLocale = Locale('en');
 
-  static const List<Locale> supportedLocale = [fallbackLocale];
+  static const List<Locale> supportedLocale = [fallbackLocale, Locale('ru')];
 }

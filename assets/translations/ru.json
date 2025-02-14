@@ -1,0 +1,16 @@
+{
+  "test": "test aaa",
+  "home": "Главная",
+  "meditation": "Медитация",
+  "stretching": "Растяжка",
+  "breathing": "Дыхание",
+  "profile": "Профиль",
+  "settings": "Настройки",
+  "edit_profile": "Редактировать профиль",
+  "progress": "Прогресс",
+  "journal_history": "История журнала",
+  "general": "Общий",
+  "notifications": "Уведомления",
+  "sounds": "Звуки",
+  "app_language": "Язык приложения"
+}

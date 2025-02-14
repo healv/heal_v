@@ -116,7 +116,10 @@ class SettingsPage extends StatelessWidget {
             ),
             BlocSelector<SettingsBloc, SettingsState, LanguageEnum?>(
               selector: (state) => state.currentLanguage,
-              builder: (context, language) => language == null ? const SizedBox() : Text(language.displayNameShort),
+              builder: (context, language) => language == null ? const SizedBox() : Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Text(language.displayNameShort),
+              ),
             ),
           ],
         ),

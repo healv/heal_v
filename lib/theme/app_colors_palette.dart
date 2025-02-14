@@ -5,22 +5,26 @@ class AppColorsPalette extends ThemeExtension<AppColorsPalette> {
     required this.background,
     required this.onBackground,
     required this.primary,
+    required this.unselectedItemColor,
   });
 
   final Color onBackground;
   final Color background;
   final Color primary;
+  final Color unselectedItemColor;
 
   @override
   AppColorsPalette copyWith({
     Color? background,
     Color? onBackground,
     Color? primary,
+    Color? unselectedItemColor,
   }) {
     return AppColorsPalette(
       background: background ?? this.background,
       onBackground: onBackground ?? this.onBackground,
       primary: primary ?? this.primary,
+      unselectedItemColor: unselectedItemColor ?? this.unselectedItemColor,
     );
   }
 
@@ -33,6 +37,7 @@ class AppColorsPalette extends ThemeExtension<AppColorsPalette> {
       background: Color.lerp(background, other.background, t) ?? background,
       onBackground: Color.lerp(onBackground, other.onBackground, t) ?? onBackground,
       primary: Color.lerp(primary, other.primary, t) ?? primary,
+      unselectedItemColor: Color.lerp(unselectedItemColor, other.unselectedItemColor, t) ?? unselectedItemColor,
     );
   }
 }

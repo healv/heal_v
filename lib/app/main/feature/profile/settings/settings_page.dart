@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/profile/common/setting_description.dart';
 import 'package:heal_v/app/main/feature/profile/common/settings_check_line.dart';
-import 'package:heal_v/shared/feature/settings/settings_bloc.dart';
 import 'package:heal_v/app/main/model/language_enum.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
+import 'package:heal_v/shared/feature/settings/settings_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -116,10 +116,12 @@ class SettingsPage extends StatelessWidget {
             ),
             BlocSelector<SettingsBloc, SettingsState, LanguageEnum?>(
               selector: (state) => state.currentLanguage,
-              builder: (context, language) => language == null ? const SizedBox() : Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Text(language.displayNameShort),
-              ),
+              builder: (context, language) => language == null
+                  ? const SizedBox()
+                  : Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(language.displayNameShort),
+                    ),
             ),
           ],
         ),

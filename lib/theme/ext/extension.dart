@@ -8,5 +8,7 @@ extension ThemeExt on BuildContext {
 
   Color get onBackground => appPalette.onBackground;
 
+  Color get unselectedItemColor => appPalette.unselectedItemColor;
+
   Color get primary => appPalette.primary;
 }

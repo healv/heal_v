@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
+import 'package:heal_v/common/widgets/avatar_widget.dart';
 import 'package:heal_v/navigation/main/main_graph.dart';
 import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
@@ -29,7 +30,7 @@ class ProfilePage extends StatelessWidget {
           Center(
             child: Column(
               children: [
-                _avatar(),
+                const AvatarWidget(),
                 const SizedBox(height: 12),
                 _userName(context),
                 const SizedBox(height: 4),
@@ -51,29 +52,6 @@ class ProfilePage extends StatelessWidget {
           _journalHistory(context),
         ],
       ),
-    );
-  }
-
-  Widget _avatar() {
-    return const Stack(
-      alignment: Alignment.center,
-      children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundImage: NetworkImage(
-            'https://example.com/profile.jpg',
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: CircleAvatar(
-            radius: 16,
-            backgroundColor: Color(0xFFE582DE),
-            child: Icon(Icons.edit, color: Colors.white, size: 16),
-          ),
-        ),
-      ],
     );
   }
 

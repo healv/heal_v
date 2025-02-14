@@ -5,4 +5,5 @@ const AppColorsPalette darkPalette = AppColorsPalette(
   onBackground: Colors.white,
   background: Colors.black,
   primary: Colors.blue,
+  unselectedItemColor: Color(0xFF666666),
 );

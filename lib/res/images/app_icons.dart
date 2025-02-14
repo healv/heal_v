@@ -9,6 +9,8 @@ enum AppIcons {
   launcher('assets/icons/ic_launcher.png'),
   arrowLeft('assets/icons/ic_arrow_left.svg'),
   arrowRight('assets/icons/ic_arrow_right.svg'),
+  tree('assets/icons/tree.png'),
+  journal('assets/icons/journal.svg'),
   stretching('assets/icons/ic_stretching.svg');
 
   final String path;

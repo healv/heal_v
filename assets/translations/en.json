@@ -12,5 +12,11 @@
   "general": "General",
   "notifications": "Notifications",
   "sounds": "Sounds",
-  "app_language": "App Language"
+  "app_language": "App Language",
+  "perfect_progress": "Perfect \nProgress",
+  "in_progress": "In Progress",
+  "complete": "Complete",
+  "for_your_journey": "For your journey",
+  "see_all": "See All",
+  "journal": "Journal"
 }

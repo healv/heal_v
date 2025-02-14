@@ -12,5 +12,11 @@
   "general": "Общий",
   "notifications": "Уведомления",
   "sounds": "Звуки",
-  "app_language": "Язык приложения"
+  "app_language": "Язык приложения",
+  "perfect_progress": "Идеальный \nПрогресс",
+  "in_progress": "В ходе выполнения",
+  "complete": "Полный",
+  "for_your_journey": "Для вашего путешествия",
+  "see_all": "Все",
+  "journal": "Журнал"
 }

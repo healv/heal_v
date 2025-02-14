@@ -10,12 +10,13 @@ class SettingDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+      padding: const EdgeInsets.only(top: 0.0, bottom: 16.0, left: 16.0, right: 16.0),
       color: context.background,
       child: Text(
         text,
         maxLines: 5,
         overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18.0),
       ),
     );
   }

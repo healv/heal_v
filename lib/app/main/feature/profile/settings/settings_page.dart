@@ -2,17 +2,15 @@ import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_v/app/main/profile/common/setting_description.dart';
-import 'package:heal_v/app/main/profile/common/settings_check_line.dart';
-import 'package:heal_v/app/main/profile/settings/settings_page_bloc.dart';
+import 'package:heal_v/app/main/feature/profile/common/setting_description.dart';
+import 'package:heal_v/app/main/feature/profile/common/settings_check_line.dart';
+import 'package:heal_v/shared/feature/settings/settings_bloc.dart';
+import 'package:heal_v/app/main/model/language_enum.dart';
+import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/theme/ext/extension.dart';
-
-import '../../../../common/tools/localization_tools.dart';
-
-const Map<String, String> availableLanguages = {'en': 'English', 'ru': 'Russian'};
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -64,13 +62,13 @@ class SettingsPage extends StatelessWidget {
             tr('notifications'),
             style: TextStyle(fontSize: 16, color: context.onBackground, fontWeight: FontWeight.w500),
           ),
-          BlocSelector<SettingsPageBloc, SettingsPageState, bool?>(
+          BlocSelector<SettingsBloc, SettingsState, bool?>(
             selector: (state) => state.isNotificationsEnable,
             builder: (context, isEnable) {
               return Switch(
                   value: isEnable ?? false,
                   onChanged: (isChecked) {
-                    context.read<SettingsPageBloc>().add(SettingsPageEvent.updateNotificationStatus(isEnable: isChecked));
+                    context.read<SettingsBloc>().add(SettingsEvent.updateNotificationStatus(isEnable: isChecked));
                   });
             },
           )
@@ -89,13 +87,13 @@ class SettingsPage extends StatelessWidget {
             tr('sounds'),
             style: TextStyle(fontSize: 16, color: context.onBackground, fontWeight: FontWeight.w500),
           ),
-          BlocSelector<SettingsPageBloc, SettingsPageState, bool?>(
+          BlocSelector<SettingsBloc, SettingsState, bool?>(
             selector: (state) => state.isSoundsEnable,
             builder: (context, isEnable) {
               return Switch(
                   value: isEnable ?? false,
                   onChanged: (isChecked) {
-                    context.read<SettingsPageBloc>().add(SettingsPageEvent.updateSoundsStatus(isEnable: isChecked));
+                    context.read<SettingsBloc>().add(SettingsEvent.updateSoundsStatus(isEnable: isChecked));
                   });
             },
           )
@@ -108,7 +106,7 @@ class SettingsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
       child: InkWell(
-        onTap: () => openLanguageBottomSheet(context),
+        onTap: () => _openLanguageBottomSheet(context),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -116,7 +114,10 @@ class SettingsPage extends StatelessWidget {
               tr('app_language'),
               style: TextStyle(fontSize: 16, color: context.onBackground, fontWeight: FontWeight.w500),
             ),
-            const Text('en'),
+            BlocSelector<SettingsBloc, SettingsState, LanguageEnum?>(
+              selector: (state) => state.currentLanguage,
+              builder: (context, language) => language == null ? const SizedBox() : Text(language.displayNameShort),
+            ),
           ],
         ),
       ),
@@ -127,7 +128,7 @@ class SettingsPage extends StatelessWidget {
     return const Padding(padding: EdgeInsets.symmetric(horizontal: 16.0), child: Divider());
   }
 
-  void openLanguageBottomSheet(BuildContext context) {
+  void _openLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
@@ -137,33 +138,31 @@ class SettingsPage extends StatelessWidget {
       ),
       useSafeArea: true,
       builder: (BuildContext context) {
-        return BlocProvider(
-          create: (_) => SettingsPageBloc()..add(SettingsPageEvent.initial()),
-          child: BlocSelector<SettingsPageBloc, SettingsPageState, String>(
-            selector: (state) => state.currentLanguage ?? 'en',
-            builder: (context, language) {
-              return ListView(
-                children: [
-                  SettingDescription(
-                    text: tr('app_language'),
+        return BlocSelector<SettingsBloc, SettingsState, LanguageEnum>(
+          selector: (state) => state.currentLanguage ?? LanguageEnum.english,
+          builder: (context, currentLanguage) {
+            return ListView(
+              children: [
+                SettingDescription(
+                  text: tr('app_language'),
+                ),
+                for (final language in LanguageEnum.values)
+                  SettingsCheckLine(
+                    checkedStatus: currentLanguage == language,
+                    title: language.displayName,
+                    callback: () {
+                      if (currentLanguage == language) {
+                        return;
+                      }
+                      context.setLocale(Locale(language.short));
+                      Store.set(key: StoreKey.languageKey, value: language.short);
+                      context.read<SettingsBloc>().add(SettingsEvent.updateCurrentLanguage(language: language));
+                      context.pop();
+                    },
                   ),
-                  for (final langEntry in availableLanguages.entries)
-                    SettingsCheckLine(
-                      checkedStatus: language == langEntry.key,
-                      title: langEntry.value,
-                      callback: () {
-                        if (language == langEntry.key) {
-                          return;
-                        }
-                        context.setLocale(Locale(langEntry.key));
-                        Store.set(key: StoreKey.languageKey, value: langEntry.key);
-                        context.pop();
-                      },
-                    ),
-                ],
-              );
-            },
-          ),
+              ],
+            );
+          },
         );
       },
     );

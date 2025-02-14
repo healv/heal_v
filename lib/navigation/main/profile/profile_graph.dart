@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_v/app/main/profile/journal_history/journal_history_page.dart';
-import 'package:heal_v/app/main/profile/journal_history/journal_history_page_bloc.dart';
-import 'package:heal_v/app/main/profile/profile_page.dart';
-import 'package:heal_v/app/main/profile/progress/progress_page.dart';
-import 'package:heal_v/app/main/profile/progress/progress_page_bloc.dart';
-import 'package:heal_v/app/main/profile/settings/settings_page.dart';
-import 'package:heal_v/app/main/profile/settings/settings_page_bloc.dart';
+import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page.dart';
+import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page_bloc.dart';
+import 'package:heal_v/app/main/feature/profile/profile_page.dart';
+import 'package:heal_v/app/main/feature/profile/progress/progress_page.dart';
+import 'package:heal_v/app/main/feature/profile/progress/progress_page_bloc.dart';
+import 'package:heal_v/app/main/feature/profile/settings/settings_page.dart';
 
-import '../../../app/main/profile/edit_profile/edit_profile_page.dart';
-import '../../../app/main/profile/edit_profile/edit_profile_page_bloc.dart';
+import '../../../app/main/feature/profile/edit_profile/edit_profile_page.dart';
+import '../../../app/main/feature/profile/edit_profile/edit_profile_page_bloc.dart';
 import '../../app_routes.dart';
 
 part 'profile_graph.g.dart';
@@ -40,10 +39,7 @@ base class ProfileNestedEditProfileRoute extends GoRouteData {
 base class ProfileSettingsRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return BlocProvider(
-      create: (_) => SettingsPageBloc()..add(SettingsPageEvent.initial()),
-      child: const SettingsPage(),
-    );
+    return const SettingsPage();
   }
 }
 

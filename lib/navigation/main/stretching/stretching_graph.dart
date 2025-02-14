@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_v/app/main/stretching/stretching_page.dart';
+import 'package:heal_v/app/main/feature/stretching/stretching_page.dart';
 
 import '../../app_routes.dart';
 

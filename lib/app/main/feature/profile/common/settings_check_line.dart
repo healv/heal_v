@@ -26,7 +26,7 @@ class SettingsCheckLine extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -35,12 +35,12 @@ class SettingsCheckLine extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
                           title,
                           style: TextStyle(
                             color: checkedStatus ? context.primary : context.onBackground,
-                            fontSize: 14,
+                            fontSize: 16,
                           ),
                         ),
                       ),
@@ -50,7 +50,7 @@ class SettingsCheckLine extends StatelessWidget {
               ),
               if (checkedStatus)
                 Padding(
-                  padding: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 16),
                   child: Icon(
                     Icons.check,
                     color: context.primary,

@@ -22,5 +22,7 @@
   "first_name": "First name",
   "last_name": "Last name",
   "edit": "Edit",
-  "email": "Email"
+  "email": "Email",
+  "age": "Age",
+  "birth": "Birth"
 }

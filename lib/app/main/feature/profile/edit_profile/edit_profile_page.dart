@@ -73,13 +73,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
       ],
       child: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 32.0),
-            const AvatarWidget(isEditable: false),
-            const SizedBox(height: 32.0),
-            _firstTextFieldsContainer(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 32.0),
+              const AvatarWidget(isEditable: false),
+              const SizedBox(height: 32.0),
+              _firstTextFieldsContainer(),
+              const SizedBox(height: 32.0),
+            ],
+          ),
         ),
       ),
     );
@@ -95,6 +98,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           _textFieldLastName(),
           const SizedBox(height: 24.0),
           _textFieldEmail(),
+          const SizedBox(height: 24.0),
+          _birthDayWidget(),
           const SizedBox(height: 32.0),
           _editButton(),
         ],
@@ -247,6 +252,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
+  Widget _birthDayWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(tr('age'), style: TextStyle(fontSize: 12, color: context.secondary, fontWeight: FontWeight.w400)),
+            const SizedBox(height: 8),
+            Text("23", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: context.onBackground)),
+          ],
+        ),
+        const Spacer(),
+        InkWell(
+          onTap: () async => await _openCalendar(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(tr('birth'), style: TextStyle(fontSize: 12, color: context.secondary, fontWeight: FontWeight.w400)),
+              const SizedBox(height: 4),
+              Text("3/2/2001", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: context.onBackground)),
+            ],
+          ),
+        ),
+        const Spacer(),
+      ],
+    );
+  }
+
   Widget _editButton() {
     return SizedBox(
       width: double.infinity,
@@ -263,6 +298,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
         color: context.onBackground,
         size: 15.0,
       ),
+    );
+  }
+
+  Future<void> _openCalendar() async {
+    await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
     );
   }
 }

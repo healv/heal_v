@@ -17,6 +17,7 @@ abstract class AppThemeGenFunctions {
       colorScheme: _colorScheme(palette),
       switchTheme: _switchThemeData(palette),
       elevatedButtonTheme: _elevatedButtonThemeData(palette),
+      datePickerTheme: _datePickerThemeData(palette),
       extensions: <ThemeExtension>[
         palette,
       ],
@@ -137,6 +138,44 @@ abstract class AppThemeGenFunctions {
         backgroundColor: palette.primary,
         foregroundColor: Colors.white,
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+      ),
+    );
+  }
+
+  static DatePickerThemeData _datePickerThemeData(AppColorsPalette palette) {
+    return DatePickerThemeData(
+      backgroundColor: palette.background,
+      todayBorder: BorderSide(color: palette.primary),
+      todayBackgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return palette.primary;
+        }
+        return palette.primary.withOpacity(0.3);
+      }),
+      todayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return Colors.white;
+        }
+        return palette.onBackground;
+      }),
+      headerForegroundColor: palette.onBackground,
+      cancelButtonStyle: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(palette.onBackground), // Цвет текста кнопки "Cancel"
+      ),
+      dayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return Colors.white;
+        }
+        return palette.onBackground;
+      }),
+      dayBackgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return palette.primary;
+        }
+        return null;
+      }),
+      confirmButtonStyle: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(palette.primary), // Цвет текста кнопки "OK"
       ),
     );
   }

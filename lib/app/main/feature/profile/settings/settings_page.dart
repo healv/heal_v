@@ -47,7 +47,7 @@ class SettingsPage extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16.0),
       child: Text(
         tr('general'),
-        style: const TextStyle(fontSize: 16, color: Color(0xFF999999), fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 16, color: context.secondary, fontWeight: FontWeight.w500),
       ),
     );
   }

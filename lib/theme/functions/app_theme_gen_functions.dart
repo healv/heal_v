@@ -16,6 +16,7 @@ abstract class AppThemeGenFunctions {
       appBarTheme: _appBarTheme(palette),
       colorScheme: _colorScheme(palette),
       switchTheme: _switchThemeData(palette),
+      elevatedButtonTheme: _elevatedButtonThemeData(palette),
       extensions: <ThemeExtension>[
         palette,
       ],
@@ -124,6 +125,18 @@ abstract class AppThemeGenFunctions {
             return const Color(0xFFCCCCCC);
           }
         },
+      ),
+    );
+  }
+
+  static ElevatedButtonThemeData _elevatedButtonThemeData(AppColorsPalette palette) {
+    return ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(48, 48),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+        backgroundColor: palette.primary,
+        foregroundColor: Colors.white,
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
       ),
     );
   }

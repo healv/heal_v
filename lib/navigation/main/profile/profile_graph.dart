@@ -28,7 +28,7 @@ base class ProfileNestedEditProfileRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return BlocProvider(
-      create: (_) => EditProfilePageBloc(),
+      create: (_) => EditProfilePageBloc()..add(EditProfilePageEvent.initial()),
       child: const EditProfilePage(),
     );
   }

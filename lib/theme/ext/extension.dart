@@ -11,4 +11,6 @@ extension ThemeExt on BuildContext {
   Color get unselectedItemColor => appPalette.unselectedItemColor;
 
   Color get primary => appPalette.primary;
+
+  Color get secondary => appPalette.secondary;
 }

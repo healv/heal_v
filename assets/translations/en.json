@@ -1,5 +1,4 @@
 {
-  "test": "test aaa",
   "home": "Home",
   "meditation": "Meditation",
   "stretching": "Stretching",
@@ -18,5 +17,10 @@
   "complete": "Complete",
   "for_your_journey": "For your journey",
   "see_all": "See All",
-  "journal": "Journal"
+  "journal": "Journal",
+  "this_field_is_required": "This field is required",
+  "first_name": "First name",
+  "last_name": "Last name",
+  "edit": "Edit",
+  "email": "Email"
 }

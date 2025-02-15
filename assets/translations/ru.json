@@ -1,5 +1,4 @@
 {
-  "test": "test aaa",
   "home": "Главная",
   "meditation": "Медитация",
   "stretching": "Растяжка",
@@ -18,5 +17,10 @@
   "complete": "Полный",
   "for_your_journey": "Для вашего путешествия",
   "see_all": "Все",
-  "journal": "Журнал"
+  "journal": "Журнал",
+  "this_field_is_required": "Это поле обязательно к заполнению",
+  "first_name": "Имя",
+  "last_name": "Фамилия",
+  "edit": "Редактировать",
+  "email": "Электронная почта"
 }

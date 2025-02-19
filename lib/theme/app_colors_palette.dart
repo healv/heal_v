@@ -6,14 +6,16 @@ class AppColorsPalette extends ThemeExtension<AppColorsPalette> {
     required this.onBackground,
     required this.primary,
     required this.unselectedItemColor,
-    required this.secondary,
+    required this.textSecondary,
+    required this.quizDialogItemColor,
   });
 
   final Color onBackground;
   final Color background;
   final Color primary;
   final Color unselectedItemColor;
-  final Color secondary;
+  final Color textSecondary;
+  final Color quizDialogItemColor;
 
   @override
   AppColorsPalette copyWith({
@@ -21,14 +23,16 @@ class AppColorsPalette extends ThemeExtension<AppColorsPalette> {
     Color? onBackground,
     Color? primary,
     Color? unselectedItemColor,
-    Color? secondary,
+    Color? textSecondary,
+    Color? quizDialogItemColor,
   }) {
     return AppColorsPalette(
       background: background ?? this.background,
       onBackground: onBackground ?? this.onBackground,
       primary: primary ?? this.primary,
       unselectedItemColor: unselectedItemColor ?? this.unselectedItemColor,
-      secondary: secondary ?? this.secondary,
+      textSecondary: textSecondary ?? this.textSecondary,
+      quizDialogItemColor: quizDialogItemColor ?? this.quizDialogItemColor,
     );
   }
 
@@ -42,7 +46,8 @@ class AppColorsPalette extends ThemeExtension<AppColorsPalette> {
       onBackground: Color.lerp(onBackground, other.onBackground, t) ?? onBackground,
       primary: Color.lerp(primary, other.primary, t) ?? primary,
       unselectedItemColor: Color.lerp(unselectedItemColor, other.unselectedItemColor, t) ?? unselectedItemColor,
-      secondary: Color.lerp(unselectedItemColor, other.unselectedItemColor, t) ?? secondary,
+      textSecondary: Color.lerp(textSecondary, other.textSecondary, t) ?? textSecondary,
+      quizDialogItemColor: Color.lerp(quizDialogItemColor, other.quizDialogItemColor, t) ?? quizDialogItemColor,
     );
   }
 }

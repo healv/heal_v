@@ -6,5 +6,6 @@ const AppColorsPalette lightPalette = AppColorsPalette(
   background: Color(0xFFFCFFF5),
   primary: Color(0xFFF7618C),
   unselectedItemColor: Color(0xFF666666),
-  secondary: Color(0xFF999999),
+  textSecondary: Color(0xFF999999),
+  quizDialogItemColor: Color(0xFFFFC0A3),
 );

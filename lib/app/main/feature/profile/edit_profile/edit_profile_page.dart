@@ -112,7 +112,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       text,
       style: TextStyle(
         fontWeight: FontWeight.w400,
-        color: context.secondary,
+        color: context.textSecondary,
         fontSize: 12.0,
       ),
     );
@@ -260,7 +260,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(tr('age'), style: TextStyle(fontSize: 12, color: context.secondary, fontWeight: FontWeight.w400)),
+            Text(tr('age'), style: TextStyle(fontSize: 12, color: context.textSecondary, fontWeight: FontWeight.w400)),
             const SizedBox(height: 8),
             Text("23", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: context.onBackground)),
           ],
@@ -271,7 +271,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(tr('birth'), style: TextStyle(fontSize: 12, color: context.secondary, fontWeight: FontWeight.w400)),
+              Text(tr('birth'), style: TextStyle(fontSize: 12, color: context.textSecondary, fontWeight: FontWeight.w400)),
               const SizedBox(height: 4),
               Text("3/2/2001", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: context.onBackground)),
             ],

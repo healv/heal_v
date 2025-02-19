@@ -6,5 +6,6 @@ const AppColorsPalette darkPalette = AppColorsPalette(
   background: Colors.black,
   primary: Colors.blue,
   unselectedItemColor: Color(0xFF666666),
-  secondary: Color(0xFF999999),
+  textSecondary: Color(0xFF999999),
+  quizDialogItemColor: Color(0xFFFFC0A3),
 );

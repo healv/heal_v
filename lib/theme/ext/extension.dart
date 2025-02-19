@@ -12,5 +12,7 @@ extension ThemeExt on BuildContext {
 
   Color get primary => appPalette.primary;
 
-  Color get secondary => appPalette.secondary;
+  Color get textSecondary => appPalette.textSecondary;
+
+  Color get quizDialogItemColor => appPalette.quizDialogItemColor;
 }

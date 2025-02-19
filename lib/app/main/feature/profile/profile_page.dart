@@ -74,7 +74,7 @@ class ProfilePage extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16.0),
       child: Text(
         tr('settings'),
-        style: TextStyle(fontSize: 16, color: context.secondary, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 16, color: context.textSecondary, fontWeight: FontWeight.w500),
       ),
     );
   }

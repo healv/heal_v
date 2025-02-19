@@ -6,6 +6,7 @@ import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
 import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
+import 'package:heal_v/shared/feature/quiz/quiz_manager.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:heal_v/tools/dart/pair.dart';
 
@@ -195,7 +196,8 @@ class HomePage extends StatelessWidget {
   void _onCardItemTap(int index, BuildContext context) {
     switch (index) {
       case 0:
-        GoRouter.of(context).go(MeditationRoute().location);
+        QuizManager.showQuizDialog();
+        // GoRouter.of(context).go(MeditationRoute().location);
         break;
       case 1:
         GoRouter.of(context).go(BreathingRoute().location);

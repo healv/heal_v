@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 
 import 'shared/feature/auth/auth_bloc.dart';
 
-final navigatorGlobalKey = GlobalKey<NavigatorState>();
+final shellNavigatorGlobalKey = GlobalKey<NavigatorState>();
 
 class HealVApplication extends StatelessWidget {
   HealVApplication({super.key});
@@ -30,7 +30,7 @@ class HealVApplication extends StatelessWidget {
     ...$breathingRouteRoutes,
     ...$stretchingRouteRoutes,
     ...$profileRouteRoutes,
-  ], initialLocation: AppRoutes.launch, navigatorKey: navigatorGlobalKey);
+  ], initialLocation: AppRoutes.launch, navigatorKey: shellNavigatorGlobalKey);
 
   @override
   Widget build(BuildContext context) {

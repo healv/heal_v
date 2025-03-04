@@ -1,0 +1,25 @@
+import 'package:heal_v/common/utils/network/api_wrapper.dart';
+import 'package:heal_v/common/utils/network/bounds/http_bounds.dart';
+import 'package:heal_v/feature/auth/model/login/login_dto.dart';
+import 'package:heal_v/feature/auth/network/auth_network_port.dart';
+import 'package:heal_v/feature/auth/packet/login_packet.dart';
+
+class LoginNetworkBounds extends HttpBounds<LoginDto, ApiWrapper<LoginDto?>> {
+  final AuthNetworkPort port;
+  final LoginPacket packet;
+
+  LoginNetworkBounds({required this.port, required this.packet});
+
+  @override
+  Future<ApiWrapper<LoginDto?>?> fetchFromNetwork() {
+    return port.login(packet);
+  }
+
+  @override
+  Future<LoginDto?> processResponse(ApiWrapper<LoginDto?>? response, {LoginDto? data}) async {
+    return switch (response) {
+      Success<LoginDto?>() => response.value,
+      _ => data,
+    };
+  }
+}

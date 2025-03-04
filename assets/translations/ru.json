@@ -24,5 +24,6 @@
   "edit": "Редактировать",
   "email": "Электронная почта",
   "age": "Возраст",
-  "birth": "Рождение"
+  "birth": "Рождение",
+  "invalid_field": "Invalid Field"
 }

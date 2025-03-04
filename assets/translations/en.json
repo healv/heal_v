@@ -24,5 +24,7 @@
   "edit": "Edit",
   "email": "Email",
   "age": "Age",
-  "birth": "Birth"
+  "birth": "Birth",
+  "invalid_field": "Invalid Field",
+  "password": "Password"
 }

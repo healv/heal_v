@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_v/shared/feature/settings/settings_bloc.dart';
 import 'package:heal_v/common/bloc/base_bloc.dart';
+import 'package:heal_v/main.dart';
 import 'package:heal_v/navigation/app_routes.dart';
+import 'package:heal_v/navigation/auth/auth_graph.dart';
 import 'package:heal_v/navigation/launch/launch_graph.dart';
 import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
 import 'package:heal_v/navigation/main/home/home_graph.dart';
@@ -12,6 +13,7 @@ import 'package:heal_v/navigation/main/main_graph.dart';
 import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
+import 'package:heal_v/shared/feature/settings/settings_bloc.dart';
 import 'package:heal_v/theme/theme_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,7 @@ class HealVApplication extends StatelessWidget {
 
   final GoRouter router = GoRouter(routes: [
     ...$launchRoutes,
+    ...$authRoutes,
     ...$mainRoutes,
     ...$homeRoutes,
     ...$meditationRoutes,
@@ -61,7 +64,7 @@ class HealVApplication extends StatelessWidget {
 
   List<BlocProvider<BaseBloc>> get providers => [
         BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(),
+          create: (context) => AuthBloc(getIt.get()),
         ),
         BlocProvider<SettingsBloc>(
           create: (context) => SettingsBloc()..add(SettingsEvent.initial()),

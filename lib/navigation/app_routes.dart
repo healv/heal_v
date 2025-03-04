@@ -4,7 +4,8 @@ abstract final class AppRoutes {
 }
 
 abstract final class AuthRoutes {
-  static const String welcome = '/authWelcome';
+  static const String signIn = '/signIn';
+  static const String signUp = '/signUp';
 }
 
 abstract final class MainRoutes {

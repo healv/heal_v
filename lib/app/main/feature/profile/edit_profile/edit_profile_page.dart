@@ -222,8 +222,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
                 controller: emailTextEditingController,
                 focusNode: emailFocusNode,
-                onChanged: (changedLastName) {
-                  context.read<EditProfilePageBloc>().add(EditProfilePageEvent.emailChanged(email: changedLastName));
+                onChanged: (changedEmail) {
+                  context.read<EditProfilePageBloc>().add(EditProfilePageEvent.emailChanged(email: changedEmail));
                 },
                 textCapitalization: TextCapitalization.words,
                 cursorColor: context.onBackground,

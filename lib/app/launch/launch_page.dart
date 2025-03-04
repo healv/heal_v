@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heal_v/common/flutter/widgets/framework.dart';
+import 'package:heal_v/navigation/auth/auth_graph.dart';
 import 'package:heal_v/navigation/main/home/home_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
+import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 
 class LaunchPage extends StatefulWidget {
   const LaunchPage({super.key});
@@ -11,7 +14,7 @@ class LaunchPage extends StatefulWidget {
   State<StatefulWidget> createState() => _LaunchPageState();
 }
 
-final class _LaunchPageState extends State<LaunchPage> {
+final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, AuthBloc, AuthBlocEffect> {
   @override
   void initState() {
     BlocProvider.of<AuthBloc>(context).add(AuthBlocEvent.initial());
@@ -38,5 +41,22 @@ final class _LaunchPageState extends State<LaunchPage> {
     return Center(
       child: AppIcons.launcher.imageAsset(),
     );
+  }
+
+  @override
+  Future<void> handleSideEffect(AuthBlocEffect effect) async {
+    switch (effect) {
+      case LoggedOut():
+        break;
+      case LoggedIn():
+        HomeRoute().go(context);
+        break;
+      case SignedUp():
+        HomeRoute().go(context);
+        break;
+      case NotLoggedIn():
+        SignInRoute().go(context);
+        break;
+    }
   }
 }

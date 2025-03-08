@@ -5,7 +5,6 @@ import 'package:heal_v/app/auth/sign_in/sign_in_page_effect.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/alert.dart';
-import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/common/widgets/loading_elevated_button.dart';
 import 'package:heal_v/navigation/auth/auth_graph.dart';
@@ -105,15 +104,6 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
-                    suffixIcon: state.isEmailFocused && state.email?.isNotEmpty == true
-                        ? InkWell(
-                            onTap: () {
-                              emailTextEditingController.text = emptyString;
-                              context.read<SignInPageBloc>().add(SignInPageEvent.emailChanged(email: emptyString));
-                            },
-                            child: _textFieldCloseIcon(),
-                          )
-                        : null,
                     errorText: state.emailErrorMsg,
                     labelText: tr('email'),
                     labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: context.onBackground),
@@ -147,22 +137,22 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
                   },
                   keyboardType: TextInputType.text,
                   cursorColor: context.onBackground,
-                  obscureText: true,
+                  obscureText: state.isPasswordHidden,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
-                    suffixIcon: state.isPasswordFocused && state.password?.isNotEmpty == true
-                        ? InkWell(
-                            onTap: () {
-                              passwordEditingController.text = emptyString;
-                              context.read<SignInPageBloc>().add(SignInPageEvent.passwordChanged(password: emptyString));
-                            },
-                            child: _textFieldCloseIcon(),
-                          )
-                        : null,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        state.isPasswordHidden ? Icons.visibility : Icons.visibility_off,
+                        color: context.onBackground.withOpacity(0.6),
+                      ),
+                      onPressed: () {
+                        context.read<SignInPageBloc>().add(SignInPageEvent.updatePasswordVisibility());
+                      },
+                    ),
                     errorText: state.passwordErrorMsg,
                     labelText: tr('password'),
                     labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: context.onBackground),
@@ -231,18 +221,6 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
     return IconButton(
       onPressed: () {},
       icon: AppIcons.google.svgAsset(height: 40),
-    );
-  }
-
-  Widget _textFieldCloseIcon() {
-    return SizedBox(
-      width: 8.0,
-      height: 8.0,
-      child: Icon(
-        Icons.clear_sharp,
-        color: context.onBackground,
-        size: 15.0,
-      ),
     );
   }
 

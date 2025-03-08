@@ -14,6 +14,10 @@ sealed class SignUpPageEvent extends BaseEvent {
   factory SignUpPageEvent.repeatPasswordChanged({required String password}) => RepeatPasswordChanged._(password: password);
 
   factory SignUpPageEvent.validate() => const Validate._();
+
+  factory SignUpPageEvent.updatePasswordVisibility() => const UpdatePasswordVisibility._();
+
+  factory SignUpPageEvent.updateRepeatPasswordVisibility() => const UpdateRepeatPasswordVisibility._();
 }
 
 final class FirstNameChanged extends SignUpPageEvent {
@@ -48,4 +52,12 @@ final class RepeatPasswordChanged extends SignUpPageEvent {
 
 final class Validate extends SignUpPageEvent {
   const Validate._();
+}
+
+final class UpdatePasswordVisibility extends SignUpPageEvent {
+  const UpdatePasswordVisibility._();
+}
+
+final class UpdateRepeatPasswordVisibility extends SignUpPageEvent {
+  const UpdateRepeatPasswordVisibility._();
 }

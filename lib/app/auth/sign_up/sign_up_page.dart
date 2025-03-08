@@ -215,7 +215,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   },
                   keyboardType: TextInputType.text,
                   cursorColor: context.onBackground,
-                  obscureText: true,
+                  obscureText: state.isPasswordHidden,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
@@ -225,6 +225,15 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                     errorText: state.passwordErrorMsg,
                     labelText: tr('password'),
                     labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: context.onBackground),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        state.isPasswordHidden ? Icons.visibility : Icons.visibility_off,
+                        color: context.onBackground.withOpacity(0.6),
+                      ),
+                      onPressed: () {
+                        context.read<SignUpPageBloc>().add(SignUpPageEvent.updatePasswordVisibility());
+                      },
+                    ),
                   ),
                 );
               },
@@ -255,7 +264,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   },
                   keyboardType: TextInputType.text,
                   cursorColor: context.onBackground,
-                  obscureText: true,
+                  obscureText: state.isRepeatPasswordHidden,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
@@ -265,6 +274,15 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                     errorText: state.repeatPasswordErrorMsg,
                     labelText: tr('repeat_password'),
                     labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: context.onBackground),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        state.isRepeatPasswordHidden ? Icons.visibility : Icons.visibility_off,
+                        color: context.onBackground.withOpacity(0.6),
+                      ),
+                      onPressed: () {
+                        context.read<SignUpPageBloc>().add(SignUpPageEvent.updateRepeatPasswordVisibility());
+                      },
+                    ),
                   ),
                 );
               },

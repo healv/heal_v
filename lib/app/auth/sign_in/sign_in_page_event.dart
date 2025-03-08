@@ -8,6 +8,8 @@ sealed class SignInPageEvent extends BaseEvent {
   factory SignInPageEvent.passwordChanged({required String password}) => PasswordChanged._(password: password);
 
   factory SignInPageEvent.validate() => const Validate._();
+
+  factory SignInPageEvent.updatePasswordVisibility() => const UpdatePasswordVisibility._();
 }
 
 final class EmailChanged extends SignInPageEvent {
@@ -24,4 +26,8 @@ final class PasswordChanged extends SignInPageEvent {
 
 final class Validate extends SignInPageEvent {
   const Validate._();
+}
+
+final class UpdatePasswordVisibility extends SignInPageEvent {
+  const UpdatePasswordVisibility._();
 }

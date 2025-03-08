@@ -18,6 +18,8 @@ class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, Si
     on<PasswordChanged>(_handlePasswordChangedEvent);
     on<RepeatPasswordChanged>(_handleRepeatPasswordChangedEvent);
     on<Validate>(_handleValidateEvent);
+    on<UpdatePasswordVisibility>(_handleUpdatePasswordVisibilityEvent);
+    on<UpdateRepeatPasswordVisibility>(_handleUpdateRepeatPasswordVisibilityEvent);
   }
 
   Future<void> _handleEmailChangedEvent(EmailChanged event, Emitter<SignUpPageState> emitter) async {
@@ -34,6 +36,16 @@ class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, Si
 
   Future<void> _handleRepeatPasswordChangedEvent(RepeatPasswordChanged event, Emitter<SignUpPageState> emitter) async {
     emitter(state.copyWith(repeatPassword: Optional.value(event.password)));
+  }
+
+  Future<void> _handleUpdatePasswordVisibilityEvent(UpdatePasswordVisibility event, Emitter<SignUpPageState> emitter) async {
+    final isVisible = state.isPasswordHidden;
+    emitter(state.copyWith(isPasswordHidden: !isVisible));
+  }
+
+  Future<void> _handleUpdateRepeatPasswordVisibilityEvent(UpdateRepeatPasswordVisibility event, Emitter<SignUpPageState> emitter) async {
+    final isVisible = state.isRepeatPasswordHidden;
+    emitter(state.copyWith(isRepeatPasswordHidden: !isVisible));
   }
 
   Future<void> _handleValidateEvent(Validate event, Emitter<SignUpPageState> emitter) async {

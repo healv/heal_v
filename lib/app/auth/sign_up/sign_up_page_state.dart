@@ -11,8 +11,8 @@ class SignUpPageState extends BaseState {
   final String? emailErrorMsg;
   final String? passwordErrorMsg;
   final String? repeatPasswordErrorMsg;
-  final bool isEmailFocused;
-  final bool isPasswordFocused;
+  final bool isPasswordHidden;
+  final bool isRepeatPasswordHidden;
 
   const SignUpPageState._({
     this.firstName,
@@ -24,14 +24,26 @@ class SignUpPageState extends BaseState {
     this.emailErrorMsg,
     this.passwordErrorMsg,
     this.repeatPasswordErrorMsg,
-    this.isEmailFocused = false,
-    this.isPasswordFocused = false,
+    this.isPasswordHidden = true,
+    this.isRepeatPasswordHidden = true,
   });
 
   factory SignUpPageState.initial() => const SignUpPageState._();
 
   @override
-  List<Object?> get props => [firstName, email, password, repeatPassword, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, passwordErrorMsg, repeatPasswordErrorMsg, isEmailFocused, isPasswordFocused];
+  List<Object?> get props => [
+        firstName,
+        email,
+        password,
+        repeatPassword,
+        firstNameErrorMsg,
+        lastNameErrorMsg,
+        emailErrorMsg,
+        passwordErrorMsg,
+        repeatPasswordErrorMsg,
+        isPasswordHidden,
+        isRepeatPasswordHidden,
+      ];
 
   SignUpPageState copyWith({
     Optional<String?>? firstName,
@@ -43,8 +55,8 @@ class SignUpPageState extends BaseState {
     Optional<String?>? emailErrorMsg,
     Optional<String?>? passwordErrorMsg,
     Optional<String?>? repeatPasswordErrorMsg,
-    bool? isEmailFocused,
-    bool? isPasswordFocused,
+    bool? isPasswordHidden,
+    bool? isRepeatPasswordHidden,
   }) {
     return SignUpPageState._(
       firstName: firstName?.isValid == true ? firstName?.value : this.firstName,
@@ -56,8 +68,8 @@ class SignUpPageState extends BaseState {
       emailErrorMsg: emailErrorMsg?.isValid == true ? emailErrorMsg?.value : this.emailErrorMsg,
       passwordErrorMsg: passwordErrorMsg?.isValid == true ? passwordErrorMsg?.value : this.passwordErrorMsg,
       repeatPasswordErrorMsg: repeatPasswordErrorMsg?.isValid == true ? repeatPasswordErrorMsg?.value : this.repeatPasswordErrorMsg,
-      isEmailFocused: isEmailFocused ?? this.isEmailFocused,
-      isPasswordFocused: isPasswordFocused ?? this.isPasswordFocused,
+      isPasswordHidden: isPasswordHidden ?? this.isPasswordHidden,
+      isRepeatPasswordHidden: isRepeatPasswordHidden ?? this.isRepeatPasswordHidden,
     );
   }
 }

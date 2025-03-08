@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/auth/sign_up/sign_up_page_bloc.dart';
 import 'package:heal_v/app/auth/sign_up/sign_up_page_effect.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
@@ -41,9 +42,9 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
           tr('sign_up'),
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: context.onBackground),
         ),
-        leading: Container(
-          margin: const EdgeInsets.only(left: 8.0),
-          child: AppIcons.arrowLeft.svgAsset(),
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          icon: AppIcons.arrowLeft.svgAsset(),
         ),
         leadingWidth: 40,
       ),

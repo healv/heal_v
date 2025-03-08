@@ -24,7 +24,8 @@ Future<ApiWrapper<T>> parseHttpResponse<T>(Function function, List<dynamic> argu
     if (e.type == DioExceptionType.connectionTimeout || e.type == DioExceptionType.receiveTimeout || e.type == DioExceptionType.sendTimeout || e.type == DioExceptionType.connectionError) {
       error = NetworkError();
     } else {
-      error = ApiWrapper.unknownError();
+      final data = e.response?.data;
+      error = ApiWrapper.error(code: data['statusCode'], error: data['message']);
     }
     return error;
   } catch (e) {

@@ -26,5 +26,17 @@
   "age": "Age",
   "birth": "Birth",
   "invalid_field": "Invalid Field",
-  "password": "Password"
+  "invalid_email": "Invalid email format",
+  "invalid_first_name": "First name must be empty",
+  "invalid_password": "Password must contain minimum 6 symbols",
+  "password_not_match": "Password and Confirm Password not match",
+  "password": "Password",
+  "repeat_password": "Repeat Password",
+  "sign_in": "Sign In",
+  "sign_up": "Sign Up",
+  "forgot_password": "Forgot password?",
+  "or_login_with": "Or login with",
+  "or_sign_up_with": "Or sign up with",
+  "error": "Error",
+  "ok": "Ok"
 }

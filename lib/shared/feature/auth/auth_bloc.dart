@@ -32,18 +32,19 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   Future<void> _handleInitialEvent(Initial event, Emitter<AuthBlocState> emitter) async {
     final savedAccessToken = await Store.get(key: StoreKey.accessToken, defaultValue: emptyString);
     if (savedAccessToken.isNotEmpty) {
-      final response = await repo.getMe(savedAccessToken);
-      switch (response.status) {
-        case ResourceStatusEnum.success:
-          emitter(state.copyWith(accessToken: Optional.value(savedAccessToken)));
-          addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
-          break;
-        case ResourceStatusEnum.error:
-          addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.error));
-          debugPrint(response.error.toString());
-          break;
-        case ResourceStatusEnum.loading:
-          break;
+      await for (final response in repo.getMe(savedAccessToken)) {
+        switch (response.status) {
+          case ResourceStatusEnum.success:
+            emitter(state.copyWith(accessToken: Optional.value(savedAccessToken)));
+            addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
+            break;
+          case ResourceStatusEnum.error:
+            addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.error, errorMsg: response.error));
+            debugPrint(response.error.toString());
+            break;
+          case ResourceStatusEnum.loading:
+            break;
+        }
       }
     } else {
       await Future.delayed(const Duration(seconds: 2));
@@ -52,36 +53,44 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleSignUpEvent(SignUp event, Emitter<AuthBlocState> emitter) async {
-    final response = await repo.signUp(LoginPacket(email: 'harutyunyanedik1992@gmail.com', password: 'Test1234'));
-    switch (response.status) {
-      case ResourceStatusEnum.success:
-        emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user)));
-        Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
-        debugPrint(response.data.toString());
-        break;
-      case ResourceStatusEnum.error:
-        debugPrint(response.error.toString());
-        break;
-      case ResourceStatusEnum.loading:
-        break;
+    await for (final response in repo.signUp(LoginPacket(email: event.email, password: event.password))) {
+      switch (response.status) {
+        case ResourceStatusEnum.success:
+          emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user), loading: const Optional.value(true)));
+          Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
+          debugPrint(response.data.toString());
+          addSideEffect(AuthBlocEffect.signedUp(ResourceStatusEnum.success));
+          break;
+        case ResourceStatusEnum.error:
+          debugPrint(response.error.toString());
+          emitter(state.copyWith(loading: const Optional.value(false)));
+          addSideEffect(AuthBlocEffect.signedUp(ResourceStatusEnum.error, errorMsg: response.error));
+          break;
+        case ResourceStatusEnum.loading:
+          emitter(state.copyWith(loading: const Optional.value(true)));
+          break;
+      }
     }
-    addSideEffect(AuthBlocEffect.signedUp(ResourceStatusEnum.success));
   }
 
   Future<void> _handleSignInEvent(SignIn event, Emitter<AuthBlocState> emitter) async {
-    final response = await repo.login(LoginPacket(email: 'harutyunyanedik1992@gmail.com', password: 'Test1234'));
-    switch (response.status) {
-      case ResourceStatusEnum.success:
-        emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user)));
-        Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
-        debugPrint(response.data.toString());
-        break;
-      case ResourceStatusEnum.error:
-        debugPrint(response.error.toString());
-        break;
-      case ResourceStatusEnum.loading:
-        break;
+    await for (final response in repo.login(LoginPacket(email: event.email, password: event.password))) {
+      switch (response.status) {
+        case ResourceStatusEnum.success:
+          emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user), loading: const Optional.value(false)));
+          Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
+          debugPrint(response.data.toString());
+          addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
+          break;
+        case ResourceStatusEnum.error:
+          debugPrint(response.error.toString());
+          addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.error, errorMsg: response.error));
+          emitter(state.copyWith(loading: const Optional.value(false)));
+          break;
+        case ResourceStatusEnum.loading:
+          emitter(state.copyWith(loading: const Optional.value(true)));
+          break;
+      }
     }
-    addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
   }
 }

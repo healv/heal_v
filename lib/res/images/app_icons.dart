@@ -11,6 +11,7 @@ enum AppIcons {
   arrowRight('assets/icons/ic_arrow_right.svg'),
   tree('assets/icons/tree.png'),
   journal('assets/icons/journal.svg'),
+  google('assets/icons/ic_google.svg'),
   stretching('assets/icons/ic_stretching.svg');
 
   final String path;

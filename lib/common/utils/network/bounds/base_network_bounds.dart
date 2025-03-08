@@ -1,7 +1,9 @@
-abstract class BaseNetworkBounds<ResultType, RequestType> {
-  Exception? isError({RequestType? response, ResultType result});
+import 'package:heal_v/common/utils/network/api_error.dart';
 
-  void processErrorResponse(Exception? exception);
+abstract class BaseNetworkBounds<ResultType, RequestType> {
+  ApiError? isError({RequestType? response, ResultType result});
+
+  void processErrorResponse(ApiError? exception);
 
   Future<ResultType?> processResponse(RequestType? response, {ResultType? data});
 

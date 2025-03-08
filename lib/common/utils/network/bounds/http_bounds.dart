@@ -1,7 +1,5 @@
-import 'package:heal_v/common/exception/exception_error.dart';
-import 'package:heal_v/common/exception/exception_network.dart';
-import 'package:heal_v/common/exception/exception_unknown.dart';
 import 'package:heal_v/common/utils/constants.dart';
+import 'package:heal_v/common/utils/network/api_error.dart';
 
 import '../../resource.dart';
 import '../api_wrapper.dart';
@@ -12,17 +10,17 @@ abstract class HttpBounds<ResultType, RequestType> extends BaseNetworkBoundsDefa
   Future<RequestType?> fetchFromNetwork() async => null;
 
   @override
-  void processErrorResponse(Exception? exception) {}
+  void processErrorResponse(ApiError? exception) {}
 
   @override
   Future<ResultType?> processResponse(RequestType? response, {ResultType? data}) async => null;
 
   @override
-  Exception? isError({RequestType? response, ResultType? result}) {
+  ApiError? isError({RequestType? response, ResultType? result}) {
     return switch (response) {
-      UnknownError() => UnknownException(),
-      NetworkError() => NetworkException(),
-      Error() => ErrorException(message: response.error ?? emptyString, code: response.code),
+      UnknownError() => ApiError(code: -1, message: "Unknown error"),
+      NetworkError() => ApiError(code: 100, message: "No internet connection"),
+      Error() => ApiError(message: response.error ?? emptyString, code: response.code),
       _ => null,
     };
   }
@@ -46,7 +44,7 @@ abstract class HttpBounds<ResultType, RequestType> extends BaseNetworkBoundsDefa
           result = Resource.success(processedResponse);
         } else {
           processErrorResponse(error);
-          result = Resource.error(error: error);
+          result = Resource.error(error: error.message);
         }
         break;
       case FetchPolicy.networkAndCash:
@@ -61,7 +59,7 @@ abstract class HttpBounds<ResultType, RequestType> extends BaseNetworkBoundsDefa
           result = Resource.success(storageValue);
         } else {
           processErrorResponse(error);
-          result = Resource.error(error: error);
+          result = Resource.error(error: error.message);
         }
         break;
     }

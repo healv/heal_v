@@ -13,22 +13,20 @@ import 'auth_repo.dart';
 base class AuthRepoImpl implements AuthRepo {
   final AuthNetworkPort port;
 
-  // final UsersStorage usersStorage;
-
   AuthRepoImpl({required this.port});
 
   @override
-  Future<Resource<UserDto>> getMe(String accessToken) {
-    return GetMeNetworkBounds(port: port, accessToken: accessToken).call().last;
+  Stream<Resource<UserDto>> getMe(String accessToken) {
+    return GetMeNetworkBounds(port: port, accessToken: accessToken).call();
   }
 
   @override
-  Future<Resource<LoginDto>> login(LoginPacket loginPacket) {
-    return LoginNetworkBounds(port: port, packet: loginPacket).call().last;
+  Stream<Resource<LoginDto>> login(LoginPacket loginPacket) {
+    return LoginNetworkBounds(port: port, packet: loginPacket).call();
   }
 
   @override
-  Future<Resource<SignUpDto>> signUp(LoginPacket loginPacket) {
-    return SignUpNetworkBounds(port: port, packet: loginPacket).call().last;
+  Stream<Resource<SignUpDto>> signUp(LoginPacket loginPacket) {
+    return SignUpNetworkBounds(port: port, packet: loginPacket).call();
   }
 }

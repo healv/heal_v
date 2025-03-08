@@ -25,5 +25,14 @@
   "email": "Электронная почта",
   "age": "Возраст",
   "birth": "Рождение",
-  "invalid_field": "Invalid Field"
+  "invalid_field": "Invalid Field",
+  "invalid_email": "Invalid email format",
+  "invalid_first_name": "First name must be empty",
+  "invalid_password": "Password must be minimum 6 symbols",
+  "sign_in": "Sign In",
+  "sign_up": "Sign Up",
+  "forgot_password": "Forgot password?",
+  "or_login_with": "Or login with",
+  "error": "Error",
+  "ok": "Ok"
 }

@@ -17,6 +17,7 @@ abstract class AppThemeGenFunctions {
       colorScheme: _colorScheme(palette),
       switchTheme: _switchThemeData(palette),
       elevatedButtonTheme: _elevatedButtonThemeData(palette),
+      outlinedButtonTheme: _outlinedButtonTheme(palette),
       datePickerTheme: _datePickerThemeData(palette),
       extensions: <ThemeExtension>[
         palette,
@@ -176,6 +177,18 @@ abstract class AppThemeGenFunctions {
       }),
       confirmButtonStyle: ButtonStyle(
         foregroundColor: WidgetStateProperty.all(palette.primary), // Цвет текста кнопки "OK"
+      ),
+    );
+  }
+
+  static OutlinedButtonThemeData _outlinedButtonTheme(AppColorsPalette palette) {
+    return OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: palette.primary,
+        textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+        side: BorderSide(color: palette.onBackground, width: 1),
+        minimumSize: const Size(48, 48),
       ),
     );
   }

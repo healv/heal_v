@@ -5,7 +5,6 @@ import 'package:heal_v/common/bloc/base_event.dart';
 import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
 import 'package:heal_v/common/dart/optional.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
-import 'package:heal_v/common/utils/resource.dart';
 
 import '../../../common/bloc/base_state.dart';
 
@@ -17,10 +16,7 @@ class SignInPageBloc extends SideEffectBloc<SignInPageEvent, SignInPageState, Si
   SignInPageBloc() : super(SignInPageState.initial()) {
     on<EmailChanged>(_handleEmailChangedEvent);
     on<PasswordChanged>(_handlePasswordChangedEvent);
-    on<ValidateEmail>(_handleValidateEmailEvent);
-    on<ValidatePassword>(_handleValidatePasswordEvent);
-    on<EmailFocusChanged>(_handleEmailFocusChangedEvent);
-    on<PasswordFocusChanged>(_handlePasswordFocusChangedEvent);
+    on<Validate>(_handleValidateEvent);
   }
 
   Future<void> _handleEmailChangedEvent(EmailChanged event, Emitter<SignInPageState> emitter) async {
@@ -31,34 +27,21 @@ class SignInPageBloc extends SideEffectBloc<SignInPageEvent, SignInPageState, Si
     emitter(state.copyWith(password: Optional.value(event.password)));
   }
 
-  Future<void> _handleValidateEmailEvent(ValidateEmail event, Emitter<SignInPageState> emitter) async {
-    SignInPageSideEffect.emailValidated(ResourceStatusEnum.loading);
-    if (_isValidEmail()) {
-      emitter(state.copyWith(emailErrorMsg: const Optional.value(null)));
-      addSideEffect(SignInPageSideEffect.emailValidated(ResourceStatusEnum.success));
-    } else {
-      emitter(state.copyWith(emailErrorMsg: Optional.value(tr('invalid_field'))));
-      addSideEffect(SignInPageSideEffect.emailValidated(ResourceStatusEnum.error));
+  Future<void> _handleValidateEvent(Validate event, Emitter<SignInPageState> emitter) async {
+    if (!_isValidEmail()) {
+      emitter(state.copyWith(emailErrorMsg: Optional.value(tr('invalid_email'))));
+      return;
     }
-  }
 
-  Future<void> _handleValidatePasswordEvent(ValidatePassword event, Emitter<SignInPageState> emitter) async {
-    SignInPageSideEffect.emailValidated(ResourceStatusEnum.loading);
-    if (_isValidPassword()) {
-      emitter(state.copyWith(passwordErrorMsg: const Optional.value(null)));
-      addSideEffect(SignInPageSideEffect.emailValidated(ResourceStatusEnum.success));
-    } else {
-      emitter(state.copyWith(passwordErrorMsg: Optional.value(tr('invalid_field'))));
-      addSideEffect(SignInPageSideEffect.emailValidated(ResourceStatusEnum.error));
+    if (!_isValidPassword()) {
+      emitter(state.copyWith(
+        emailErrorMsg: const Optional.value(null),
+        passwordErrorMsg: Optional.value(tr('invalid_password')),
+      ));
+      return;
     }
-  }
-
-  Future<void> _handleEmailFocusChangedEvent(EmailFocusChanged event, Emitter<SignInPageState> emitter) async {
-    emitter(state.copyWith(isEmailFocused: event.isFocused));
-  }
-
-  Future<void> _handlePasswordFocusChangedEvent(PasswordFocusChanged event, Emitter<SignInPageState> emitter) async {
-    emitter(state.copyWith(isPasswordFocused: event.isFocused));
+    emitter(state.copyWith(emailErrorMsg: const Optional.value(null), passwordErrorMsg: const Optional.value(null)));
+    addSideEffect(SignInPageSideEffect.validated());
   }
 
   bool _isValidEmail() {
@@ -68,6 +51,6 @@ class SignInPageBloc extends SideEffectBloc<SignInPageEvent, SignInPageState, Si
 
   bool _isValidPassword() {
     final password = state.password?.trim();
-    return password != null && password.isNotEmpty;
+    return password != null && password.length > 5;
   }
 }

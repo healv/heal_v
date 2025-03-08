@@ -15,4 +15,8 @@ extension ThemeExt on BuildContext {
   Color get textSecondary => appPalette.textSecondary;
 
   Color get quizDialogItemColor => appPalette.quizDialogItemColor;
+
+  void unFocus() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
 }

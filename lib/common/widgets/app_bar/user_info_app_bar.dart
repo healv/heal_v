@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:heal_v/common/widgets/avatar_widget.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+import 'package:shimmer/shimmer.dart';
 
 class UserInfoAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final bool loading;
+
   const UserInfoAppBar({
     super.key,
+    required this.title,
+    required this.loading,
   });
 
   @override
@@ -36,26 +42,32 @@ class UserInfoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   const AvatarWidget(radius: 25, isEditable: false),
                   const SizedBox(width: 16.0),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Good Moring, Eman! 👋',
-                          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: context.onBackground),
-                        ),
-                        Text(
-                          'Hope your feeling good today.',
-                          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500, color: context.unselectedItemColor),
-                        ),
-                      ],
-                    ),
+                    child: loading
+                        ? _loadingShimmer(context)
+                        : Text(
+                            '$title 👋',
+                            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: context.onBackground),
+                          ),
                   ),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _loadingShimmer(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 16.0),
+      child: Shimmer.fromColors(
+        baseColor: context.onBackground.withOpacity(0.3),
+        highlightColor: context.onBackground.withOpacity(0.1),
+        child: Container(
+          color: context.onBackground.withOpacity(0.3),
+          height: 24,
+        ),
       ),
     );
   }

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:heal_v/application.dart';
 import 'package:heal_v/config/easylocalization/easy_localization_config.dart';
-import 'package:heal_v/feature/auth/di/auth_module.dart';
+import 'package:heal_v/feature/heal_v/api/auth/di/auth_module.dart';
+import 'package:heal_v/feature/heal_v/api/shared_content/di/shared_content_module.dart';
 import 'package:heal_v/theme/helpers/theme_helper.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -43,6 +44,7 @@ Future<void> _setupDio() async {
 Future<void> _setupDI() async {
   getIt.registerSingletonAsync(() => SharedPreferences.getInstance());
   await getIt.authModule();
+  await getIt.sharedContentModule();
 }
 
 Future<void> _setupHydratedBloc() async {

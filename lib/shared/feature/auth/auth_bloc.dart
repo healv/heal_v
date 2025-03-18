@@ -7,9 +7,9 @@ import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/common/utils/store_key.dart';
-import 'package:heal_v/feature/auth/model/user/user_dto.dart';
-import 'package:heal_v/feature/auth/packet/login_packet.dart';
-import 'package:heal_v/feature/auth/repo/auth_repo.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/repo/auth_repo.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 
 import '../../../common/bloc/base_event.dart';

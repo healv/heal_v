@@ -1,4 +1,4 @@
-import 'package:heal_v/feature/auth/model/user/user_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'sign_up_dto.g.dart';

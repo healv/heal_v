@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:heal_v/feature/auth/web_service/heal_v_network_web_service.dart';
+import 'package:heal_v/feature/heal_v/api/web_service/heal_v_network_web_service.dart';
 
 import '../network/auth_network_adapter.dart';
 import '../network/auth_network_port.dart';

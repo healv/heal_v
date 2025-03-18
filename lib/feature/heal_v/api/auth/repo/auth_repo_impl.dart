@@ -1,12 +1,12 @@
 import 'package:heal_v/common/utils/resource.dart';
-import 'package:heal_v/feature/auth/bounds/get_me_network_bounds.dart';
-import 'package:heal_v/feature/auth/bounds/login_network_bounds.dart';
-import 'package:heal_v/feature/auth/bounds/sign_up_network_bounds.dart';
-import 'package:heal_v/feature/auth/model/login/login_dto.dart';
-import 'package:heal_v/feature/auth/model/sign_up/sign_up_dto.dart';
-import 'package:heal_v/feature/auth/model/user/user_dto.dart';
-import 'package:heal_v/feature/auth/network/auth_network_port.dart';
-import 'package:heal_v/feature/auth/packet/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/bounds/get_me_network_bounds.dart';
+import 'package:heal_v/feature/heal_v/api/auth/bounds/login_network_bounds.dart';
+import 'package:heal_v/feature/heal_v/api/auth/bounds/sign_up_network_bounds.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/login/login_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/sign_up/sign_up_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/network/auth_network_port.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/login_packet.dart';
 
 import 'auth_repo.dart';
 

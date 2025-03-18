@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:heal_v/feature/auth/model/login/login_dto.dart';
-import 'package:heal_v/feature/auth/model/sign_up/sign_up_dto.dart';
-import 'package:heal_v/feature/auth/packet/login_packet.dart';
-import 'package:heal_v/feature/auth/utils/auth_constants.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/login/login_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/sign_up/sign_up_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
+import 'package:heal_v/feature/heal_v/api/shared_content/model/shared_content_dto.dart';
 import 'package:retrofit/retrofit.dart';
-
-import '../model/user/user_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
 
@@ -21,4 +21,7 @@ abstract class HealVNetworkWebService {
 
   @GET('/auth/user')
   Future<HttpResponse<UserDto?>> me(@Header('Authorization') String authToken);
+
+  @GET('/shared-content')
+  Future<HttpResponse<SharedContentDto?>> sharedContent();
 }

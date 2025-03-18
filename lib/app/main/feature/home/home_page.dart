@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/user_info_app_bar.dart';
 import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
-import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/quiz/quiz_manager.dart';
+import 'package:heal_v/shared/feature/shared_content/shared_content_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:heal_v/tools/dart/pair.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<StatefulWidget> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SharedContentBloc>().add(SharedContentEvent.initial());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const UserInfoAppBar(),
-      body: _body(context),
+    return BlocBuilder<SharedContentBloc, SharedContentState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: UserInfoAppBar(
+            title: state.appBarMessage ?? emptyString,
+            loading: state.loading,
+          ),
+          body: _body(context),
+        );
+      },
     );
   }
 

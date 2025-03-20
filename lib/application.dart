@@ -13,6 +13,7 @@ import 'package:heal_v/navigation/main/main_graph.dart';
 import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
+import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/shared/feature/settings/settings_bloc.dart';
 import 'package:heal_v/shared/feature/shared_content/shared_content_bloc.dart';
 import 'package:heal_v/theme/theme_notifier.dart';
@@ -64,14 +65,9 @@ class HealVApplication extends StatelessWidget {
   }
 
   List<BlocProvider<BaseBloc>> get providers => [
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(getIt.get()),
-        ),
-        BlocProvider<SettingsBloc>(
-          create: (context) => SettingsBloc()..add(SettingsEvent.initial()),
-        ),
-        BlocProvider<SharedContentBloc>(
-          create: (context) => SharedContentBloc(getIt.get()),
-        ),
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc(getIt.get())),
+        BlocProvider<SettingsBloc>(create: (context) => SettingsBloc()..add(SettingsEvent.initial())),
+        BlocProvider<SharedContentBloc>(create: (context) => SharedContentBloc(getIt.get())),
+        BlocProvider<ProgressBloc>(create: (context) => ProgressBloc(getIt.get())),
       ];
 }

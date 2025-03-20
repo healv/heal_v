@@ -28,7 +28,7 @@ final class _LoadingElevatedButtonState extends State<LoadingElevatedButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: widget.style,
-      onPressed: widget.onPressed,
+      onPressed: widget.isLoading == true ? () {} : widget.onPressed,
       child: widget.isLoading == true
           ? Center(
               child: SizedBox(

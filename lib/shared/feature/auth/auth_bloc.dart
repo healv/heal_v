@@ -33,7 +33,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   Future<void> _handleInitialEvent(Initial event, Emitter<AuthBlocState> emitter) async {
     final savedAccessToken = await Store.get(key: StoreKey.accessToken, defaultValue: emptyString);
     if (savedAccessToken.isNotEmpty) {
-      await for (final response in repo.getMe(savedAccessToken)) {
+      await for (final response in repo.getMe()) {
         switch (response.status) {
           case ResourceStatusEnum.success:
             emitter(state.copyWith(accessToken: Optional.value(savedAccessToken)));

@@ -5,13 +5,12 @@ import 'package:heal_v/feature/heal_v/api/progress/network/daily_progress_networ
 
 class DailyProgressNetworkBounds extends HttpBounds<DailyProgressDto, ApiWrapper<DailyProgressDto?>> {
   final DailyProgressNetworkPort port;
-  final String authToken;
 
-  DailyProgressNetworkBounds({required this.port, required this.authToken});
+  DailyProgressNetworkBounds({required this.port});
 
   @override
   Future<ApiWrapper<DailyProgressDto?>?> fetchFromNetwork() {
-    return port.getDailyProgress(authToken);
+    return port.getDailyProgress();
   }
 
   @override

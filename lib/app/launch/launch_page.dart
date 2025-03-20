@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
+import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/utils/alert.dart';
+import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/navigation/auth/auth_graph.dart';
 import 'package:heal_v/navigation/main/home/home_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
@@ -49,10 +52,25 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
       case LoggedOut():
         break;
       case LoggedIn():
-        HomeRoute().go(context);
+        switch (effect.status) {
+          case ResourceStatusEnum.success:
+            HomeRoute().go(context);
+            break;
+          case ResourceStatusEnum.error:
+            SignInRoute().go(context);
+            break;
+          default:
+            break;
+        }
         break;
       case SignedUp():
-        HomeRoute().go(context);
+        switch (effect.status) {
+          case ResourceStatusEnum.success:
+            HomeRoute().go(context);
+            break;
+          default:
+            break;
+        }
         break;
       case NotLoggedIn():
         SignInRoute().go(context);

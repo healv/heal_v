@@ -3,6 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:heal_v/application.dart';
+import 'package:heal_v/common/tools/store.dart';
+import 'package:heal_v/common/utils/constants.dart';
+import 'package:heal_v/common/utils/network/interceptors/auth_interceptor.dart';
+import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/config/easylocalization/easy_localization_config.dart';
 import 'package:heal_v/feature/heal_v/api/auth/di/auth_module.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/di/breathing_module.dart';
@@ -35,10 +39,12 @@ void main() async {
 }
 
 Future<void> _setupDio() async {
+  final accessToken = await Store.get(key: StoreKey.accessToken, defaultValue: emptyString);
   getIt.registerLazySingleton<Dio>(() {
     final dio = Dio()
       ..interceptors.addAll([
         LogInterceptor(requestBody: true, responseBody: true),
+        AuthInterceptor(accessToken),
       ]);
     return dio;
   });

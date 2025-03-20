@@ -94,11 +94,10 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<UserDto?>> me(String authToken) async {
+  Future<HttpResponse<UserDto?>> me() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': authToken};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<UserDto>>(Options(
       method: 'GET',
@@ -165,12 +164,10 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<DailyProgressDto?>> getDailyProgress(
-      String authToken) async {
+  Future<HttpResponse<DailyProgressDto?>> getDailyProgress() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': authToken};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<DailyProgressDto>>(Options(
       method: 'GET',
@@ -203,11 +200,10 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<MeditationsDto?>> meditations(String authToken) async {
+  Future<HttpResponse<MeditationsDto?>> meditations() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': authToken};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<MeditationsDto>>(Options(
       method: 'GET',
@@ -239,11 +235,10 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<BreathingsDto?>> breathings(String authToken) async {
+  Future<HttpResponse<BreathingsDto?>> breathings() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': authToken};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<BreathingsDto>>(Options(
       method: 'GET',

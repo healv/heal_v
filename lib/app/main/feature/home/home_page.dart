@@ -7,6 +7,7 @@ import 'package:heal_v/common/widgets/app_bar/user_info_app_bar.dart';
 import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
+import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/shared/feature/quiz/quiz_manager.dart';
 import 'package:heal_v/shared/feature/shared_content/shared_content_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    context.read<ProgressBloc>().add(ProgressEvent.initial());
     context.read<SharedContentBloc>().add(SharedContentEvent.initial());
   }
 

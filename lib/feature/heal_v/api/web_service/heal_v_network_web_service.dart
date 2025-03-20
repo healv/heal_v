@@ -24,17 +24,17 @@ abstract class HealVNetworkWebService {
   Future<HttpResponse<SignUpDto?>> signUp(@Body() SignUpPacket body);
 
   @GET('/auth/user')
-  Future<HttpResponse<UserDto?>> me(@Header('Authorization') String authToken);
+  Future<HttpResponse<UserDto?>> me();
 
   @GET('/shared-content')
   Future<HttpResponse<SharedContentDto?>> sharedContent();
 
   @GET('/daily-progress')
-  Future<HttpResponse<DailyProgressDto?>> getDailyProgress(@Header('Authorization') String authToken);
+  Future<HttpResponse<DailyProgressDto?>> getDailyProgress();
 
   @GET('/meditations')
-  Future<HttpResponse<MeditationsDto?>> meditations(@Header('Authorization') String authToken);
+  Future<HttpResponse<MeditationsDto?>> meditations();
 
   @GET('/breathings')
-  Future<HttpResponse<BreathingsDto?>> breathings(@Header('Authorization') String authToken);
+  Future<HttpResponse<BreathingsDto?>> breathings();
 }

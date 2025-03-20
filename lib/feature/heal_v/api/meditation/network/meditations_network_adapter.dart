@@ -10,7 +10,7 @@ base class MeditationsNetworkAdapter implements MeditationsNetworkPort {
   MeditationsNetworkAdapter({required this.healVNetworkWebService});
 
   @override
-  Future<ApiWrapper<MeditationsDto?>> meditations({required String authToken}) {
-    return parseHttpResponse<MeditationsDto>(healVNetworkWebService.meditations, [authToken]);
+  Future<ApiWrapper<MeditationsDto?>> meditations() {
+    return parseHttpResponse<MeditationsDto>(healVNetworkWebService.meditations, []);
   }
 }

@@ -6,13 +6,12 @@ import 'package:heal_v/feature/heal_v/api/breathing/network/breathings_network_p
 
 class BreathingsNetworkBounds extends HttpBounds<MeditationBreathings, ApiWrapper<BreathingsDto?>> {
   final BreathingsNetworkPort port;
-  final String authToken;
 
-  BreathingsNetworkBounds({required this.port, required this.authToken});
+  BreathingsNetworkBounds({required this.port});
 
   @override
   Future<ApiWrapper<BreathingsDto?>?> fetchFromNetwork() {
-    return port.breathings(authToken: authToken);
+    return port.breathings();
   }
 
   @override

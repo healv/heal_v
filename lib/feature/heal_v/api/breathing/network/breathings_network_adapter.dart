@@ -10,7 +10,7 @@ base class BreathingsNetworkAdapter implements BreathingsNetworkPort {
   BreathingsNetworkAdapter({required this.healVNetworkWebService});
 
   @override
-  Future<ApiWrapper<BreathingsDto?>> breathings({required String authToken}) {
-    return parseHttpResponse<BreathingsDto>(healVNetworkWebService.breathings, [authToken]);
+  Future<ApiWrapper<BreathingsDto?>> breathings() {
+    return parseHttpResponse<BreathingsDto>(healVNetworkWebService.breathings, []);
   }
 }

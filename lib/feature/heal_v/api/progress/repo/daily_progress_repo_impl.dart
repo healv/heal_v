@@ -10,7 +10,7 @@ base class DailyProgressRepoImpl implements DailyProgressRepo {
   DailyProgressRepoImpl({required this.port});
 
   @override
-  Stream<Resource<DailyProgressDto>> getDailyProgress({required String authToken}) {
-    return DailyProgressNetworkBounds(port: port, authToken: authToken).call();
+  Stream<Resource<DailyProgressDto>> getDailyProgress() {
+    return DailyProgressNetworkBounds(port: port).call();
   }
 }

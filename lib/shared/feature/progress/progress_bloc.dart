@@ -9,7 +9,6 @@ import 'package:heal_v/feature/heal_v/api/progress/repo/daily_progress_repo.dart
 import '../../../common/bloc/base_event.dart';
 
 part 'progress_event.dart';
-
 part 'progress_state.dart';
 
 class ProgressBloc extends BaseBloc<ProgressEvent, ProgressState> {
@@ -20,7 +19,7 @@ class ProgressBloc extends BaseBloc<ProgressEvent, ProgressState> {
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<ProgressState> emitter) async {
-    await for (final response in repo.getDailyProgress(authToken: event.authToken)) {
+    await for (final response in repo.getDailyProgress()) {
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(

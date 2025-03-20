@@ -10,7 +10,7 @@ base class DailyProgressNetworkAdapter implements DailyProgressNetworkPort {
   DailyProgressNetworkAdapter({required this.healVNetworkWebService});
 
   @override
-  Future<ApiWrapper<DailyProgressDto?>> getDailyProgress(String? authToken) {
-    return parseHttpResponse<DailyProgressDto>(healVNetworkWebService.getDailyProgress, [authToken]);
+  Future<ApiWrapper<DailyProgressDto?>> getDailyProgress() {
+    return parseHttpResponse<DailyProgressDto>(healVNetworkWebService.getDailyProgress, []);
   }
 }

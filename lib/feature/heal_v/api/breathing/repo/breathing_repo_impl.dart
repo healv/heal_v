@@ -10,7 +10,7 @@ base class BreathingsRepoImpl implements BreathingsRepo {
   BreathingsRepoImpl({required this.port});
 
   @override
-  Stream<Resource<MeditationBreathings>> breathing({required String authToken}) {
-    return BreathingsNetworkBounds(port: port, authToken: authToken).call();
+  Stream<Resource<MeditationBreathings>> breathing() {
+    return BreathingsNetworkBounds(port: port).call();
   }
 }

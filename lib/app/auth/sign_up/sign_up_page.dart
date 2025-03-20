@@ -346,7 +346,13 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
   Future<void> handleSideEffect(SignUpPageSideEffect effect) async {
     switch (effect) {
       case Validated():
-        context.read<AuthBloc>().add(AuthBlocEvent.signUp(email: emailTextEditingController.text, password: passwordEditingController.text));
+        context.read<AuthBloc>().add(
+              AuthBlocEvent.signUp(
+                email: emailTextEditingController.text,
+                password: passwordEditingController.text,
+                name: firstNameTextEditingController.text,
+              ),
+            );
         break;
     }
   }

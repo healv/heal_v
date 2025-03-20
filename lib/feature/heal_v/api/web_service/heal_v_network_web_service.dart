@@ -2,8 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/login/login_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/sign_up/sign_up_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
+import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_dto.dart';
+import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_dto.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/shared_content/model/shared_content_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -17,11 +21,20 @@ abstract class HealVNetworkWebService {
   Future<HttpResponse<LoginDto?>> login(@Body() LoginPacket body);
 
   @POST('/auth/signup')
-  Future<HttpResponse<SignUpDto?>> signUp(@Body() LoginPacket body);
+  Future<HttpResponse<SignUpDto?>> signUp(@Body() SignUpPacket body);
 
   @GET('/auth/user')
   Future<HttpResponse<UserDto?>> me(@Header('Authorization') String authToken);
 
   @GET('/shared-content')
   Future<HttpResponse<SharedContentDto?>> sharedContent();
+
+  @GET('/daily-progress')
+  Future<HttpResponse<DailyProgressDto?>> getDailyProgress(@Header('Authorization') String authToken);
+
+  @GET('/meditations')
+  Future<HttpResponse<MeditationsDto?>> meditations(@Header('Authorization') String authToken);
+
+  @GET('/breathings')
+  Future<HttpResponse<BreathingsDto?>> breathings(@Header('Authorization') String authToken);
 }

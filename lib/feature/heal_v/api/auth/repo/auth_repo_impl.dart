@@ -6,7 +6,8 @@ import 'package:heal_v/feature/heal_v/api/auth/model/login/login_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/sign_up/sign_up_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/network/auth_network_port.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 
 import 'auth_repo.dart';
 
@@ -26,7 +27,7 @@ base class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Stream<Resource<SignUpDto>> signUp(LoginPacket loginPacket) {
-    return SignUpNetworkBounds(port: port, packet: loginPacket).call();
+  Stream<Resource<SignUpDto>> signUp(SignUpPacket signUpPacket) {
+    return SignUpNetworkBounds(port: port, packet: signUpPacket).call();
   }
 }

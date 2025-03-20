@@ -8,7 +8,8 @@ import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/repo/auth_repo.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 
@@ -53,7 +54,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleSignUpEvent(SignUp event, Emitter<AuthBlocState> emitter) async {
-    await for (final response in repo.signUp(LoginPacket(email: event.email, password: event.password))) {
+    await for (final response in repo.signUp(SignUpPacket(email: event.email, password: event.password))) {
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user), loading: const Optional.value(true)));

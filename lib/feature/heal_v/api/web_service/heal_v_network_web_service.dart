@@ -5,7 +5,9 @@ import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
+import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_dto.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_dto.dart';
+import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_categories_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/shared_content/model/shared_content_dto.dart';
@@ -37,4 +39,10 @@ abstract class HealVNetworkWebService {
 
   @GET('/breathings')
   Future<HttpResponse<BreathingsDto?>> breathings();
+
+  @GET('/meditations/categories')
+  Future<HttpResponse<List<MeditationsCategoriesDto>?>> meditationsCategories();
+
+  @GET('/breathings/categories')
+  Future<HttpResponse<List<BreathingsCategoriesDto>?>> breathingsCategories();
 }

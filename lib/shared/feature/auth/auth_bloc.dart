@@ -54,7 +54,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleSignUpEvent(SignUp event, Emitter<AuthBlocState> emitter) async {
-    await for (final response in repo.signUp(SignUpPacket(email: event.email, password: event.password))) {
+    await for (final response in repo.signUp(SignUpPacket(email: event.email, password: event.password, name: event.name))) {
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user), loading: const Optional.value(true)));

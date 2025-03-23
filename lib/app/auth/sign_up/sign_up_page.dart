@@ -72,8 +72,6 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
             _signUpButton(context),
             const SizedBox(height: 20),
             Text(tr('or_sign_up_with')),
-            const SizedBox(height: 10),
-            _googleSignUpIcon(context),
           ],
         ),
       ),
@@ -314,13 +312,6 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
           ),
         );
       },
-    );
-  }
-
-  Widget _googleSignUpIcon(BuildContext context) {
-    return IconButton(
-      onPressed: () {},
-      icon: AppIcons.google.svgAsset(height: 40),
     );
   }
 

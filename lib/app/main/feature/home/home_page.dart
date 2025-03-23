@@ -5,13 +5,12 @@ import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/user_info_app_bar.dart';
 import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
+import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
-import 'package:heal_v/shared/feature/quiz/quiz_manager.dart';
 import 'package:heal_v/shared/feature/shared_content/shared_content_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
-import 'package:heal_v/tools/dart/pair.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -166,60 +165,65 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _mainListView(BuildContext context) {
-    List<Pair<String, AppIcons>> items = [
-      Pair(tr('meditation'), AppIcons.meditation),
-      Pair(tr('breathing'), AppIcons.breathing),
-      Pair(tr('stretching'), AppIcons.stretching),
-      Pair(tr('journal'), AppIcons.journal),
-    ];
-    return Expanded(
-      child: ListView.separated(
-        itemBuilder: (context, index) => _cardItem(context, items[index], index),
-        separatorBuilder: (context, index) => const SizedBox(height: 8.0),
-        itemCount: items.length,
-      ),
+    return BlocBuilder<ProgressBloc, ProgressState>(
+      builder: (BuildContext context, ProgressState state) {
+        List<ProgressModel> items = [
+          ProgressModel(name: tr('meditation'), icon: AppIcons.meditation, isEnabled: state.meditation),
+          ProgressModel(name: tr('breathing'), icon: AppIcons.breathing, isEnabled: state.breathing),
+          ProgressModel(name: tr('stretching'), icon: AppIcons.stretching, isEnabled: state.stretching),
+          ProgressModel(name: tr('journal'), icon: AppIcons.journal, isEnabled: true),
+        ];
+        return Expanded(
+          child: ListView.separated(
+            itemBuilder: (context, index) => _cardItem(context, items[index], index),
+            separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+            itemCount: items.length,
+          ),
+        );
+      },
     );
   }
 
-  Widget _cardItem(BuildContext context, Pair<String, AppIcons> item, int index) {
+  Widget _cardItem(BuildContext context, ProgressModel item, int index) {
     return InkWell(
-      onTap: () => _onCardItemTap(index, context),
+      onTap: () => _onCardItemTap(context, index, item.isEnabled == true),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
-            height: 73,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                const SizedBox(width: 16),
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(color: context.primary, shape: BoxShape.circle),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: item.second.svgAsset(colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
-                  ),
+          height: 73,
+          decoration: BoxDecoration(
+            color: item.isEnabled == true ? Colors.white : context.onBackground.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+              const SizedBox(width: 16),
+              Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(color: context.primary, shape: BoxShape.circle),
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: item.icon?.svgAsset(colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
                 ),
-                const SizedBox(width: 16),
-                Text(
-                  item.first,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: context.onBackground),
-                ),
-              ],
-            )),
+              ),
+              const SizedBox(width: 16),
+              Text(
+                item.name ?? emptyString,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: context.onBackground),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  void _onCardItemTap(int index, BuildContext context) {
+  void _onCardItemTap(BuildContext context, int index, bool isEnabled) {
+    if (!isEnabled) return;
     switch (index) {
       case 0:
-        QuizManager.showQuizDialog();
-        // GoRouter.of(context).go(MeditationRoute().location);
+        GoRouter.of(context).go(MeditationRoute().location);
         break;
       case 1:
         GoRouter.of(context).go(BreathingRoute().location);
@@ -229,4 +233,12 @@ class _HomePageState extends State<HomePage> {
         break;
     }
   }
+}
+
+class ProgressModel {
+  final String? name;
+  final AppIcons? icon;
+  final bool? isEnabled;
+
+  const ProgressModel({this.name, this.icon, this.isEnabled});
 }

@@ -70,8 +70,6 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
             _textFieldRepeatPassword(),
             const SizedBox(height: 24.0),
             _signUpButton(context),
-            const SizedBox(height: 20),
-            Text(tr('or_sign_up_with')),
           ],
         ),
       ),

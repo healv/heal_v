@@ -34,12 +34,12 @@ class _MeditationPageState extends State<MeditationPage> {
         const SizedBox(height: 32),
         _categories(context),
         const SizedBox(height: 24),
-        // BlocSelector<MeditationPageBloc, MeditationPageState, List<MeditationBreathing>?>(
-        //   selector: (state) => state.filteredItems,
-        //   builder: (context, items) {
-        //     return Expanded(child: MeditationCard(items: items ?? []));
-        //   },
-        // ),
+        BlocSelector<MeditationPageBloc, MeditationPageState, List<MeditationBreathing>?>(
+          selector: (state) => state.filteredItems,
+          builder: (context, items) {
+            return Expanded(child: MeditationCard(items: items ?? []));
+          },
+        ),
       ],
     );
   }

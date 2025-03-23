@@ -68,7 +68,7 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
   }
 
   Future<void> _handleFilterByCategoryEvent(FilterByCategory event, Emitter<BreathingPageState> emitter) async {
-    final filteredData = state.items?.meditationBreathing?.where((e) => e.category == event.category.name).toList();
+    final filteredData = state.items?.meditationBreathing?.where((e) => e.category?.trim() == event.category.name?.trim()).toList();
     emitter(state.copyWith(filteredItems: Optional.value(filteredData)));
   }
 

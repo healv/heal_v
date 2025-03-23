@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import 'package:heal_v/app/main/feature/common/widget/meditation_breathing_categories_widget.dart';
+import 'package:heal_v/app/main/feature/common/widget/meditation_card.dart';
 import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
@@ -31,6 +33,13 @@ class _MeditationPageState extends State<MeditationPage> {
       children: [
         const SizedBox(height: 32),
         _categories(context),
+        const SizedBox(height: 24),
+        // BlocSelector<MeditationPageBloc, MeditationPageState, List<MeditationBreathing>?>(
+        //   selector: (state) => state.filteredItems,
+        //   builder: (context, items) {
+        //     return Expanded(child: MeditationCard(items: items ?? []));
+        //   },
+        // ),
       ],
     );
   }
@@ -49,7 +58,9 @@ class _MeditationPageState extends State<MeditationPage> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
-                        context.read<MeditationPageBloc>().add(MeditationPageEvent.updateCategory(category: categories![index]));
+                        final bloc = context.read<MeditationPageBloc>();
+                        bloc.add(MeditationPageEvent.updateCategory(category: categories![index]));
+                        bloc.add(MeditationPageEvent.filterByCategory(category: categories[index]));
                       },
                       child: MeditationBreathingCategoriesWidget(
                         name: categories?[index].name ?? emptyString,

@@ -19,6 +19,8 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
   MeditationPageBloc(this.repo) : super(MeditationPageState.initial()) {
     on<Initial>(_handleInitialEvent);
     on<UpdateCategory>(_handleUpdateCategoryEvent);
+    on<GetMeditations>(_handleGetMeditationsEvent);
+    on<FilterByCategory>(_handleFilterByCategoryEvent);
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<MeditationPageState> emitter) async {
@@ -30,6 +32,7 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
             categories: Optional.value(response.data),
             selectedCategory: Optional.value(response.data?.first),
           ));
+          add(MeditationPageEvent.meditations());
           break;
         case ResourceStatusEnum.error:
           emitter(state.copyWith(categoriesLoading: const Optional.value(false)));
@@ -39,6 +42,33 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
           break;
       }
     }
+  }
+
+  Future<void> _handleGetMeditationsEvent(GetMeditations event, Emitter<MeditationPageState> emitter) async {
+    await for (final response in repo.meditations()) {
+      switch (response.status) {
+        case ResourceStatusEnum.success:
+          emitter(state.copyWith(
+            loading: const Optional.value(false),
+            items: Optional.value(response.data),
+          ));
+          if (state.selectedCategory != null) {
+            add(MeditationPageEvent.filterByCategory(category: state.selectedCategory!));
+          }
+          break;
+        case ResourceStatusEnum.error:
+          emitter(state.copyWith(loading: const Optional.value(false)));
+          break;
+        case ResourceStatusEnum.loading:
+          emitter(state.copyWith(loading: const Optional.value(true)));
+          break;
+      }
+    }
+  }
+
+  Future<void> _handleFilterByCategoryEvent(FilterByCategory event, Emitter<MeditationPageState> emitter) async {
+    final filteredData = state.items?.meditationBreathing?.where((e) => e.category == event.category.name).toList();
+    emitter(state.copyWith(filteredItems: Optional.value(filteredData)));
   }
 
   Future<void> _handleUpdateCategoryEvent(UpdateCategory event, Emitter<MeditationPageState> emitter) async {

@@ -8,7 +8,7 @@ class ProgressPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar(title: tr('progress'), isBackEnable: true),
+      appBar: HealVAppBar.simple(title: tr('progress'), isBackEnable: true),
       body: const Text('data'),
     );
   }

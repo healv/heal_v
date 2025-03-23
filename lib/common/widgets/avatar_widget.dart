@@ -20,8 +20,8 @@ class AvatarWidget extends StatelessWidget {
             CircleAvatar(
               radius: radius,
               backgroundColor: context.primary,
-              backgroundImage: url != null ? NetworkImage(url) : null,
-              child: url == null ? Icon(Icons.person, size: radius) : null,
+              backgroundImage: (url != null && url.isNotEmpty) ? NetworkImage(url) : null,
+              child: url == null || url.isEmpty ? Icon(Icons.person, size: radius) : null,
             ),
             if (isEditable)
               const Positioned(

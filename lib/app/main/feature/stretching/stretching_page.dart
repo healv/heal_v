@@ -8,7 +8,7 @@ class StretchingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar(
+      appBar: HealVAppBar.simple(
         title: tr('stretching'),
         isBackEnable: false,
       ),

@@ -45,7 +45,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar(title: tr('edit_profile'), isBackEnable: true),
+      appBar: HealVAppBar.simple(title: tr('edit_profile'), isBackEnable: true),
       body: _body(context),
     );
   }

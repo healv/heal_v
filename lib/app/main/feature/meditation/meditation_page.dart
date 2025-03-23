@@ -8,9 +8,10 @@ class MeditationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar(
+      appBar: HealVAppBar.search(
         title: tr('meditation'),
         isBackEnable: false,
+        onSearchTextChanged: (value) {},
       ),
       body: _body(context),
     );

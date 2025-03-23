@@ -8,7 +8,7 @@ class JournalHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar(title: tr('journal_history'), isBackEnable: true),
+      appBar: HealVAppBar.simple(title: tr('journal_history'), isBackEnable: true),
       body: const Text('data'),
     );
   }

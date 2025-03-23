@@ -8,7 +8,7 @@ class BreathingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar(
+      appBar: HealVAppBar.search(
         title: tr('breathing'),
         isBackEnable: false,
       ),

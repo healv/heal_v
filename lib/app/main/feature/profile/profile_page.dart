@@ -64,7 +64,7 @@ class ProfilePage extends StatelessWidget {
       selector: (AuthBlocState state) => state.user,
       builder: (BuildContext context, User? user) {
         return Text(
-          user?.displayName ?? emptyString,
+          '${user?.name ?? emptyString} ${user?.lastName ?? emptyString}',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: context.onBackground),
         );
       },

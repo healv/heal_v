@@ -24,8 +24,10 @@ class UserDto {
 class User {
   @JsonKey(name: "email")
   final String? email;
-  @JsonKey(name: "displayName")
-  final String? displayName;
+  @JsonKey(name: "name")
+  final String? name;
+  @JsonKey(name: "lastName")
+  final String? lastName;
   @JsonKey(name: "photoURL")
   final String? photoURL;
   @JsonKey(name: "subscription")
@@ -39,7 +41,8 @@ class User {
 
   User({
     this.email,
-    this.displayName,
+    this.name,
+    this.lastName,
     this.photoURL,
     this.subscription,
     this.preferences,
@@ -61,9 +64,9 @@ class Subscription {
   @JsonKey(name: "status")
   final String? status;
   @JsonKey(name: "plan")
-  final dynamic? plan;
+  final dynamic plan;
   @JsonKey(name: "expiresAt")
-  final dynamic? expiresAt;
+  final dynamic expiresAt;
 
   Subscription({
     this.status,
@@ -103,7 +106,7 @@ class Progress {
   @JsonKey(name: "completedLessons")
   final List<dynamic>? completedLessons;
   @JsonKey(name: "lastLessonId")
-  final dynamic? lastLessonId;
+  final dynamic lastLessonId;
 
   Progress({
     this.completedLessons,

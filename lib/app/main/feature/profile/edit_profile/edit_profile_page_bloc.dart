@@ -6,7 +6,9 @@ import 'package:heal_v/common/bloc/base_state.dart';
 import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
 import 'package:heal_v/common/dart/optional.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 
 part 'edit_profile_page_event.dart';
 
@@ -29,10 +31,10 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
 
   Future<void> _handleInitialEvent(Initial event, Emitter<EditProfilePageState> emitter) async {
     emitter(state.copyWith(
-      firstName: const Optional.value('Emma'), // event.user?.firstName
-      lastName: const Optional.value('Elhadedy'), // event.user?.lastName
-      email: const Optional.value('emanelhadidi777@gmail.com'), // event.user?.email
-      avatar: const Optional.value(''), // event.user?.avatar
+      firstName: Optional.value(event.user.displayName),
+      lastName: const Optional.value(emptyString), // event.user?.lastName
+      email: Optional.value(event.user.email),
+      avatar: Optional.value(event.user.photoURL),
     ));
   }
 

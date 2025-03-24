@@ -7,6 +7,8 @@ import 'package:heal_v/app/main/feature/profile/profile_page.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/settings/settings_page.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 
 import '../../../app/main/feature/profile/edit_profile/edit_profile_page.dart';
 import '../../../app/main/feature/profile/edit_profile/edit_profile_page_bloc.dart';
@@ -27,8 +29,10 @@ base class ProfileRoute extends GoRouteData {
 base class ProfileNestedEditProfileRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    final user = context.read<AuthBloc>().state.user;
     return BlocProvider(
-      create: (_) => EditProfilePageBloc()..add(EditProfilePageEvent.initial()),
+      lazy: false,
+      create: (_) => EditProfilePageBloc()..add(EditProfilePageEvent.initial(user: user ?? User())),
       child: const EditProfilePage(),
     );
   }

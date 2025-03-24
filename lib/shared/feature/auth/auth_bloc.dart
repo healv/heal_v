@@ -36,7 +36,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       await for (final response in repo.getMe()) {
         switch (response.status) {
           case ResourceStatusEnum.success:
-            emitter(state.copyWith(accessToken: Optional.value(savedAccessToken)));
+            emitter(state.copyWith(accessToken: Optional.value(savedAccessToken), user: Optional.value(response.data?.user)));
             addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
             break;
           case ResourceStatusEnum.error:

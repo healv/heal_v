@@ -3,4 +3,5 @@ class StoreKey {
   static const String languageKey = 'language_key';
 
   static const String accessToken = 'access_token';
+  static const String refreshToken = 'refresh_token';
 }

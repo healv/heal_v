@@ -59,6 +59,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
         case ResourceStatusEnum.success:
           emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user), loading: const Optional.value(true)));
           Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
+          Store.set(key: StoreKey.refreshToken, value: response.data?.refreshToken);
           debugPrint(response.data.toString());
           addSideEffect(AuthBlocEffect.signedUp(ResourceStatusEnum.success));
           break;
@@ -80,6 +81,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
         case ResourceStatusEnum.success:
           emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user), loading: const Optional.value(false)));
           Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
+          Store.set(key: StoreKey.refreshToken, value: response.data?.refreshToken);
           debugPrint(response.data.toString());
           addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
           break;

@@ -40,8 +40,8 @@ Future<void> _setupDio() async {
     final dio = Dio()
       ..interceptors.addAll([
         LogInterceptor(requestBody: true, responseBody: true),
-        const AuthInterceptor(),
       ]);
+    dio.interceptors.add(AuthInterceptor(dio));
     return dio;
   });
 }

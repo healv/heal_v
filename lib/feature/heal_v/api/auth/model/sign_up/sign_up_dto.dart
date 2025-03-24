@@ -7,11 +7,14 @@ part 'sign_up_dto.g.dart';
 class SignUpDto {
   @JsonKey(name: "accessToken")
   final String? accessToken;
+  @JsonKey(name: "refreshToken")
+  final String? refreshToken;
   @JsonKey(name: "user")
   final User? user;
 
   SignUpDto({
     this.accessToken,
+    this.refreshToken,
     this.user,
   });
 

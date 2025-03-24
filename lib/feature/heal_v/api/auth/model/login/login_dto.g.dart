@@ -8,6 +8,7 @@ part of 'login_dto.dart';
 
 LoginDto _$LoginDtoFromJson(Map<String, dynamic> json) => LoginDto(
       accessToken: json['accessToken'] as String?,
+      refreshToken: json['refreshToken'] as String?,
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
@@ -15,5 +16,6 @@ LoginDto _$LoginDtoFromJson(Map<String, dynamic> json) => LoginDto(
 
 Map<String, dynamic> _$LoginDtoToJson(LoginDto instance) => <String, dynamic>{
       'accessToken': instance.accessToken,
+      'refreshToken': instance.refreshToken,
       'user': instance.user,
     };

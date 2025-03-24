@@ -7,11 +7,14 @@ part 'login_dto.g.dart';
 class LoginDto {
   @JsonKey(name: "accessToken")
   final String? accessToken;
+  @JsonKey(name: "refreshToken")
+  final String? refreshToken;
   @JsonKey(name: "user")
   final User? user;
 
   LoginDto({
     this.accessToken,
+    this.refreshToken,
     this.user,
   });
 

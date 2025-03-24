@@ -2,9 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/store_key.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/refresh_token/refresh_token_dto.dart';
 
 class AuthInterceptor extends Interceptor {
-  const AuthInterceptor();
+  final Dio dio;
+
+  const AuthInterceptor(this.dio);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
@@ -13,5 +16,39 @@ class AuthInterceptor extends Interceptor {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
     super.onRequest(options, handler);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
+    if (err.response?.statusCode == 401) {
+      final refreshToken = await Store.get(key: StoreKey.refreshToken, defaultValue: emptyString);
+
+      final response = await dio.post<RefreshTokenDto>(
+        'https://heal-v-backend.onrender.com/auth/refresh',
+        data: {'refreshToken': refreshToken},
+      );
+
+      final newAccessToken = response.data?.accessToken;
+      final newRefreshToken = response.data?.refreshToken;
+
+      if (newAccessToken != null && newRefreshToken != null) {
+        Store.set(key: StoreKey.accessToken, value: newAccessToken);
+        Store.set(key: StoreKey.refreshToken, value: newRefreshToken);
+
+        final retryRequest = err.requestOptions;
+        retryRequest.headers['Authorization'] = 'Bearer $newAccessToken';
+        final result = await dio.request(
+          retryRequest.path,
+          options: Options(
+            method: retryRequest.method,
+            headers: retryRequest.headers,
+          ),
+          data: retryRequest.data,
+          queryParameters: retryRequest.queryParameters,
+        );
+        return handler.resolve(result);
+      }
+    }
+    super.onError(err, handler);
   }
 }

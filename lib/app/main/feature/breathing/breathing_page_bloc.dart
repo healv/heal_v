@@ -8,10 +8,8 @@ import 'package:heal_v/common/dart/optional.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_dto.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/repo/breathing_repo.dart';
-import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_categories_dto.dart';
 
 part 'breathing_page_event.dart';
-
 part 'breathing_page_state.dart';
 
 class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState> {

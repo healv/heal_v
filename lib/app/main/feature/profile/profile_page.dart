@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/common/widgets/avatar_widget.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/navigation/main/main_graph.dart';
 import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
+import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -56,16 +60,26 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _userName(BuildContext context) {
-    return Text(
-      "Eman Elhadedy",
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: context.onBackground),
+    return BlocSelector<AuthBloc, AuthBlocState, User?>(
+      selector: (AuthBlocState state) => state.user,
+      builder: (BuildContext context, User? user) {
+        return Text(
+          user?.displayName ?? emptyString,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: context.onBackground),
+        );
+      },
     );
   }
 
   Widget _userJoinedDate(BuildContext context) {
-    return Text(
-      "Joined 12 Feb",
-      style: TextStyle(fontSize: 14, color: context.onBackground),
+    return BlocSelector<AuthBloc, AuthBlocState, User?>(
+      selector: (AuthBlocState state) => state.user,
+      builder: (BuildContext context, User? user) {
+        return Text(
+          user?.createdAt != null ? 'Joined ${user?.createdAt}' : emptyString,
+          style: TextStyle(fontSize: 14, color: context.onBackground),
+        );
+      },
     );
   }
 

@@ -18,7 +18,7 @@ class SeeAllWidget extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: seeAllPressed,
           child: Text(
             tr('see_all'),
             style: TextStyle(fontWeight: FontWeight.w400, color: context.primary),

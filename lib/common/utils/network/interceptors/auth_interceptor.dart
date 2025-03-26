@@ -40,7 +40,7 @@ class AuthInterceptor extends Interceptor {
         final retryRequest = err.requestOptions;
         retryRequest.headers['Authorization'] = 'Bearer $newAccessToken';
         final result = await dio.request(
-          retryRequest.path,
+          'https://heal-v-backend.onrender.com${retryRequest.path}',
           options: Options(
             method: retryRequest.method,
             headers: retryRequest.headers,

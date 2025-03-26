@@ -26,6 +26,13 @@ RouteBase get $mainShellRoute => StatefulShellRouteData.$route(
             GoRouteData.$route(
               path: '/mainMeditation',
               factory: $MeditationRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'meditationDetails',
+                  factory: $MeditationNestedMeditationDetailsRouteExtension
+                      ._fromState,
+                ),
+              ],
             ),
           ],
         ),
@@ -89,6 +96,31 @@ extension $MeditationRouteExtension on MeditationRoute {
 
   String get location => GoRouteData.$location(
         '/mainMeditation',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $MeditationNestedMeditationDetailsRouteExtension
+    on MeditationNestedMeditationDetailsRoute {
+  static MeditationNestedMeditationDetailsRoute _fromState(
+          GoRouterState state) =>
+      MeditationNestedMeditationDetailsRoute(
+        meditations: state.uri.queryParameters['meditations']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/mainMeditation/meditationDetails',
+        queryParams: {
+          'meditations': meditations,
+        },
       );
 
   void go(BuildContext context) => context.go(location);

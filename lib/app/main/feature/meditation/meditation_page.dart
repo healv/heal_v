@@ -10,6 +10,8 @@ import 'package:heal_v/common/widgets/see_all_widget.dart';
 import 'package:heal_v/navigation/main/main_graph.dart';
 import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
+import 'package:heal_v/theme/ext/extension.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MeditationPage extends StatefulWidget {
   const MeditationPage({super.key});
@@ -91,5 +93,30 @@ class _MeditationPageState extends State<MeditationPage> {
             borderRadius: BorderRadius.circular(12),
             child: AppIcons.demoImage.imageAsset(width: screenSize - half, height: 292, fit: BoxFit.cover),
           );
+  }
+
+  Widget _loadingShimmer() {
+    final screenSize = MediaQuery.of(context).size.width;
+    final half = screenSize / 2.5;
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) => SizedBox(
+        width: screenSize - half,
+        height: 292,
+        child: Shimmer.fromColors(
+          baseColor: context.onBackground.withOpacity(0.3),
+          highlightColor: context.onBackground.withOpacity(0.1),
+          child: Container(
+            height: 24,
+            decoration: BoxDecoration(
+              color: const Color(0xFFE6E6E6),
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ),
+        ),
+      ),
+      separatorBuilder: (context, index) => const SizedBox(width: 8.0),
+      itemCount: 4,
+    );
   }
 }

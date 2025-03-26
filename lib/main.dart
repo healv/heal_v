@@ -25,6 +25,7 @@ void main() async {
   await _setupHydratedBloc();
   await ThemeHelper.init();
 
+
   runApp(
     EasyLocalization(
       startLocale: const Locale('en'),

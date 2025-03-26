@@ -25,8 +25,8 @@ extension IconsExt on AppIcons {
     return SvgPicture.asset(key: ValueKey(path), path, width: width, height: height, colorFilter: colorFilter, fit: fit);
   }
 
-  Image imageAsset({double? width, double? height}) {
-    return Image.asset(key: ValueKey(path), path, width: width, height: height);
+  Image imageAsset({double? width, double? height, BoxFit? fit}) {
+    return Image.asset(key: ValueKey(path), path, width: width, height: height, fit: fit);
   }
 
   AssetImage assetImage() {

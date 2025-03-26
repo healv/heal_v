@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
-import 'package:heal_v/app/main/feature/common/widget/meditation_breathing_categories_widget.dart';
-import 'package:heal_v/app/main/feature/common/widget/meditation_card.dart';
 import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
-import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
+import 'package:heal_v/common/widgets/see_all_widget.dart';
+import 'package:heal_v/res/images/app_icons.dart';
 
 class MeditationPage extends StatefulWidget {
   const MeditationPage({super.key});
@@ -19,61 +18,72 @@ class _MeditationPageState extends State<MeditationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar.search(
+      appBar: HealVAppBar.simple(
         title: tr('meditation'),
         isBackEnable: false,
-        onSearchTextChanged: (value) {},
       ),
       body: _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 32),
-        _categories(context),
-        const SizedBox(height: 24),
-        BlocSelector<MeditationPageBloc, MeditationPageState, List<MeditationBreathing>?>(
-          selector: (state) => state.filteredItems,
-          builder: (context, items) {
-            return Expanded(child: MeditationCard(items: items ?? []));
-          },
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0),
+      child: BlocSelector<MeditationPageBloc, MeditationPageState, Map<String, List<MeditationBreathing>>?>(
+        selector: (state) => state.itemsMap,
+        builder: (context, items) => _mainListView(context, items),
+      ),
     );
   }
 
-  Widget _categories(BuildContext context) {
-    return BlocBuilder<MeditationPageBloc, MeditationPageState>(
-      builder: (BuildContext context, MeditationPageState state) {
-        final categories = state.categories;
-        return SizedBox(
-          height: 30,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: state.categoriesLoading == true
-                ? const MeditationBreathingCategoriesWidget.loading()
-                : ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        final bloc = context.read<MeditationPageBloc>();
-                        bloc.add(MeditationPageEvent.updateCategory(category: categories![index]));
-                        bloc.add(MeditationPageEvent.filterByCategory(category: categories[index]));
-                      },
-                      child: MeditationBreathingCategoriesWidget(
-                        name: categories?[index].name ?? emptyString,
-                        id: categories?[index].id ?? emptyString,
-                        selected: state.selectedCategory == categories?[index],
-                      ),
-                    ),
-                    separatorBuilder: (context, index) => const SizedBox(width: 8.0),
-                    itemCount: categories?.length ?? 0,
-                  ),
+  Widget _mainListView(BuildContext context, Map<String, List<MeditationBreathing>>? items) {
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SeeAllWidget(
+                title: 'Explore ${items?.keys.toList()[index]}',
+                seeAllPressed: () {},
+              ),
+              SizedBox(
+                height: 293,
+                child: ListView.separated(
+                  itemBuilder: (context, innerIndex) => _image(items?.values.toList()[index][innerIndex].photoUrl),
+                  separatorBuilder: (context, index) => const SizedBox(width: 8),
+                  itemCount: items?.values.toList()[index].length ?? 0,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                ),
+              ),
+            ],
           ),
         );
       },
+      separatorBuilder: (context, index) => const SizedBox(height: 8),
+      itemCount: items?.length ?? 0,
     );
+  }
+
+  Widget _image(String? imageUrl) {
+    final screenSize = MediaQuery.of(context).size.width;
+    final half = screenSize / 2.5;
+    return imageUrl != null || imageUrl?.isNotEmpty == true
+        ? ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              imageUrl!,
+              width: 250,
+              height: 292,
+              fit: BoxFit.cover,
+            ),
+          )
+        : ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: AppIcons.demoImage.imageAsset(width: screenSize - half, height: 292, fit: BoxFit.cover),
+          );
   }
 }

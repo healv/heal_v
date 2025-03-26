@@ -8,6 +8,7 @@ final class MeditationPageState extends BaseState {
   final MeditationBreathings? items;
   final MeditationsCategoriesDto? selectedCategory;
   final List<MeditationBreathing>? filteredItems;
+  final Map<String, List<MeditationBreathing>>? itemsMap;
 
   const MeditationPageState._({
     this.categories,
@@ -16,12 +17,21 @@ final class MeditationPageState extends BaseState {
     this.items,
     this.selectedCategory,
     this.filteredItems,
+    this.itemsMap,
   });
 
   factory MeditationPageState.initial() => const MeditationPageState._();
 
   @override
-  List<Object?> get props => [categories, categoriesLoading, loading, items, selectedCategory, filteredItems];
+  List<Object?> get props => [
+        categories,
+        categoriesLoading,
+        loading,
+        items,
+        selectedCategory,
+        filteredItems,
+        itemsMap,
+      ];
 
   MeditationPageState copyWith({
     Optional<List<MeditationsCategoriesDto>?>? categories,
@@ -30,6 +40,7 @@ final class MeditationPageState extends BaseState {
     Optional<bool?>? categoriesLoading,
     Optional<bool?>? loading,
     Optional<List<MeditationBreathing>?>? filteredItems,
+    Optional<Map<String, List<MeditationBreathing>>?>? itemsMap,
   }) {
     return MeditationPageState._(
       categories: categories?.isValid == true ? categories?.value : this.categories,
@@ -38,6 +49,7 @@ final class MeditationPageState extends BaseState {
       items: items?.isValid == true ? items?.value : this.items,
       selectedCategory: selectedCategory?.isValid == true ? selectedCategory?.value : this.selectedCategory,
       filteredItems: filteredItems?.isValid == true ? filteredItems?.value : this.filteredItems,
+      itemsMap: itemsMap?.isValid == true ? itemsMap?.value : this.itemsMap,
     );
   }
 }

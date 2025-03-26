@@ -29,14 +29,20 @@ BreathingDto _$BreathingDtoFromJson(Map<String, dynamic> json) => BreathingDto(
       category: json['category'] as String?,
       photoUrl: json['photoUrl'] as String?,
       audioUrl: json['audioUrl'] as String?,
+      description: json['description'] as String?,
+      duration: json['duration'] as String?,
+      preview: json['preview'] as String?,
     );
 
 Map<String, dynamic> _$BreathingDtoToJson(BreathingDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'description': instance.description,
       'author': instance.author,
       'category': instance.category,
+      'duration': instance.duration,
       'photoUrl': instance.photoUrl,
+      'preview': instance.preview,
       'audioUrl': instance.audioUrl,
     };

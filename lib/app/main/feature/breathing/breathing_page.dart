@@ -32,13 +32,17 @@ class _BreathingPageState extends State<BreathingPage> {
       children: [
         const SizedBox(height: 32),
         _categories(context),
-        BlocSelector<BreathingPageBloc, BreathingPageState, List<MeditationBreathing>?>(
-          selector: (state) => state.filteredItems,
-          builder: (context, items) {
-            return Expanded(child: MeditationCard(items: items ?? []));
-          },
-        ),
+        _breathings(context),
       ],
+    );
+  }
+
+  Widget _breathings(BuildContext context) {
+    return BlocSelector<BreathingPageBloc, BreathingPageState, List<MeditationBreathing>?>(
+      selector: (state) => state.filteredItems,
+      builder: (context, items) {
+        return Expanded(child: MeditationCard(items: items ?? []));
+      },
     );
   }
 

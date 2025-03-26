@@ -17,6 +17,9 @@ class MeditationBreathing {
   final String? category;
   final String? photoUrl;
   final String? audioUrl;
+  final String? description;
+  final String? duration;
+  final String? preview;
 
   MeditationBreathing({
     this.id,
@@ -25,5 +28,8 @@ class MeditationBreathing {
     this.category,
     this.photoUrl,
     this.audioUrl,
+    this.description,
+    this.duration,
+    this.preview,
   });
 }

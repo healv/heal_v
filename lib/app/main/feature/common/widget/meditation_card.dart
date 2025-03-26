@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import 'package:heal_v/common/utils/constants.dart';
+import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 class MeditationCard extends StatelessWidget {
@@ -32,13 +33,6 @@ class MeditationCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        const Text('+100', style: TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(width: 4),
-                        Icon(Icons.favorite, color: context.primary, size: 16),
-                      ],
-                    ),
                     const SizedBox(height: 4),
                     Text(
                       item.name ?? emptyString,
@@ -49,7 +43,7 @@ class MeditationCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      item.category ?? emptyString,
+                      '${item.category ?? emptyString} ${item.duration != null ? ' • ${item.duration}' : emptyString}',
                       style: TextStyle(
                         color: context.unselectedItemColor,
                         fontSize: 14,
@@ -57,9 +51,9 @@ class MeditationCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Both can be full-body practices, although stretching focuses on one muscle group.',
-                      style: TextStyle(
+                    Text(
+                      item.description ?? emptyString,
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 12,
                       ),
@@ -94,6 +88,9 @@ class MeditationCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           )
-        : const SizedBox();
+        : ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: AppIcons.demoImage.imageAsset(width: 80, height: 80),
+          );
   }
 }

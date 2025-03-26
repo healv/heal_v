@@ -11,7 +11,7 @@ class BreathingsDto {
   @JsonKey(name: "prevCursor")
   final String? prevCursor;
 
-  BreathingsDto ({
+  BreathingsDto({
     this.breathings,
     this.nextCursor,
     this.prevCursor,
@@ -32,22 +32,31 @@ class BreathingDto {
   final String? id;
   @JsonKey(name: "name")
   final String? name;
+  @JsonKey(name: "description")
+  final String? description;
   @JsonKey(name: "author")
   final String? author;
   @JsonKey(name: "category")
   final String? category;
+  @JsonKey(name: "duration")
+  final String? duration;
   @JsonKey(name: "photoUrl")
   final String? photoUrl;
+  @JsonKey(name: "preview")
+  final String? preview;
   @JsonKey(name: "audioUrl")
   final String? audioUrl;
 
-  BreathingDto ({
+  BreathingDto({
     this.id,
     this.name,
     this.author,
     this.category,
     this.photoUrl,
     this.audioUrl,
+    this.description,
+    this.duration,
+    this.preview,
   });
 
   factory BreathingDto.fromJson(Map<String, dynamic> json) {
@@ -58,5 +67,3 @@ class BreathingDto {
     return _$BreathingDtoToJson(this);
   }
 }
-
-

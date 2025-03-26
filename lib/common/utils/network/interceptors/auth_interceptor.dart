@@ -23,13 +23,15 @@ class AuthInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       final refreshToken = await Store.get(key: StoreKey.refreshToken, defaultValue: emptyString);
 
-      final response = await dio.post<RefreshTokenDto>(
+      final response = await dio.post<Map<String, dynamic>>(
         'https://heal-v-backend.onrender.com/auth/refresh',
         data: {'refreshToken': refreshToken},
       );
 
-      final newAccessToken = response.data?.accessToken;
-      final newRefreshToken = response.data?.refreshToken;
+      final refreshTokenDto = RefreshTokenDto.fromJson(response.data ?? {});
+
+      final newAccessToken = refreshTokenDto.accessToken;
+      final newRefreshToken = refreshTokenDto.refreshToken;
 
       if (newAccessToken != null && newRefreshToken != null) {
         Store.set(key: StoreKey.accessToken, value: newAccessToken);

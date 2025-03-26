@@ -9,7 +9,7 @@ class RefreshTokenDto {
   @JsonKey(name: "refreshToken")
   final String? refreshToken;
 
-  RefreshTokenDto ({
+  RefreshTokenDto({
     this.accessToken,
     this.refreshToken,
   });
@@ -22,5 +22,3 @@ class RefreshTokenDto {
     return _$RefreshTokenDtoToJson(this);
   }
 }
-
-

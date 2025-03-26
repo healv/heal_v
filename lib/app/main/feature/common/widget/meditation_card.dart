@@ -18,7 +18,7 @@ class MeditationCard extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = items[index];
         return Container(
-          margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
@@ -72,7 +72,7 @@ class MeditationCard extends StatelessWidget {
           ),
         );
       },
-      separatorBuilder: (_, index) => const SizedBox(height: 0),
+      separatorBuilder: (_, index) => const SizedBox(height: 12),
       itemCount: items.length,
     );
   }

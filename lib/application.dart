@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/common/bloc/base_bloc.dart';
+import 'package:heal_v/common/network/network_state_manager.dart';
+import 'package:heal_v/common/widgets/no_internet_sceen.dart';
 import 'package:heal_v/main.dart';
 import 'package:heal_v/navigation/app_routes.dart';
 import 'package:heal_v/navigation/auth/auth_graph.dart';
@@ -23,7 +27,7 @@ import 'shared/feature/auth/auth_bloc.dart';
 
 final shellNavigatorGlobalKey = GlobalKey<NavigatorState>();
 
-class HealVApplication extends StatelessWidget {
+class HealVApplication extends StatefulWidget {
   HealVApplication({super.key});
 
   final GoRouter router = GoRouter(routes: [
@@ -37,12 +41,31 @@ class HealVApplication extends StatelessWidget {
     ...$profileRouteRoutes,
   ], initialLocation: AppRoutes.launch, navigatorKey: shellNavigatorGlobalKey);
 
+  List<BlocProvider<BaseBloc>> get providers => [
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc(getIt.get())),
+        BlocProvider<SettingsBloc>(create: (context) => SettingsBloc()..add(SettingsEvent.initial())),
+        BlocProvider<SharedContentBloc>(create: (context) => SharedContentBloc(getIt.get())),
+        BlocProvider<ProgressBloc>(create: (context) => ProgressBloc(getIt.get())),
+      ];
+
+  @override
+  State<StatefulWidget> createState() => _HealVApplicationState();
+}
+
+class _HealVApplicationState extends State<HealVApplication> {
+  Widget? _overlay;
+
+  void changeCallOverlay({Widget? overlay}) {
+    _overlay = overlay;
+    Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => ThemeNotifier(),
       child: MultiBlocProvider(
-        providers: providers,
+        providers: widget.providers,
         child: Consumer<ThemeNotifier>(
           builder: (context, themeNotifier, child) {
             return MaterialApp.router(
@@ -52,22 +75,26 @@ class HealVApplication extends StatelessWidget {
               locale: context.locale,
 
               /// Navigation
-              routerConfig: router,
+              routerConfig: widget.router,
 
               /// App settings
               debugShowCheckedModeBanner: false,
               theme: themeNotifier.selectedTheme,
+              builder: (context, child) {
+                NetworkStateManager().states.listen((state) {
+                  changeCallOverlay(overlay: state.isOnline == true ? null : const NoInternetScreen());
+                });
+                return Column(
+                  children: [
+                    _overlay ?? const SizedBox(),
+                    Expanded(child: child!),
+                  ],
+                );
+              },
             );
           },
         ),
       ),
     );
   }
-
-  List<BlocProvider<BaseBloc>> get providers => [
-        BlocProvider<AuthBloc>(create: (context) => AuthBloc(getIt.get())),
-        BlocProvider<SettingsBloc>(create: (context) => SettingsBloc()..add(SettingsEvent.initial())),
-        BlocProvider<SharedContentBloc>(create: (context) => SharedContentBloc(getIt.get())),
-        BlocProvider<ProgressBloc>(create: (context) => ProgressBloc(getIt.get())),
-      ];
 }

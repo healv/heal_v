@@ -30,7 +30,7 @@ class ThemeNotifier extends ChangeNotifier {
     } else {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
+          statusBarColor: Colors.black,
           statusBarBrightness: Brightness.dark,
           statusBarIconBrightness: Brightness.light,
         ),

@@ -3,6 +3,7 @@ part of 'sign_up_page_bloc.dart';
 @immutable
 class SignUpPageState extends BaseState {
   final String? firstName;
+  final String? lastName;
   final String? email;
   final String? password;
   final String? repeatPassword;
@@ -16,6 +17,7 @@ class SignUpPageState extends BaseState {
 
   const SignUpPageState._({
     this.firstName,
+    this.lastName,
     this.email,
     this.password,
     this.repeatPassword,
@@ -33,6 +35,7 @@ class SignUpPageState extends BaseState {
   @override
   List<Object?> get props => [
         firstName,
+        lastName,
         email,
         password,
         repeatPassword,
@@ -47,6 +50,7 @@ class SignUpPageState extends BaseState {
 
   SignUpPageState copyWith({
     Optional<String?>? firstName,
+    Optional<String?>? lastName,
     Optional<String?>? email,
     Optional<String?>? password,
     Optional<String?>? repeatPassword,
@@ -60,6 +64,7 @@ class SignUpPageState extends BaseState {
   }) {
     return SignUpPageState._(
       firstName: firstName?.isValid == true ? firstName?.value : this.firstName,
+      lastName: lastName?.isValid == true ? lastName?.value : this.lastName,
       email: email?.isValid == true ? email?.value : this.email,
       password: password?.isValid == true ? password?.value : this.password,
       repeatPassword: repeatPassword?.isValid == true ? repeatPassword?.value : this.repeatPassword,

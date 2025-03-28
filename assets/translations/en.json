@@ -28,6 +28,7 @@
   "invalid_field": "Invalid Field",
   "invalid_email": "Invalid email format",
   "invalid_first_name": "First name must be empty",
+  "invalid_last_name": "Last name must be empty",
   "invalid_password": "Password must contain minimum 6 symbols",
   "password_not_match": "Password and Confirm Password not match",
   "password": "Password",

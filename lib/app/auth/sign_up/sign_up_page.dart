@@ -141,6 +141,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
+                    errorText: state.lastNameErrorMsg,
                     labelText: tr('last_name'),
                     labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: context.onBackground),
                   ),

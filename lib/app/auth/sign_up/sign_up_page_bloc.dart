@@ -14,6 +14,7 @@ part 'sign_up_page_state.dart';
 class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, SignUpPageSideEffect> {
   SignUpPageBloc() : super(SignUpPageState.initial()) {
     on<FirstNameChanged>(_handleFirstNameChangedEvent);
+    on<LastNameChanged>(_handleLastNameChangedEvent);
     on<EmailChanged>(_handleEmailChangedEvent);
     on<PasswordChanged>(_handlePasswordChangedEvent);
     on<RepeatPasswordChanged>(_handleRepeatPasswordChangedEvent);
@@ -28,6 +29,10 @@ class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, Si
 
   Future<void> _handleFirstNameChangedEvent(FirstNameChanged event, Emitter<SignUpPageState> emitter) async {
     emitter(state.copyWith(firstName: Optional.value(event.firstName)));
+  }
+
+  Future<void> _handleLastNameChangedEvent(LastNameChanged event, Emitter<SignUpPageState> emitter) async {
+    emitter(state.copyWith(lastName: Optional.value(event.lastName)));
   }
 
   Future<void> _handlePasswordChangedEvent(PasswordChanged event, Emitter<SignUpPageState> emitter) async {
@@ -54,10 +59,21 @@ class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, Si
       return;
     }
 
+    if (!_isValidLastName()) {
+      emitter(
+        state.copyWith(
+          firstNameErrorMsg: const Optional.value(null),
+          lastNameErrorMsg: Optional.value(tr('invalid_last_name')),
+        ),
+      );
+      return;
+    }
+
     if (!_isValidEmail()) {
       emitter(
         state.copyWith(
           firstNameErrorMsg: const Optional.value(null),
+          lastNameErrorMsg: const Optional.value(null),
           emailErrorMsg: Optional.value(tr('invalid_email')),
         ),
       );
@@ -68,6 +84,7 @@ class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, Si
       emitter(
         state.copyWith(
           firstNameErrorMsg: const Optional.value(null),
+          lastNameErrorMsg: const Optional.value(null),
           emailErrorMsg: const Optional.value(null),
           passwordErrorMsg: Optional.value(tr('invalid_password')),
         ),
@@ -79,6 +96,7 @@ class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, Si
       emitter(
         state.copyWith(
           firstNameErrorMsg: const Optional.value(null),
+          lastNameErrorMsg: const Optional.value(null),
           emailErrorMsg: const Optional.value(null),
           passwordErrorMsg: Optional.value(tr('password_not_match')),
           repeatPasswordErrorMsg: Optional.value(tr('password_not_match')),
@@ -90,6 +108,7 @@ class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, Si
     emitter(
       state.copyWith(
         firstNameErrorMsg: const Optional.value(null),
+        lastNameErrorMsg: const Optional.value(null),
         emailErrorMsg: const Optional.value(null),
         passwordErrorMsg: const Optional.value(null),
         repeatPasswordErrorMsg: const Optional.value(null),
@@ -101,6 +120,11 @@ class SignUpPageBloc extends SideEffectBloc<SignUpPageEvent, SignUpPageState, Si
   bool _isValidFirstName() {
     final firstName = state.firstName?.trim();
     return firstName != null && firstName.isNotEmpty;
+  }
+
+  bool _isValidLastName() {
+    final lastName = state.lastName?.trim();
+    return lastName != null && lastName.isNotEmpty;
   }
 
   bool _isValidEmail() {

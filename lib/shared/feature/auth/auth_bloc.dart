@@ -36,7 +36,10 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       await for (final response in repo.getMe()) {
         switch (response.status) {
           case ResourceStatusEnum.success:
-            emitter(state.copyWith(accessToken: Optional.value(savedAccessToken), user: Optional.value(response.data?.user)));
+            emitter(state.copyWith(
+              accessToken: Optional.value(savedAccessToken),
+              user: Optional.value(response.data?.user),
+            ));
             addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
             break;
           case ResourceStatusEnum.error:
@@ -54,10 +57,14 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleSignUpEvent(SignUp event, Emitter<AuthBlocState> emitter) async {
-    await for (final response in repo.signUp(SignUpPacket(email: event.email, password: event.password, name: event.name))) {
+    await for (final response in repo.signUp(SignUpPacket(email: event.email, password: event.password, name: event.name, lastName: event.lastName))) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user), loading: const Optional.value(true)));
+          emitter(state.copyWith(
+            accessToken: Optional.value(response.data?.accessToken),
+            user: Optional.value(response.data?.user),
+            loading: const Optional.value(true),
+          ));
           Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
           Store.set(key: StoreKey.refreshToken, value: response.data?.refreshToken);
           debugPrint(response.data.toString());
@@ -79,7 +86,11 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     await for (final response in repo.login(LoginPacket(email: event.email, password: event.password))) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          emitter(state.copyWith(accessToken: Optional.value(response.data?.accessToken), user: Optional.value(response.data?.user), loading: const Optional.value(false)));
+          emitter(state.copyWith(
+            accessToken: Optional.value(response.data?.accessToken),
+            user: Optional.value(response.data?.user),
+            loading: const Optional.value(false),
+          ));
           Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
           Store.set(key: StoreKey.refreshToken, value: response.data?.refreshToken);
           debugPrint(response.data.toString());

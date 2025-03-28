@@ -340,6 +340,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                 email: emailTextEditingController.text,
                 password: passwordEditingController.text,
                 name: firstNameTextEditingController.text,
+                lastName: lastNameTextEditingController.text,
               ),
             );
         break;

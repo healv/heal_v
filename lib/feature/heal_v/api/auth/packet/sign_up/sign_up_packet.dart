@@ -11,11 +11,14 @@ final class SignUpPacket extends Packet {
   final String? password;
   @JsonKey(name: "name")
   final String? name;
+  @JsonKey(name: "lastName")
+  final String? lastName;
 
   SignUpPacket({
     this.email,
     this.password,
     this.name,
+    this.lastName,
   });
 
   factory SignUpPacket.fromJson(Map<String, dynamic> json) {

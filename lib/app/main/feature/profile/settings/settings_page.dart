@@ -6,6 +6,7 @@ import 'package:heal_v/app/main/feature/profile/common/setting_description.dart'
 import 'package:heal_v/app/main/feature/profile/common/settings_check_line.dart';
 import 'package:heal_v/app/main/model/language_enum.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/tools/sound_player.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
@@ -106,7 +107,10 @@ class SettingsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
       child: InkWell(
-        onTap: () => _openLanguageBottomSheet(context),
+        onTap: () async {
+          await SoundPlayer.checkAndPlayClickSound();
+          _openLanguageBottomSheet(context);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

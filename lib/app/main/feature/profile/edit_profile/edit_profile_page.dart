@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/edit_profile/edit_profile_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/tools/sound_player.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/common/widgets/avatar_widget.dart';
@@ -302,6 +303,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _openCalendar() async {
+    await SoundPlayer.checkAndPlayClickSound();
     await showDatePicker(
       context: context,
       initialDate: DateTime.now(),

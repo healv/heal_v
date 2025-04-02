@@ -22,7 +22,11 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
 
   Future<void> _handleInitialEvent(SettingsPageInitial event, Emitter<SettingsState> emitter) async {
     final currentLanguageCode = await Store.get(key: StoreKey.languageKey, defaultValue: 'en');
-    emitter(state.copyWith(currentLanguage: Optional.value(LanguageEnum.from(currentLanguageCode))));
+    final isSoundEnable = await Store.get(key: StoreKey.soundsEnable, defaultValue: false);
+    emitter(state.copyWith(
+      currentLanguage: Optional.value(LanguageEnum.from(currentLanguageCode)),
+      isSoundsEnable: Optional.value(isSoundEnable),
+    ));
   }
 
   Future<void> _handleUpdateNotificationsStatusEvent(UpdateNotificationsStatus event, Emitter<SettingsState> emitter) async {
@@ -30,7 +34,8 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _handleUpdateSoundsStatusEvent(UpdateSoundsStatus event, Emitter<SettingsState> emitter) async {
-    emitter(state.copyWith(isSoundsEnable: Optional.value(event.isEnable)));
+    await Store.set(key: StoreKey.soundsEnable, value: event.isEnable);
+    emitter(state.copyWith(isSoundsEnable: Optional.value(await Store.get(key: StoreKey.soundsEnable, defaultValue: event.isEnable))));
   }
 
   Future<void> _handleUpdateCurrentLanguageEvent(UpdateCurrentLanguage event, Emitter<SettingsState> emitter) async {

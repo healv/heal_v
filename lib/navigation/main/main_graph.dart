@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/main_page.dart';
+import 'package:heal_v/common/tools/sound_player.dart';
 import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
 import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/navigation/main/profile/profile_graph.dart';
@@ -37,6 +38,7 @@ class MainShellRoute extends StatefulShellRouteData {
 
   @override
   Widget builder(BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
+    SoundPlayer.checkAndPlayClickSound();
     return MainPage(navigationShell);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/tools/sound_player.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/common/widgets/avatar_widget.dart';
@@ -97,7 +98,10 @@ class ProfilePage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
       child: InkWell(
-        onTap: () => ProfileNestedEditProfileRoute().go(context),
+        onTap: () async {
+          await SoundPlayer.checkAndPlayClickSound();
+          ProfileNestedEditProfileRoute().go(context);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -135,7 +139,10 @@ class ProfilePage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
       child: InkWell(
-        onTap: () => ProfileSettingsRoute().push(context),
+        onTap: () async {
+          await SoundPlayer.checkAndPlayClickSound();
+          ProfileSettingsRoute().push(context);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

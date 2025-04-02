@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/tools/sound_player.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/user_info_app_bar.dart';
 import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
@@ -186,7 +187,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _cardItem(BuildContext context, ProgressModel item, int index) {
     return InkWell(
-      onTap: () => _onCardItemTap(context, index, item.isEnabled == true),
+      onTap: () async => await _onCardItemTap(context, index, item.isEnabled == true),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
@@ -219,8 +220,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _onCardItemTap(BuildContext context, int index, bool isEnabled) {
+  Future<void> _onCardItemTap(BuildContext context, int index, bool isEnabled) async {
     if (!isEnabled) return;
+    await SoundPlayer.checkAndPlayClickSound();
     switch (index) {
       case 0:
         GoRouter.of(context).go(MeditationRoute().location);

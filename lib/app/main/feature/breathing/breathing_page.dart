@@ -8,6 +8,8 @@ import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 
+import '../../../../common/tools/sound_player.dart';
+
 class BreathingPage extends StatefulWidget {
   const BreathingPage({super.key});
 
@@ -59,7 +61,8 @@ class _BreathingPageState extends State<BreathingPage> {
                 : ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        await SoundPlayer.checkAndPlayClickSound();
                         final bloc = context.read<BreathingPageBloc>();
                         bloc.add(BreathingPageEvent.updateCategory(category: categories![index]));
                         bloc.add(BreathingPageEvent.filterByCategory(category: categories[index]));

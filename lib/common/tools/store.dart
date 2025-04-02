@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Store {
-  static void set({
+  static Future<void> set({
     required String key,
     required dynamic value,
   }) async {

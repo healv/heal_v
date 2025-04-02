@@ -219,7 +219,9 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
 
   Widget _googleSignInIcon(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: () {
+
+      },
       icon: AppIcons.google.svgAsset(height: 40),
     );
   }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "520396323634",
+    "project_id": "heal-v-app",
+    "storage_bucket": "heal-v-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520396323634:android:ef6717795fd55838bfb52b",
+        "android_client_info": {
+          "package_name": "com.heal_v"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "520396323634-619rfvmmdh6ri8kj4sfurn8vnvl4dga6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.heal_v",
+            "certificate_hash": "d33b041f7bbffa9f4dbe66279cc57059d7fb5f5b"
+          }
+        },
+        {
+          "client_id": "520396323634-6ug7h7mv5tsbd96ojev7tbcrbum81jvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9uBwpK70ZfGI8eH7bXB9rAQD5SC2Mc9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "520396323634-6ug7h7mv5tsbd96ojev7tbcrbum81jvl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -37,6 +37,13 @@
             {
               "client_id": "520396323634-6ug7h7mv5tsbd96ojev7tbcrbum81jvl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "520396323634-bl3fbrn4kls5je6j3fp609n6phf60h82.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.healv"
+              }
             }
           ]
         }

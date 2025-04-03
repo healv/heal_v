@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:heal_v/app/auth/sign_in/sign_in_page_bloc.dart';
 import 'package:heal_v/app/auth/sign_in/sign_in_page_effect.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
@@ -219,11 +221,31 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
 
   Widget _googleSignInIcon(BuildContext context) {
     return IconButton(
-      onPressed: () {
-
+      onPressed: () async {
+        final user = await _signInWithGoogle();
+        final a = user?.user;
       },
       icon: AppIcons.google.svgAsset(height: 40),
     );
+  }
+
+  Future<UserCredential?> _signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return null;
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (error) {
+      debugPrint("Error Google: $error");
+      return null;
+    }
   }
 
   void _listenAuthEffects(AuthBlocEffect effect) async {

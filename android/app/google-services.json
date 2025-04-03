@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "520396323634-619rfvmmdh6ri8kj4sfurn8vnvl4dga6.apps.googleusercontent.com",
+          "client_id": "520396323634-cgfqj1n962lf6i162nh6hsfdmnue470u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.heal_v",
-            "certificate_hash": "d33b041f7bbffa9f4dbe66279cc57059d7fb5f5b"
+            "certificate_hash": "196b461989cd9ac726e9f326252518722a3103fb"
           }
         },
         {

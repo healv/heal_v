@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>520396323634-bl3fbrn4kls5je6j3fp609n6phf60h82.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.520396323634-bl3fbrn4kls5je6j3fp609n6phf60h82</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>520396323634-619rfvmmdh6ri8kj4sfurn8vnvl4dga6.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCnuzOiPIGInniMacj70cS3zP2KIIL9rE0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>520396323634</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.healv</string>
+	<key>PROJECT_ID</key>
+	<string>heal-v-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>heal-v-app.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:520396323634:ios:0200485bdf80d2dcbfb52b</string>
+</dict>
+</plist>

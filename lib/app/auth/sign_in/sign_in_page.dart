@@ -227,18 +227,29 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        IconButton(
-          onPressed: () async {
-            final userCredential = await _signInWithGoogle();
-          },
-          icon: AppIcons.google.svgAsset(height: 40),
-        ),
-        if (Platform.isIOS)
-          IconButton(
+        SizedBox(
+          height: 60,
+          child: IconButton(
             onPressed: () async {
-              final userCredential = await _signInWithApple();
+              final userCredential = await _signInWithGoogle();
             },
-            icon: const Icon(Icons.apple, size: 50),
+            icon: AppIcons.google.svgAsset(height: 35),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
+        ),
+        if (Platform.isIOS) const SizedBox(width: 8.0),
+        if (Platform.isIOS)
+          SizedBox(
+            height: 60,
+            child: IconButton(
+              onPressed: () async {
+                final userCredential = await _signInWithApple();
+              },
+              icon: const Icon(Icons.apple, size: 50),
+              padding: const EdgeInsets.only(bottom: 4.0),
+              constraints: const BoxConstraints(),
+            ),
           ),
       ],
     );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +17,7 @@ import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -220,17 +223,30 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
   }
 
   Widget _googleSignInIcon(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
-        final userCredential = await _signInWithGoogle();
-        final user = userCredential?.user;
-      },
-      icon: AppIcons.google.svgAsset(height: 40),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        IconButton(
+          onPressed: () async {
+            final userCredential = await _signInWithGoogle();
+          },
+          icon: AppIcons.google.svgAsset(height: 40),
+        ),
+        if (Platform.isIOS)
+          IconButton(
+            onPressed: () async {
+              final userCredential = await _signInWithApple();
+            },
+            icon: const Icon(Icons.apple, size: 50),
+          ),
+      ],
     );
   }
 
   Future<UserCredential?> _signInWithGoogle() async {
     try {
+      await GoogleSignIn().signOut();
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return null;
 
@@ -244,6 +260,29 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (error) {
       debugPrint("Error Google: $error");
+      return null;
+    }
+  }
+
+  Future<UserCredential?> _signInWithApple() async {
+    try {
+      if (!Platform.isIOS && !Platform.isMacOS) {
+        debugPrint("Apple Sign-In support only for iOS/macOS");
+        return null;
+      }
+
+      final AuthorizationCredentialAppleID appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+      );
+
+      final OAuthCredential credential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (error) {
+      debugPrint("Error Apple: $error");
       return null;
     }
   }

@@ -28,16 +28,18 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.zero,
-      child: Container(
-        height: MediaQuery.of(context).padding.top + 50,
-        color: context.primary,
-        child: Center(
-          child: RichText(
+    return Container(
+      height: MediaQuery.of(context).padding.top,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      color: context.primary.withValues(alpha: 0.8),
+      child: Row(
+        children: [
+          const Icon(Icons.wifi_off),
+          const SizedBox(width: 16),
+          RichText(
             text: TextSpan(
               children: [
-                TextSpan(text: tr('no_internet_connection'), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                TextSpan(text: tr('you_are_offline'), style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                 TextSpan(
                     style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
                     text: visibleDot == 0
@@ -49,8 +51,8 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
                                 : '$doth$doth$doth'),
               ],
             ),
-          ),
-        ),
+          )
+        ],
       ),
     );
   }

@@ -61,6 +61,14 @@ class _HealVApplicationState extends State<HealVApplication> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    NetworkStateManager().states.listen((state) {
+      changeCallOverlay(overlay: state.isOnline == true ? null : const NoInternetScreen());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => ThemeNotifier(),
@@ -81,13 +89,18 @@ class _HealVApplicationState extends State<HealVApplication> {
               debugShowCheckedModeBanner: false,
               theme: themeNotifier.selectedTheme,
               builder: (context, child) {
-                NetworkStateManager().states.listen((state) {
-                  changeCallOverlay(overlay: state.isOnline == true ? null : const NoInternetScreen());
-                });
-                return Column(
+                return Stack(
                   children: [
-                    _overlay ?? const SizedBox(),
-                    Expanded(child: child!),
+                    child!,
+                    if (_overlay != null)
+                      Positioned(
+                        bottom: MediaQuery.of(context).padding.bottom + 70,
+                        left: 16,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: _overlay,
+                        ),
+                      ),
                   ],
                 );
               },

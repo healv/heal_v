@@ -35,9 +35,10 @@ class _MeditationPageState extends State<MeditationPage> {
   Widget _body(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 24.0),
-      child: BlocSelector<MeditationPageBloc, MeditationPageState, Map<String, List<MeditationBreathing>>?>(
-        selector: (state) => state.itemsMap,
-        builder: (context, items) => _mainListView(context, items),
+      child: BlocBuilder<MeditationPageBloc, MeditationPageState>(
+        builder: (BuildContext context, MeditationPageState state) {
+          return state.loading == true ? _meditationMainListViewShimmer(context) : _mainListView(context, state.itemsMap);
+        },
       ),
     );
   }
@@ -76,6 +77,27 @@ class _MeditationPageState extends State<MeditationPage> {
     );
   }
 
+  Widget _meditationMainListViewShimmer(BuildContext context) {
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SeeAllWidget.loading(),
+              const SizedBox(height: 16),
+              _meditationCardListShimmer(),
+            ],
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => const SizedBox(height: 24),
+      itemCount: 3,
+    );
+  }
+
   Widget _image(String? imageUrl) {
     final screenSize = MediaQuery.of(context).size.width;
     final half = screenSize / 2.5;
@@ -95,28 +117,34 @@ class _MeditationPageState extends State<MeditationPage> {
           );
   }
 
-  Widget _loadingShimmer() {
+  Widget _meditationCardListShimmer() {
     final screenSize = MediaQuery.of(context).size.width;
     final half = screenSize / 2.5;
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) => SizedBox(
-        width: screenSize - half,
-        height: 292,
-        child: Shimmer.fromColors(
-          baseColor: context.onBackground.withOpacity(0.3),
-          highlightColor: context.onBackground.withOpacity(0.1),
-          child: Container(
-            height: 24,
-            decoration: BoxDecoration(
-              color: const Color(0xFFE6E6E6),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
+
+    Widget shimmer() {
+      return Shimmer.fromColors(
+        baseColor: context.onBackground.withOpacity(0.3),
+        highlightColor: context.onBackground.withOpacity(0.1),
+        child: Container(
+          width: screenSize - half,
+          height: 292,
+          decoration: BoxDecoration(
+            color: context.onBackground.withOpacity(0.7),
+            borderRadius: BorderRadius.circular(12.0),
           ),
         ),
+      );
+    }
+
+    return SizedBox(
+      height: 300,
+      child: ListView.separated(
+        itemBuilder: (context, index) => shimmer(),
+        separatorBuilder: (context, index) => const SizedBox(width: 8),
+        itemCount: 3,
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
       ),
-      separatorBuilder: (context, index) => const SizedBox(width: 8.0),
-      itemCount: 4,
     );
   }
 }

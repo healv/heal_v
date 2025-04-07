@@ -37,10 +37,10 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
           add(MeditationPageEvent.meditations());
           break;
         case ResourceStatusEnum.error:
-          emitter(state.copyWith(categoriesLoading: const Optional.value(false)));
+          emitter(state.copyWith(categoriesLoading: const Optional.value(false), loading: const Optional.value(false)));
           break;
         case ResourceStatusEnum.loading:
-          emitter(state.copyWith(categoriesLoading: const Optional.value(true)));
+          emitter(state.copyWith(categoriesLoading: const Optional.value(true), loading: const Optional.value(true)));
           break;
       }
     }

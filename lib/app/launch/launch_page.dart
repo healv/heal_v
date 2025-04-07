@@ -54,9 +54,6 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
           case ResourceStatusEnum.success:
             HomeRoute().go(context);
             break;
-          case ResourceStatusEnum.error:
-            SignInRoute().go(context);
-            break;
           default:
             break;
         }

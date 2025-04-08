@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:heal_v/common/network/network_state_manager.dart';
 import 'package:retrofit/dio.dart';
 
 import '../constants.dart';
@@ -7,9 +6,6 @@ import 'api_wrapper.dart';
 
 Future<ApiWrapper<T>> parseHttpResponse<T>(Function function, List<dynamic> arguments) async {
   try {
-    if (await NetworkStateManager().isNetworkAvailable() == false) {
-      return NetworkError();
-    }
     final HttpResponse<T?> result = await Function.apply(function, arguments);
     final statusCode = result.response.statusCode;
     final body = result.data;
@@ -25,7 +21,11 @@ Future<ApiWrapper<T>> parseHttpResponse<T>(Function function, List<dynamic> argu
       error = NetworkError();
     } else {
       final data = e.response?.data;
-      error = ApiWrapper.error(code: data['statusCode'], error: data['message']);
+      if (data != null) {
+        error = ApiWrapper.error(code: data['statusCode'], error: data['message']);
+      } else {
+        error = ApiWrapper.unknownError(error: e);
+      }
     }
     return error;
   } catch (e) {

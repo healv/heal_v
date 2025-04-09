@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -154,7 +155,9 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700, color: context.onBackground),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              FirebaseCrashlytics.instance.crash();
+            },
             child: Text(
               tr('see_all'),
               style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: context.primary),

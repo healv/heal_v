@@ -155,9 +155,7 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700, color: context.onBackground),
           ),
           TextButton(
-            onPressed: () {
-              FirebaseCrashlytics.instance.crash();
-            },
+            onPressed: () {},
             child: Text(
               tr('see_all'),
               style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: context.primary),

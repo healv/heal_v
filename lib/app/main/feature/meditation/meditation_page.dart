@@ -59,7 +59,7 @@ class _MeditationPageState extends State<MeditationPage> {
                 },
               ),
               SizedBox(
-                height: 293,
+                height: 273,
                 child: ListView.separated(
                   itemBuilder: (context, innerIndex) => _image(items?.values.toList()[index][innerIndex].photoUrl),
                   separatorBuilder: (context, index) => const SizedBox(width: 8),
@@ -107,13 +107,13 @@ class _MeditationPageState extends State<MeditationPage> {
             child: Image.network(
               imageUrl!,
               width: 250,
-              height: 292,
+              height: 272,
               fit: BoxFit.cover,
             ),
           )
         : ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: AppIcons.demoImage.imageAsset(width: screenSize - half, height: 292, fit: BoxFit.cover),
+            child: AppIcons.demoImage.imageAsset(width: screenSize - half, height: 272, fit: BoxFit.cover),
           );
   }
 
@@ -137,7 +137,7 @@ class _MeditationPageState extends State<MeditationPage> {
     }
 
     return SizedBox(
-      height: 300,
+      height: 272,
       child: ListView.separated(
         itemBuilder: (context, index) => shimmer(),
         separatorBuilder: (context, index) => const SizedBox(width: 8),

@@ -34,7 +34,7 @@ class _MeditationPageState extends State<MeditationPage> {
 
   Widget _body(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 0.0),
+      padding: const EdgeInsets.only(top: 8.0),
       child: BlocBuilder<MeditationPageBloc, MeditationPageState>(
         builder: (BuildContext context, MeditationPageState state) {
           return state.loading == true ? _meditationMainListViewShimmer(context) : _mainListView(context, state.itemsMap);

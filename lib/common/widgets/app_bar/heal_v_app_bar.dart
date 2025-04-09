@@ -39,7 +39,7 @@ class HealVAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       flexibleSpace: Container(
-        margin: const EdgeInsets.only(bottom: 16.0),
+        margin: EdgeInsets.only(bottom: isSearchEnable ? 16.0 : 0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.pink.shade100, Colors.white],
@@ -79,7 +79,7 @@ class HealVAppBar extends StatelessWidget implements PreferredSizeWidget {
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: Colors.grey.withValues(alpha: 0.5),
                         spreadRadius: 2,
                         blurRadius: 5,
                       ),
@@ -120,5 +120,5 @@ class HealVAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(120);
+  Size get preferredSize => Size.fromHeight(isSearchEnable ? 120 : 100);
 }

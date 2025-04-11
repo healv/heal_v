@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/common/utils/analytics/firebase_analytics_service.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/common/widgets/see_all_widget.dart';
 import 'package:heal_v/navigation/main/main_graph.dart';
@@ -55,6 +57,7 @@ class _MeditationPageState extends State<MeditationPage> {
               SeeAllWidget(
                 title: 'Explore ${items?.keys.toList()[index]}',
                 seeAllPressed: () {
+                  FirebaseAnalyticsService.logEventMeditationSeeAll(items?.keys.toList()[index]);
                   MeditationNestedMeditationDetailsRoute(meditations: jsonEncode(items?.values.toList()[index])).push(context);
                 },
               ),

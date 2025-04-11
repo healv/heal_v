@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -37,6 +38,7 @@ void main() async {
     await _setupDI();
     await _setupHydratedBloc();
     await ThemeHelper.init();
+    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
 
     runApp(
       EasyLocalization(

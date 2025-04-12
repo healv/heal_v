@@ -6,7 +6,7 @@ class FirebaseAnalyticsService {
   static void logEventMeditationSeeAll(String? category) {
     try {
       FirebaseAnalytics.instance.logEvent(
-        name: 'home_page_see_all_clicked',
+        name: 'meditation_page_see_all_clicked',
         parameters: {'category': category ?? emptyString},
       );
     } catch (e) {

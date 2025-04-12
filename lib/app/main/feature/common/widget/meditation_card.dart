@@ -19,7 +19,7 @@ class MeditationCard extends StatelessWidget {
         final item = items[index];
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: context.primary, width: 1.5),
@@ -63,10 +63,16 @@ class MeditationCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(
-                Icons.play_circle_fill,
-                color: context.primary,
-                size: 40,
+              Container(
+                padding: const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                  color: context.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.play_arrow_outlined,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -83,14 +89,14 @@ class MeditationCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
               imageUrl!,
-              width: 80,
-              height: 80,
+              width: 60,
+              height: 60,
               fit: BoxFit.cover,
             ),
           )
         : ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: AppIcons.demoImage.imageAsset(width: 80, height: 80),
+            borderRadius: BorderRadius.circular(6),
+            child: AppIcons.demoImage.imageAsset(width: 60, height: 60, fit: BoxFit.cover),
           );
   }
 }

@@ -45,5 +45,11 @@
   "you_are_offline": "You are currently offline",
   "notification_permission_description": "Heal V wants to send notifications",
   "allow": "Allow",
-  "deny": "Deny"
+  "deny": "Deny",
+  "week": "Week",
+  "meditation_locked_description" : "This meditation is not yet available.\nPlease complete your current session\nto unlock it.",
+  "breathing_locked_description" : "This breathing is not yet available.\nPlease complete your current session\nto unlock it.",
+  "meditation_locked": "Meditation Locked",
+  "breathing_locked": "Breathing Locked",
+  "okay" : "Okay"
 }

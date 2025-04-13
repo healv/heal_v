@@ -7,8 +7,10 @@ import 'package:heal_v/app/main/feature/common/widget/meditation_card.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
+import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../common/tools/sound_player.dart';
+import '../../../../common/utils/alert.dart';
 
 class BreathingPage extends StatefulWidget {
   const BreathingPage({super.key});
@@ -18,6 +20,8 @@ class BreathingPage extends StatefulWidget {
 }
 
 class _BreathingPageState extends State<BreathingPage> {
+  int selectedWeekIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +37,8 @@ class _BreathingPageState extends State<BreathingPage> {
     return Column(
       children: [
         const SizedBox(height: 32),
-        _categories(context),
+        _weeks(context),
+        // _categories(context),
         _breathings(context),
       ],
     );
@@ -41,10 +46,42 @@ class _BreathingPageState extends State<BreathingPage> {
 
   Widget _breathings(BuildContext context) {
     return BlocSelector<BreathingPageBloc, BreathingPageState, List<MeditationBreathing>?>(
-      selector: (state) => state.filteredItems,
+      selector: (state) => state.items?.meditationBreathing,
       builder: (context, items) {
         return Expanded(child: MeditationCard(items: items ?? []));
       },
+    );
+  }
+
+  Widget _weeks(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(4, (index) {
+          final isSelected = index == selectedWeekIndex;
+          return SizedBox(
+            height: 60,
+            child: GestureDetector(
+              onTap: () {
+                showLockedDialog(context, tr('breathing_locked'), tr('breathing_locked_description'));
+              },
+              child: Column(
+                children: [
+                  Text('${tr('week')} ${index + 1}', style: TextStyle(color: isSelected ? context.onBackground : context.unselectedItemColor)),
+                  if (isSelected)
+                    Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      height: 2,
+                      width: 60,
+                      color: context.onBackground,
+                    ),
+                ],
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
 

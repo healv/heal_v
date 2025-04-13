@@ -1,0 +1,4 @@
+enum MeditationTypeEnum {
+  meditations,
+  breathings,
+}

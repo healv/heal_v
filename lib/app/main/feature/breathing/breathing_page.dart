@@ -38,7 +38,6 @@ class _BreathingPageState extends State<BreathingPage> {
       children: [
         const SizedBox(height: 32),
         _weeks(context),
-        // _categories(context),
         _breathings(context),
       ],
     );

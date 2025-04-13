@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,12 +6,10 @@ import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_mod
 import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
-import 'package:heal_v/common/widgets/see_all_widget.dart';
-import 'package:heal_v/navigation/main/main_graph.dart';
-import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
-import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../../../common/utils/alert.dart';
 
 class MeditationPage extends StatefulWidget {
   const MeditationPage({super.key});
@@ -21,10 +19,12 @@ class MeditationPage extends StatefulWidget {
 }
 
 class _MeditationPageState extends State<MeditationPage> {
+  int selectedWeekIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar.simple(
+      appBar: HealVAppBar.search(
         title: tr('meditation'),
         isBackEnable: false,
       ),
@@ -33,117 +33,108 @@ class _MeditationPageState extends State<MeditationPage> {
   }
 
   Widget _body(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 32),
+        _weeks(context),
+        Expanded(child: _meditations(context)),
+      ],
+    );
+  }
+
+  Widget _meditations(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: BlocBuilder<MeditationPageBloc, MeditationPageState>(
         builder: (BuildContext context, MeditationPageState state) {
-          return state.loading == true ? _meditationMainListViewShimmer(context) : _mainListView(context, state.itemsMap);
+          return state.loading == true ? _meditationsShimmer(context) : _meditationsGridView(context, state.items?.meditationBreathing);
         },
       ),
     );
   }
 
-  Widget _mainListView(BuildContext context, Map<String, List<MeditationBreathing>>? items) {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SeeAllWidget(
-                title: 'Explore ${items?.keys.toList()[index]}',
-                seeAllPressed: () {
-                  MeditationNestedMeditationDetailsRoute(meditations: jsonEncode(items?.values.toList()[index])).push(context);
-                },
-              ),
-              SizedBox(
-                height: 273,
-                child: ListView.separated(
-                  itemBuilder: (context, innerIndex) => _image(items?.values.toList()[index][innerIndex].photoUrl),
-                  separatorBuilder: (context, index) => const SizedBox(width: 8),
-                  itemCount: items?.values.toList()[index].length ?? 0,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(height: 8),
+  Widget _meditationsGridView(BuildContext context, List<MeditationBreathing>? items) {
+    return GridView.builder(
+      itemBuilder: (context, index) => _image(items?[index].photoUrl),
       itemCount: items?.length ?? 0,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 3 / 2,
+      ),
     );
   }
 
-  Widget _meditationMainListViewShimmer(BuildContext context) {
-    return ListView.separated(
+  Widget _meditationsShimmer(BuildContext context) {
+    return GridView.builder(
       itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SeeAllWidget.loading(),
-              const SizedBox(height: 16),
-              _meditationCardListShimmer(),
-            ],
+        return Shimmer.fromColors(
+          baseColor: context.onBackground.withOpacity(0.3),
+          highlightColor: context.onBackground.withOpacity(0.1),
+          child: Container(
+            decoration: BoxDecoration(
+              color: context.onBackground.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(12.0),
+            ),
           ),
         );
       },
-      separatorBuilder: (context, index) => const SizedBox(height: 24),
-      itemCount: 3,
+      itemCount: 10,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 3 / 2,
+      ),
     );
   }
 
   Widget _image(String? imageUrl) {
-    final screenSize = MediaQuery.of(context).size.width;
-    final half = screenSize / 2.5;
+    final index = Random().nextInt(5);
+    final path = 'assets/icons/ic_meditation_$index.png';
     return imageUrl != null || imageUrl?.isNotEmpty == true
         ? ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
               imageUrl!,
-              width: 250,
-              height: 272,
               fit: BoxFit.cover,
             ),
           )
         : ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: AppIcons.demoImage.imageAsset(width: screenSize - half, height: 272, fit: BoxFit.cover),
+            child: Image.asset(key: ValueKey(path), path, width: 60, height: 60, fit: BoxFit.cover),
           );
   }
 
-  Widget _meditationCardListShimmer() {
-    final screenSize = MediaQuery.of(context).size.width;
-    final half = screenSize / 2.5;
-
-    Widget shimmer() {
-      return Shimmer.fromColors(
-        baseColor: context.onBackground.withOpacity(0.3),
-        highlightColor: context.onBackground.withOpacity(0.1),
-        child: Container(
-          width: screenSize - half,
-          height: 292,
-          decoration: BoxDecoration(
-            color: context.onBackground.withOpacity(0.7),
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-        ),
-      );
-    }
-
-    return SizedBox(
-      height: 272,
-      child: ListView.separated(
-        itemBuilder: (context, index) => shimmer(),
-        separatorBuilder: (context, index) => const SizedBox(width: 8),
-        itemCount: 3,
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
+  Widget _weeks(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(4, (index) {
+          final isSelected = index == selectedWeekIndex;
+          return SizedBox(
+            height: 60,
+            child: GestureDetector(
+              onTap: () {
+                showLockedDialog(context, tr('meditation_locked'), tr('meditation_locked_description'));
+              },
+              child: Column(
+                children: [
+                  Text('${tr('week')} ${index + 1}', style: TextStyle(color: isSelected ? context.onBackground : context.unselectedItemColor)),
+                  if (isSelected)
+                    Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      height: 2,
+                      width: 60,
+                      color: context.onBackground,
+                    ),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }

@@ -18,7 +18,7 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
   BreathingPageBloc(this.repo) : super(BreathingPageState.initial()) {
     on<Initial>(_handleInitialEvent);
     on<UpdateCategory>(_handleUpdateCategoryEvent);
-    on<GetBreathings>(_handleGetMeditationsEvent);
+    on<GetBreathings>(_handleGetBreathingsEvent);
     on<FilterByCategory>(_handleFilterByCategoryEvent);
   }
 
@@ -34,16 +34,16 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
           add(BreathingPageEvent.breathings());
           break;
         case ResourceStatusEnum.error:
-          emitter(state.copyWith(categoriesLoading: const Optional.value(false)));
+          emitter(state.copyWith(categoriesLoading: const Optional.value(false), loading: const Optional.value(false)));
           break;
         case ResourceStatusEnum.loading:
-          emitter(state.copyWith(categoriesLoading: const Optional.value(true)));
+          emitter(state.copyWith(categoriesLoading: const Optional.value(true), loading: const Optional.value(true)));
           break;
       }
     }
   }
 
-  Future<void> _handleGetMeditationsEvent(GetBreathings event, Emitter<BreathingPageState> emitter) async {
+  Future<void> _handleGetBreathingsEvent(GetBreathings event, Emitter<BreathingPageState> emitter) async {
     await for (final response in repo.breathing()) {
       switch (response.status) {
         case ResourceStatusEnum.success:

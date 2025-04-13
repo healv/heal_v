@@ -45,10 +45,9 @@ class _BreathingPageState extends State<BreathingPage> {
   }
 
   Widget _breathings(BuildContext context) {
-    return BlocSelector<BreathingPageBloc, BreathingPageState, List<MeditationBreathing>?>(
-      selector: (state) => state.items?.meditationBreathing,
-      builder: (context, items) {
-        return Expanded(child: MeditationCard(items: items ?? []));
+    return BlocBuilder<BreathingPageBloc, BreathingPageState>(
+      builder: (context, state) {
+        return state.loading == true ? Expanded(child: MeditationCard.loading()) : Expanded(child: MeditationCard(items: state.items?.meditationBreathing ?? []));
       },
     );
   }

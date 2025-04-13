@@ -6,4 +6,5 @@ class StoreKey {
   static const String refreshToken = 'refresh_token';
 
   static const String soundsEnable = 'sounds_enable';
+  static const String notificationEnable = 'notification_enable';
 }

@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -39,6 +40,7 @@ void main() async {
     await _setupHydratedBloc();
     await ThemeHelper.init();
     await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     runApp(
       EasyLocalization(
@@ -51,6 +53,10 @@ void main() async {
   }, (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack);
   });
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  debugPrint('message received: ${message.messageId}');
 }
 
 Future<void> _setupDio() async {

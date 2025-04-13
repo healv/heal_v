@@ -42,5 +42,8 @@
   "ok": "Ok",
   "search": "Search",
   "no_internet_connection": "No Internet Connection",
-  "you_are_offline": "You are currently offline"
+  "you_are_offline": "You are currently offline",
+  "notification_permission_description": "Heal V wants to send notifications",
+  "allow": "Allow",
+  "deny": "Deny"
 }

@@ -12,10 +12,13 @@ import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/repo/auth_repo.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import '../../../application.dart';
 import '../../../common/bloc/base_event.dart';
 import '../../../common/bloc/base_state.dart';
 import '../../../common/dart/optional.dart';
+import '../../../navigation/auth/auth_graph.dart';
 
 part 'auth_bloc_event.dart';
 
@@ -31,7 +34,14 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<AuthBlocState> emitter) async {
+    final permissionGranted = await Permission.notification.isGranted;
+    final permissionAlwaysDenied = await Permission.notification.isPermanentlyDenied;
+    if (!permissionGranted && !permissionAlwaysDenied) {
+      final status = await PermissionRoute().push<PermissionStatus>(shellNavigatorGlobalKey.currentContext!) ?? PermissionStatus.denied;
+      Store.set(key: StoreKey.notificationEnable, value: status.isGranted);
+    }
     final savedAccessToken = await Store.get(key: StoreKey.accessToken, defaultValue: emptyString);
+
     if (savedAccessToken.isNotEmpty) {
       await for (final response in repo.getMe()) {
         switch (response.status) {

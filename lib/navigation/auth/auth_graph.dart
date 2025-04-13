@@ -5,6 +5,7 @@ import 'package:heal_v/app/auth/sign_in/sign_in_page.dart';
 import 'package:heal_v/app/auth/sign_in/sign_in_page_bloc.dart';
 import 'package:heal_v/app/auth/sign_up/sign_up_page.dart';
 import 'package:heal_v/app/auth/sign_up/sign_up_page_bloc.dart';
+import 'package:heal_v/app/main/feature/permission/permission_page.dart';
 
 import '../app_routes.dart';
 import '../base/base_go_route_data.dart';
@@ -32,6 +33,15 @@ base class SignUpRoute extends BaseFadeTransitionGoRouteData {
       create: (_) => SignUpPageBloc(),
       child: const SignUpPage(),
     );
+  }
+}
+
+@TypedGoRoute<PermissionRoute>(path: AuthRoutes.permission, routes: <TypedRoute<RouteData>>[])
+@immutable
+base class PermissionRoute extends BaseFadeTransitionGoRouteData {
+  @override
+  Widget pageChild(BuildContext context, GoRouterState state) {
+    return const PermissionPage();
   }
 }
 

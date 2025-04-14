@@ -25,7 +25,7 @@ class JournalHistoryPageBloc extends BaseBloc<JournalHistoryPageEvent, JournalHi
     await for (final response in repo.getJournalHistory()) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          final history =
+          final history = response.data ??
               [
                 JournalHistoryDto(message: 'Advantages of yoga', date: '15/05/2024'),
                 JournalHistoryDto(message: 'Advantages of yoga', date: '14/05/2024'),

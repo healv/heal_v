@@ -8,6 +8,7 @@ import 'package:heal_v/app/main/feature/profile/progress/progress_page.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/settings/settings_page.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/main.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 
 import '../../../app/main/feature/profile/edit_profile/edit_profile_page.dart';
@@ -65,7 +66,8 @@ base class ProfileJournalHistoryRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return BlocProvider(
-      create: (_) => JournalHistoryPageBloc(),
+      create: (_) => JournalHistoryPageBloc(getIt.get())..add(JournalHistoryPageEvent.initial()),
+      lazy: false,
       child: const JournalHistoryPage(),
     );
   }

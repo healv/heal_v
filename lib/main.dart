@@ -15,6 +15,7 @@ import 'package:heal_v/common/utils/network/interceptors/retry_interceptor.dart'
 import 'package:heal_v/config/easylocalization/easy_localization_config.dart';
 import 'package:heal_v/feature/heal_v/api/auth/di/auth_module.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/di/breathing_module.dart';
+import 'package:heal_v/feature/heal_v/api/journal/di/journal_module.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/di/meditations_module.dart';
 import 'package:heal_v/feature/heal_v/api/progress/di/daily_progress_module.dart';
 import 'package:heal_v/feature/heal_v/api/shared_content/di/shared_content_module.dart';
@@ -78,6 +79,7 @@ Future<void> _setupDI() async {
   await getIt.dailyProgressModule();
   await getIt.meditationsModule();
   await getIt.breathingsModule();
+  await getIt.journalModule();
 }
 
 Future<void> _setupHydratedBloc() async {

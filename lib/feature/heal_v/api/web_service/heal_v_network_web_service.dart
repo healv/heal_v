@@ -13,6 +13,8 @@ import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress
 import 'package:heal_v/feature/heal_v/api/shared_content/model/shared_content_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../journal/model/journal_history_dto.dart';
+
 part 'heal_v_network_web_service.g.dart';
 
 @RestApi(baseUrl: AuthConstants.baseUrl)
@@ -45,4 +47,7 @@ abstract class HealVNetworkWebService {
 
   @GET('/breathings/categories')
   Future<HttpResponse<List<BreathingsCategoriesDto>?>> breathingsCategories();
+
+  @GET('/journal')
+  Future<HttpResponse<List<JournalHistoryDto>?>> getJournalHistory();
 }

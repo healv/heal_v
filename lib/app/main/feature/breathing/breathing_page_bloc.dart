@@ -10,6 +10,7 @@ import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_
 import 'package:heal_v/feature/heal_v/api/breathing/repo/breathing_repo.dart';
 
 part 'breathing_page_event.dart';
+
 part 'breathing_page_state.dart';
 
 class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState> {
@@ -23,28 +24,11 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<BreathingPageState> emitter) async {
-    await for (final response in repo.breathingCategories()) {
-      switch (response.status) {
-        case ResourceStatusEnum.success:
-          emitter(state.copyWith(
-            categoriesLoading: const Optional.value(false),
-            categories: Optional.value(response.data),
-            selectedCategory: Optional.value(response.data?.first),
-          ));
-          add(BreathingPageEvent.breathings());
-          break;
-        case ResourceStatusEnum.error:
-          emitter(state.copyWith(categoriesLoading: const Optional.value(false), loading: const Optional.value(false)));
-          break;
-        case ResourceStatusEnum.loading:
-          emitter(state.copyWith(categoriesLoading: const Optional.value(true), loading: const Optional.value(true)));
-          break;
-      }
-    }
+    add(BreathingPageEvent.breathings());
   }
 
   Future<void> _handleGetBreathingsEvent(GetBreathings event, Emitter<BreathingPageState> emitter) async {
-    await for (final response in repo.breathing()) {
+    await for (final response in repo.breathing(searchQuery: event.searchQuery)) {
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(

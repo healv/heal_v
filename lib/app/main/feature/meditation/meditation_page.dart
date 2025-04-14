@@ -5,6 +5,7 @@ import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_mod
 import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
+import 'package:heal_v/shared/feature/empty/empty_widget.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -28,6 +29,9 @@ class _MeditationPageState extends State<MeditationPage> {
       appBar: HealVAppBar.search(
         title: tr('meditation'),
         isBackEnable: false,
+        onSearchTextChanged: (value) {
+          context.read<MeditationPageBloc>().add(MeditationPageEvent.meditations(searchQuery: value));
+        },
       ),
       body: _body(context),
     );
@@ -48,7 +52,18 @@ class _MeditationPageState extends State<MeditationPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: BlocBuilder<MeditationPageBloc, MeditationPageState>(
         builder: (BuildContext context, MeditationPageState state) {
-          return state.loading == true ? _meditationsShimmer(context) : _meditationsGridView(context, state.items?.meditationBreathing);
+          if (state.loading == true) {
+            return _meditationsShimmer(context);
+          }
+          if (state.items == null) {
+            return const SizedBox();
+          }
+          if (state.items!.meditationBreathing!.isEmpty) {
+            return const Center(
+              child: EmptyWidget(),
+            );
+          }
+          return _meditationsGridView(context, state.items?.meditationBreathing);
         },
       ),
     );

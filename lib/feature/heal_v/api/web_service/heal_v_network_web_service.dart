@@ -35,10 +35,10 @@ abstract class HealVNetworkWebService {
   Future<HttpResponse<DailyProgressDto?>> getDailyProgress();
 
   @GET('/meditations')
-  Future<HttpResponse<MeditationsDto?>> meditations();
+  Future<HttpResponse<MeditationsDto?>> meditations(@Query('search') String? searchQuery);
 
   @GET('/breathings')
-  Future<HttpResponse<BreathingsDto?>> breathings();
+  Future<HttpResponse<BreathingsDto?>> breathings(@Query('search') String? searchQuery);
 
   @GET('/meditations/categories')
   Future<HttpResponse<List<MeditationsCategoriesDto>?>> meditationsCategories();

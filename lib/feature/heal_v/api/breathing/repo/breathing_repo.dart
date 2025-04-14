@@ -3,7 +3,7 @@ import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_dto.dart';
 
 abstract interface class BreathingsRepo {
-  Stream<Resource<MeditationBreathings>> breathing();
+  Stream<Resource<MeditationBreathings>> breathing({String? searchQuery});
 
   Stream<Resource<List<BreathingsCategoriesDto>>> breathingCategories();
 }

@@ -51,5 +51,6 @@
   "breathing_locked_description" : "This breathing is not yet available.\nPlease complete your current session\nto unlock it.",
   "meditation_locked": "Meditation Locked",
   "breathing_locked": "Breathing Locked",
-  "okay" : "Okay"
+  "okay" : "Okay",
+  "no_data_available": "No data available"
 }

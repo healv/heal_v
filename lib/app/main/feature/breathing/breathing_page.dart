@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/breathing/breathing_page_bloc.dart';
-import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import 'package:heal_v/app/main/feature/common/widget/meditation_breathing_categories_widget.dart';
 import 'package:heal_v/app/main/feature/common/widget/meditation_card.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
@@ -11,6 +10,7 @@ import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../common/tools/sound_player.dart';
 import '../../../../common/utils/alert.dart';
+import '../../../../shared/feature/empty/empty_widget.dart';
 
 class BreathingPage extends StatefulWidget {
   const BreathingPage({super.key});
@@ -28,6 +28,9 @@ class _BreathingPageState extends State<BreathingPage> {
       appBar: HealVAppBar.search(
         title: tr('breathing'),
         isBackEnable: false,
+        onSearchTextChanged: (value) {
+          context.read<BreathingPageBloc>().add(BreathingPageEvent.breathings(searchQuery: value));
+        },
       ),
       body: _body(context),
     );
@@ -38,7 +41,7 @@ class _BreathingPageState extends State<BreathingPage> {
       children: [
         const SizedBox(height: 32),
         _weeks(context),
-        _breathings(context),
+        Expanded(child: _breathings(context)),
       ],
     );
   }
@@ -46,7 +49,18 @@ class _BreathingPageState extends State<BreathingPage> {
   Widget _breathings(BuildContext context) {
     return BlocBuilder<BreathingPageBloc, BreathingPageState>(
       builder: (context, state) {
-        return state.loading == true ? Expanded(child: MeditationCard.loading()) : Expanded(child: MeditationCard(items: state.items?.meditationBreathing ?? []));
+        if (state.loading == true) {
+          return MeditationCard.loading();
+        }
+        if (state.items == null) {
+          return const SizedBox();
+        }
+        if (state.items!.meditationBreathing!.isEmpty) {
+          return const Center(
+            child: EmptyWidget(),
+          );
+        }
+        return MeditationCard(items: state.items?.meditationBreathing ?? []);
       },
     );
   }

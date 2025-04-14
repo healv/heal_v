@@ -11,8 +11,8 @@ base class MeditationsNetworkAdapter implements MeditationsNetworkPort {
   MeditationsNetworkAdapter({required this.healVNetworkWebService});
 
   @override
-  Future<ApiWrapper<MeditationsDto?>> meditations() {
-    return parseHttpResponse<MeditationsDto>(healVNetworkWebService.meditations, []);
+  Future<ApiWrapper<MeditationsDto?>> meditations({String? searchQuery}) {
+    return parseHttpResponse<MeditationsDto>(healVNetworkWebService.meditations, [searchQuery]);
   }
 
   @override

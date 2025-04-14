@@ -12,8 +12,8 @@ base class MeditationsRepoImpl implements MeditationsRepo {
   MeditationsRepoImpl({required this.port});
 
   @override
-  Stream<Resource<MeditationBreathings>> meditations() {
-    return MeditationsNetworkBounds(port: port).call();
+  Stream<Resource<MeditationBreathings>> meditations({String? searchQuery}) {
+    return MeditationsNetworkBounds(port: port, searchQuery: searchQuery).call();
   }
 
   @override

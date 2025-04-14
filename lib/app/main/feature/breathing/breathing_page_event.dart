@@ -5,7 +5,7 @@ sealed class BreathingPageEvent extends BaseEvent {
 
   factory BreathingPageEvent.initial() => Initial._();
 
-  factory BreathingPageEvent.breathings() => GetBreathings._();
+  factory BreathingPageEvent.breathings({String? searchQuery}) => GetBreathings._(searchQuery);
 
   factory BreathingPageEvent.filterByCategory({required BreathingsCategoriesDto category}) => FilterByCategory._(category);
 
@@ -17,7 +17,9 @@ final class Initial extends BreathingPageEvent {
 }
 
 final class GetBreathings extends BreathingPageEvent {
-  GetBreathings._();
+  final String? searchQuery;
+
+  GetBreathings._(this.searchQuery);
 }
 
 final class FilterByCategory extends BreathingPageEvent {

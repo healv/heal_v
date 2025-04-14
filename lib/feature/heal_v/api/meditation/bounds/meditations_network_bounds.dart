@@ -10,12 +10,13 @@ import '../../../../../app/main/feature/common/model/meditation_type_enum.dart';
 
 class MeditationsNetworkBounds extends HttpBounds<MeditationBreathings, ApiWrapper<MeditationsDto?>> {
   final MeditationsNetworkPort port;
+  final String? searchQuery;
 
-  MeditationsNetworkBounds({required this.port});
+  MeditationsNetworkBounds({required this.port, this.searchQuery});
 
   @override
   Future<ApiWrapper<MeditationsDto?>?> fetchFromNetwork() {
-    return port.meditations();
+    return port.meditations(searchQuery: searchQuery);
   }
 
   @override

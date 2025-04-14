@@ -17,6 +17,7 @@ enum AppIcons {
   demoImage2('assets/icons/demo_image2.png'),
   demoImage3('assets/icons/demo_image3.png'),
   icLock('assets/icons/ic_lock.svg'),
+  icEmpty('assets/icons/ic_empty.svg'),
   stretching('assets/icons/ic_stretching.svg');
 
   final String path;

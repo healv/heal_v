@@ -10,12 +10,13 @@ import 'package:heal_v/feature/heal_v/api/breathing/network/breathings_network_p
 
 class BreathingsNetworkBounds extends HttpBounds<MeditationBreathings, ApiWrapper<BreathingsDto?>> {
   final BreathingsNetworkPort port;
+  final String? searchQuery;
 
-  BreathingsNetworkBounds({required this.port});
+  BreathingsNetworkBounds({required this.port, this.searchQuery});
 
   @override
   Future<ApiWrapper<BreathingsDto?>?> fetchFromNetwork() {
-    return port.breathings();
+    return port.breathings(searchQuery: searchQuery);
   }
 
   @override

@@ -17,6 +17,10 @@ MeditationBreathing _$MeditationBreathingFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       duration: json['duration'] as String?,
       preview: json['preview'] as String?,
+      showDescription: json['showDescription'] as bool?,
+      isEnable: json['isEnable'] as bool?,
+      type: $enumDecodeNullable(_$MeditationTypeEnumEnumMap, json['type']),
+      demoImage: json['demoImage'] as String?,
     );
 
 Map<String, dynamic> _$MeditationBreathingToJson(
@@ -31,4 +35,13 @@ Map<String, dynamic> _$MeditationBreathingToJson(
       'description': instance.description,
       'duration': instance.duration,
       'preview': instance.preview,
+      'showDescription': instance.showDescription,
+      'isEnable': instance.isEnable,
+      'type': _$MeditationTypeEnumEnumMap[instance.type],
+      'demoImage': instance.demoImage,
     };
+
+const _$MeditationTypeEnumEnumMap = {
+  MeditationTypeEnum.meditations: 'meditations',
+  MeditationTypeEnum.breathings: 'breathings',
+};

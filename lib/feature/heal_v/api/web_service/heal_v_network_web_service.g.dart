@@ -200,9 +200,10 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<MeditationsDto?>> meditations() async {
+  Future<HttpResponse<MeditationsDto?>> meditations(String? searchQuery) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'search': searchQuery};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<MeditationsDto>>(Options(
@@ -235,9 +236,10 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<BreathingsDto?>> breathings() async {
+  Future<HttpResponse<BreathingsDto?>> breathings(String? searchQuery) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'search': searchQuery};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<BreathingsDto>>(Options(

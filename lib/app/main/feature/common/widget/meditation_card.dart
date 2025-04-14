@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
@@ -57,7 +55,7 @@ class _MeditationCardState extends State<MeditationCard> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          _image(item.photoUrl),
+                          _image(item.photoUrl, item.demoImage ?? emptyString),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -131,9 +129,7 @@ class _MeditationCardState extends State<MeditationCard> {
     );
   }
 
-  Widget _image(String? imageUrl) {
-    final index = Random().nextInt(3);
-    final path = index != 0 ? 'assets/icons/demo_image$index.png' : 'assets/icons/demo_image2.png';
+  Widget _image(String? imageUrl, String demoImage) {
     return imageUrl != null || imageUrl?.isNotEmpty == true
         ? ClipRRect(
             borderRadius: BorderRadius.circular(12),
@@ -146,7 +142,7 @@ class _MeditationCardState extends State<MeditationCard> {
           )
         : ClipRRect(
             borderRadius: BorderRadius.circular(6),
-            child: Image.asset(key: ValueKey(path), path, width: 60, height: 60, fit: BoxFit.cover),
+            child: Image.asset(key: ValueKey(demoImage), demoImage, width: 60, height: 60, fit: BoxFit.cover),
           );
   }
 

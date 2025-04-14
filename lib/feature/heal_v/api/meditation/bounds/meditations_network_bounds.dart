@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import 'package:heal_v/common/utils/network/api_wrapper.dart';
 import 'package:heal_v/common/utils/network/bounds/http_bounds.dart';
@@ -22,9 +24,10 @@ class MeditationsNetworkBounds extends HttpBounds<MeditationBreathings, ApiWrapp
       Success<MeditationsDto?>() => MeditationBreathings(
           nextCursor: response.value?.nextCursor,
           prevCursor: response.value?.prevCursor,
-          meditationBreathing: response.value?.meditations
-              ?.map(
-                (e) => MeditationBreathing(
+          meditationBreathing: response.value?.meditations?.map(
+            (e) {
+              final index = Random().nextInt(5);
+              return MeditationBreathing(
                   type: MeditationTypeEnum.meditations,
                   id: e.id,
                   name: e.name,
@@ -32,9 +35,13 @@ class MeditationsNetworkBounds extends HttpBounds<MeditationBreathings, ApiWrapp
                   category: e.category,
                   photoUrl: e.photoUrl,
                   audioUrl: e.audioUrl,
-                ),
-              )
-              .toList(),
+                  duration: '15',
+                  description: 'Both can be full-body practices, although stretching focuses on one muscle group at a time while yoga can include full-body movements.',
+                  isEnable: e.name == '6' || e.name == '5' || e.name == '5',
+                  //todo remove
+                  demoImage: 'assets/icons/ic_meditation_$index.png');
+            },
+          ).toList(),
         ),
       _ => data,
     };

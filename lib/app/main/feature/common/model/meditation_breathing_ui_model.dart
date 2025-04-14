@@ -33,6 +33,7 @@ class MeditationBreathing {
   final bool? showDescription;
   final bool? isEnable;
   final MeditationTypeEnum? type;
+  final String? demoImage;
 
   const MeditationBreathing({
     this.id,
@@ -47,6 +48,7 @@ class MeditationBreathing {
     this.showDescription,
     this.isEnable,
     this.type,
+    this.demoImage,
   });
 
   MeditationBreathing copyWith({
@@ -62,6 +64,7 @@ class MeditationBreathing {
     Optional<bool>? showDescription,
     Optional<bool>? isEnable,
     Optional<MeditationTypeEnum>? type,
+    Optional<String>? demoImage,
   }) {
     return MeditationBreathing(
       id: id?.isValid == true ? id?.value : this.id,
@@ -76,6 +79,7 @@ class MeditationBreathing {
       showDescription: showDescription?.isValid == true ? showDescription?.value : this.showDescription,
       isEnable: isEnable?.isValid == true ? isEnable?.value : this.isEnable,
       type: type?.isValid == true ? type?.value : this.type,
+      demoImage: demoImage?.isValid == true ? demoImage?.value : this.demoImage,
     );
   }
 

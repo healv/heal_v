@@ -7,6 +7,7 @@ import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/feature/heal_v/api/journal/model/journal_history_dto.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../shared/feature/empty/empty_widget.dart';
 
@@ -29,7 +30,7 @@ class JournalHistoryPage extends StatelessWidget {
       child: BlocBuilder<JournalHistoryPageBloc, JournalHistoryPageState>(
         builder: (BuildContext context, JournalHistoryPageState state) {
           if (state.loading == true) {
-            // return _meditationsShimmer(context);
+            return _shimmer(context);
           }
           if (state.journalHistory == null) {
             return const SizedBox();
@@ -108,6 +109,30 @@ class JournalHistoryPage extends StatelessWidget {
         onTap: () {
           // Navigate to article or perform action
         },
+      ),
+    );
+  }
+
+  Widget _shimmer(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: ListView.separated(
+        itemBuilder: (context, index) => SizedBox(
+          height: 50,
+          child: Shimmer.fromColors(
+            baseColor: context.onBackground.withOpacity(0.3),
+            highlightColor: context.onBackground.withOpacity(0.1),
+            child: Container(
+              decoration: BoxDecoration(
+                color: context.onBackground.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ),
+          ),
+        ),
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
+        shrinkWrap: true,
+        itemCount: 20,
       ),
     );
   }

@@ -36,7 +36,7 @@ class JournalHistoryPageBloc extends BaseBloc<JournalHistoryPageEvent, JournalHi
                 JournalHistoryDto(message: 'Advantages of yoga', date: '15/08/2024'),
                 JournalHistoryDto(message: 'Advantages of yoga', date: '15/08/2024'),
                 JournalHistoryDto(message: 'Advantages of yoga', date: '15/08/2024'),
-                JournalHistoryDto(message: 'Advantages of yoga', date: '15/09/2024'),
+                JournalHistoryDto(message: 'Advantages of yoga', date: '15/09/2024'), //todo remove test data
               ];
           final Map<String, List<JournalHistoryDto>> grouped = {};
           for (var item in history) {

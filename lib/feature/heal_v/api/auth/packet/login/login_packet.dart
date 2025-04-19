@@ -19,6 +19,7 @@ final class LoginPacket extends Packet {
     return _$LoginPacketFromJson(json);
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return _$LoginPacketToJson(this);
   }

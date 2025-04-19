@@ -7,6 +7,8 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.signIn({required String email, required String password}) => SignIn._(email: email, password: password);
 
+  factory AuthBlocEvent.signInFirebase({required String uid, required String email, required String displayName}) => SignInFirebase._(uid: uid, email: email, displayName: displayName);
+
   factory AuthBlocEvent.signUp({required String email, required String password, required String name, String? lastName}) => SignUp._(email: email, password: password, name: name, lastName: lastName);
 
   factory AuthBlocEvent.me({required String accessToken}) => GetMe._(accessToken: accessToken);
@@ -21,6 +23,14 @@ class SignIn extends AuthBlocEvent {
   final String password;
 
   SignIn._({required this.email, required this.password});
+}
+
+class SignInFirebase extends AuthBlocEvent {
+  final String uid;
+  final String email;
+  final String displayName;
+
+  SignInFirebase._({required this.uid, required this.email, required this.displayName});
 }
 
 class SignUp extends AuthBlocEvent {

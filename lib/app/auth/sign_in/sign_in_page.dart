@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'package:heal_v/app/auth/sign_in/sign_in_page_effect.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/alert.dart';
+import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/common/widgets/loading_elevated_button.dart';
 import 'package:heal_v/navigation/auth/auth_graph.dart';
@@ -104,7 +106,7 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: context.onBackground,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
@@ -144,7 +146,7 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
                   cursorColor: context.onBackground,
                   obscureText: state.isPasswordHidden,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
@@ -152,7 +154,7 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
                     suffixIcon: IconButton(
                       icon: Icon(
                         state.isPasswordHidden ? Icons.visibility : Icons.visibility_off,
-                        color: context.onBackground.withOpacity(0.6),
+                        color: context.onBackground.withValues(alpha: 0.6),
                       ),
                       onPressed: () {
                         context.read<SignInPageBloc>().add(SignInPageEvent.updatePasswordVisibility());
@@ -223,6 +225,7 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
   }
 
   Widget _googleSignInIcon(BuildContext context) {
+    final authBloc = context.read<AuthBloc>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -232,6 +235,16 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
           child: IconButton(
             onPressed: () async {
               final userCredential = await _signInWithGoogle();
+              log("GOOGLE_SIGN_IN_TAG: User credentials:$userCredential");
+              if (userCredential?.user?.uid != null && userCredential?.user?.email != null && userCredential?.user?.displayName != null) {
+                authBloc.add(
+                  AuthBlocEvent.signInFirebase(
+                    uid: userCredential?.user?.uid ?? emptyString,
+                    email: userCredential?.user?.email ?? emptyString,
+                    displayName: userCredential?.user?.displayName ?? emptyString,
+                  ),
+                );
+              }
             },
             icon: AppIcons.google.svgAsset(height: 35),
             padding: EdgeInsets.zero,

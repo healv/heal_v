@@ -21,33 +21,33 @@ part 'heal_v_network_web_service.g.dart';
 abstract class HealVNetworkWebService {
   factory HealVNetworkWebService(Dio dio, {String baseUrl}) = _HealVNetworkWebService;
 
-  @POST('/auth/login')
+  @POST('auth/login')
   Future<HttpResponse<LoginDto?>> login(@Body() LoginPacket body);
 
-  @POST('/auth/signup')
+  @POST('auth/signup')
   Future<HttpResponse<SignUpDto?>> signUp(@Body() SignUpPacket body);
 
-  @GET('/auth/user')
+  @GET('auth/user')
   Future<HttpResponse<UserDto?>> me();
 
-  @GET('/shared-content')
+  @GET('shared-content')
   Future<HttpResponse<SharedContentDto?>> sharedContent();
 
-  @GET('/daily-progress')
+  @GET('daily-progress')
   Future<HttpResponse<DailyProgressDto?>> getDailyProgress();
 
-  @GET('/meditations')
+  @GET('meditations')
   Future<HttpResponse<MeditationsDto?>> meditations(@Query('search') String? searchQuery);
 
-  @GET('/breathings')
+  @GET('breathings')
   Future<HttpResponse<BreathingsDto?>> breathings(@Query('search') String? searchQuery);
 
-  @GET('/meditations/categories')
+  @GET('meditations/categories')
   Future<HttpResponse<List<MeditationsCategoriesDto>?>> meditationsCategories();
 
-  @GET('/breathings/categories')
+  @GET('breathings/categories')
   Future<HttpResponse<List<BreathingsCategoriesDto>?>> breathingsCategories();
 
-  @GET('/journal')
+  @GET('journal')
   Future<HttpResponse<List<JournalHistoryDto>?>> getJournalHistory();
 }

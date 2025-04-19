@@ -14,7 +14,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://heal-v-backend.onrender.com';
+    baseUrl ??= AuthConstants.baseUrl;
   }
 
   final Dio _dio;

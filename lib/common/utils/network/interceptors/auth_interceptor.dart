@@ -4,6 +4,8 @@ import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/refresh_token/refresh_token_dto.dart';
 
+import '../../../../feature/heal_v/api/auth/utils/auth_constants.dart' show AuthConstants;
+
 class AuthInterceptor extends Interceptor {
   final Dio dio;
 
@@ -27,7 +29,7 @@ class AuthInterceptor extends Interceptor {
           key: StoreKey.refreshToken, defaultValue: emptyString);
       if (refreshToken.isNotEmpty) {
         final response = await dio.post<Map<String, dynamic>>(
-          'https://heal-v-backend.onrender.com/auth/refresh',
+          '${AuthConstants.baseUrl}auth/refresh',
           data: {'refreshToken': refreshToken},
         );
 
@@ -43,7 +45,7 @@ class AuthInterceptor extends Interceptor {
           final retryRequest = err.requestOptions;
           retryRequest.headers['Authorization'] = 'Bearer $newAccessToken';
           final result = await dio.request(
-            'https://heal-v-backend.onrender.com${retryRequest.path}',
+            '${AuthConstants.baseUrl}${retryRequest.path}',
             options: Options(
               method: retryRequest.method,
               headers: retryRequest.headers,

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/store_key.dart';
+import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 
 class RetryInterceptor extends Interceptor {
   final Dio dio;
@@ -25,7 +26,7 @@ class RetryInterceptor extends Interceptor {
           options.headers?['Authorization'] = 'Bearer $accessToken';
         }
         final response = await dio.request(
-          'https://heal-v-backend.onrender.com${err.requestOptions.path}',
+          '${AuthConstants.baseUrl}${err.requestOptions.path}',
           options: options,
           data: err.requestOptions.data,
           queryParameters: err.requestOptions.queryParameters,

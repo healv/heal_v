@@ -8,6 +8,7 @@ import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_firebase_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/repo/auth_repo.dart';
@@ -21,7 +22,6 @@ import '../../../common/dart/optional.dart';
 import '../../../navigation/auth/auth_graph.dart';
 
 part 'auth_bloc_event.dart';
-
 part 'auth_bloc_state.dart';
 
 final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBlocEffect> {
@@ -31,6 +31,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<Initial>(_handleInitialEvent);
     on<SignUp>(_handleSignUpEvent);
     on<SignIn>(_handleSignInEvent);
+    on<SignInFirebase>(_handleSignInFirebaseEvent);
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<AuthBlocState> emitter) async {
@@ -94,6 +95,32 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
 
   Future<void> _handleSignInEvent(SignIn event, Emitter<AuthBlocState> emitter) async {
     await for (final response in repo.login(LoginPacket(email: event.email, password: event.password))) {
+      switch (response.status) {
+        case ResourceStatusEnum.success:
+          emitter(state.copyWith(
+            accessToken: Optional.value(response.data?.accessToken),
+            user: Optional.value(response.data?.user),
+            loading: const Optional.value(false),
+          ));
+          Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
+          Store.set(key: StoreKey.refreshToken, value: response.data?.refreshToken);
+          debugPrint(response.data.toString());
+          addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
+          break;
+        case ResourceStatusEnum.error:
+          debugPrint(response.error.toString());
+          addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.error, errorMsg: response.error));
+          emitter(state.copyWith(loading: const Optional.value(false)));
+          break;
+        case ResourceStatusEnum.loading:
+          emitter(state.copyWith(loading: const Optional.value(true)));
+          break;
+      }
+    }
+  }
+
+  Future<void> _handleSignInFirebaseEvent(SignInFirebase event, Emitter<AuthBlocState> emitter) async {
+    await for (final response in repo.loginFirebase(LoginFirebasePacket(uid: event.uid, email: event.email, displayName: event.displayName))) {
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(

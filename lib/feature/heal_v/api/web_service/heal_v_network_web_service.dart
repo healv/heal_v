@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/login/login_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/sign_up/sign_up_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_firebase_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
@@ -23,6 +24,9 @@ abstract class HealVNetworkWebService {
 
   @POST('auth/login')
   Future<HttpResponse<LoginDto?>> login(@Body() LoginPacket body);
+
+  @POST('auth/firebase')
+  Future<HttpResponse<LoginDto?>> loginFirebase(@Body() LoginFirebasePacket body);
 
   @POST('auth/signup')
   Future<HttpResponse<SignUpDto?>> signUp(@Body() SignUpPacket body);

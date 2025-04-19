@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "520396323634-27vl9btuomdgpm9qc1i7lrtra5cdoesc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.heal_v",
+            "certificate_hash": "9237b865ff560253c3b615aefb57d378eee50d94"
+          }
+        },
+        {
           "client_id": "520396323634-cgfqj1n962lf6i162nh6hsfdmnue470u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.heal_v",
             "certificate_hash": "196b461989cd9ac726e9f326252518722a3103fb"
+          }
+        },
+        {
+          "client_id": "520396323634-ke0ieetrt8cjcask4lpq768l2a0isqf2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.heal_v",
+            "certificate_hash": "6b51554ed7f4e6f1d21b2bebcf1e155891a5895c"
           }
         },
         {

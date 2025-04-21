@@ -258,6 +258,16 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
             child: IconButton(
               onPressed: () async {
                 final userCredential = await _signInWithApple();
+                log("APPLE_SIGN_IN_TAG: User credentials:$userCredential");
+                if (userCredential?.user?.uid != null && userCredential?.user?.email != null && userCredential?.user?.displayName != null) {
+                  authBloc.add(
+                    AuthBlocEvent.signInFirebase(
+                      uid: userCredential?.user?.uid ?? emptyString,
+                      email: userCredential?.user?.email ?? emptyString,
+                      displayName: userCredential?.user?.displayName ?? emptyString,
+                    ),
+                  );
+                }
               },
               icon: const Icon(Icons.apple, size: 50),
               padding: const EdgeInsets.only(bottom: 4.0),

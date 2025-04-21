@@ -24,9 +24,9 @@ class MeditationBreathing {
   final String? id;
   final String? name;
   final String? author;
-  final String? category;
-  final String? photoUrl;
-  final String? audioUrl;
+  final List<MeditationBreathingCategory>? category;
+  final List<MeditationBreathingMediaUrl>? photoUrl;
+  final List<MeditationBreathingMediaUrl>? audioUrl;
   final String? description;
   final String? duration;
   final String? preview;
@@ -55,9 +55,9 @@ class MeditationBreathing {
     Optional<String>? id,
     Optional<String>? name,
     Optional<String>? author,
-    Optional<String>? category,
-    Optional<String>? photoUrl,
-    Optional<String>? audioUrl,
+    Optional<List<MeditationBreathingCategory>>? category,
+    Optional<List<MeditationBreathingMediaUrl>>? photoUrl,
+    Optional<List<MeditationBreathingMediaUrl>>? audioUrl,
     Optional<String>? description,
     Optional<String>? duration,
     Optional<String>? preview,
@@ -103,5 +103,68 @@ class MeditationBreathing {
 
   Map<String, dynamic> toJson() {
     return _$MeditationBreathingToJson(this);
+  }
+}
+
+@JsonSerializable()
+@immutable
+class MeditationBreathingCategory {
+  final String? id;
+  final String? name;
+
+  const MeditationBreathingCategory({
+    this.id,
+    this.name,
+  });
+
+  factory MeditationBreathingCategory.fromMap(Map<String, dynamic> map) {
+    return MeditationBreathingCategory(
+      id: map['id'],
+      name: map['name'],
+    );
+  }
+
+  factory MeditationBreathingCategory.fromJson(Map<String, dynamic> json) {
+    return _$MeditationBreathingCategoryFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$MeditationBreathingCategoryToJson(this);
+  }
+}
+
+@JsonSerializable()
+@immutable
+class MeditationBreathingMediaUrl {
+  final String? downloadURL;
+  final int? lastModifiedTS;
+  final String? name;
+  final String? ref;
+  final String? type;
+
+  const MeditationBreathingMediaUrl({
+    required this.downloadURL,
+    required this.lastModifiedTS,
+    required this.name,
+    required this.ref,
+    required this.type,
+  });
+
+  factory MeditationBreathingMediaUrl.fromMap(Map<String, dynamic> map) {
+    return MeditationBreathingMediaUrl(
+      downloadURL: map['downloadURL'],
+      lastModifiedTS: map['lastModifiedTS'],
+      name: map['name'],
+      ref: map['ref'],
+      type: map['type'],
+    );
+  }
+
+  factory MeditationBreathingMediaUrl.fromJson(Map<String, dynamic> json) {
+    return _$MeditationBreathingMediaUrlFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$MeditationBreathingMediaUrlToJson(this);
   }
 }

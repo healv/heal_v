@@ -95,7 +95,7 @@ class _MeditationPageState extends State<MeditationPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                  child: _image(items?[index].photoUrl, items?[index].demoImage ?? emptyString),
+                  child: _image(items?[index].photoUrl?.first.downloadURL, items?[index].demoImage ?? emptyString),
                 ),
                 const SizedBox(height: 8),
                 Padding(
@@ -151,11 +151,11 @@ class _MeditationPageState extends State<MeditationPage> {
     return GridView.builder(
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
-          baseColor: context.onBackground.withOpacity(0.3),
-          highlightColor: context.onBackground.withOpacity(0.1),
+          baseColor: context.onBackground.withValues(alpha: 0.3),
+          highlightColor: context.onBackground.withValues(alpha: 0.1),
           child: Container(
             decoration: BoxDecoration(
-              color: context.onBackground.withOpacity(0.7),
+              color: context.onBackground.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(12.0),
             ),
           ),

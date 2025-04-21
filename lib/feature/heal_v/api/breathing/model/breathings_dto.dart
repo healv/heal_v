@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'breathings_categories_dto.dart';
+
 part 'breathings_dto.g.dart';
 
 @JsonSerializable()
@@ -37,15 +39,15 @@ class BreathingDto {
   @JsonKey(name: "author")
   final String? author;
   @JsonKey(name: "category")
-  final String? category;
+  final List<BreathingsCategoriesDto>? category;
   @JsonKey(name: "duration")
   final String? duration;
   @JsonKey(name: "photoUrl")
-  final String? photoUrl;
+  final List<BreathingMediaUrlDto>? photoUrl;
   @JsonKey(name: "preview")
   final String? preview;
   @JsonKey(name: "audioUrl")
-  final String? audioUrl;
+  final List<BreathingMediaUrlDto>? audioUrl;
 
   BreathingDto({
     this.id,
@@ -65,5 +67,35 @@ class BreathingDto {
 
   Map<String, dynamic> toJson() {
     return _$BreathingDtoToJson(this);
+  }
+}
+
+@JsonSerializable()
+class BreathingMediaUrlDto {
+  @JsonKey(name: "downloadURL")
+  final String? downloadURL;
+  @JsonKey(name: "lastModifiedTS")
+  final int? lastModifiedTS;
+  @JsonKey(name: "name")
+  final String? name;
+  @JsonKey(name: "ref")
+  final String? ref;
+  @JsonKey(name: "type")
+  final String? type;
+
+  BreathingMediaUrlDto({
+    required this.downloadURL,
+    required this.lastModifiedTS,
+    required this.name,
+    required this.ref,
+    required this.type,
+  });
+
+  factory BreathingMediaUrlDto.fromJson(Map<String, dynamic> json) {
+    return _$BreathingMediaUrlDtoFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$BreathingMediaUrlDtoToJson(this);
   }
 }

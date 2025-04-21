@@ -55,7 +55,7 @@ class _MeditationCardState extends State<MeditationCard> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          _image(item.photoUrl, item.demoImage ?? emptyString),
+                          _image(item.photoUrl?.first.downloadURL, item.demoImage ?? emptyString),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -150,12 +150,12 @@ class _MeditationCardState extends State<MeditationCard> {
     return SizedBox(
       height: 80,
       child: Shimmer.fromColors(
-        baseColor: context.onBackground.withOpacity(0.3),
-        highlightColor: context.onBackground.withOpacity(0.1),
+        baseColor: context.onBackground.withValues(alpha: 0.3),
+        highlightColor: context.onBackground.withValues(alpha: 0.1),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16.0),
           decoration: BoxDecoration(
-            color: context.onBackground.withOpacity(0.7),
+            color: context.onBackground.withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(12.0),
           ),
         ),

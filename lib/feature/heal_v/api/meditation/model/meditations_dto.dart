@@ -11,7 +11,7 @@ class MeditationsDto {
   @JsonKey(name: "prevCursor")
   final String? prevCursor;
 
-  MeditationsDto ({
+  MeditationsDto({
     this.meditations,
     this.nextCursor,
     this.prevCursor,
@@ -35,13 +35,13 @@ class MeditationDto {
   @JsonKey(name: "author")
   final String? author;
   @JsonKey(name: "category")
-  final String? category;
+  final List<MeditationCategoryDto>? category;
   @JsonKey(name: "photoUrl")
-  final String? photoUrl;
+  final List<MeditationMediaUrlDto>? photoUrl;
   @JsonKey(name: "audioUrl")
-  final String? audioUrl;
+  final List<MeditationMediaUrlDto>? audioUrl;
 
-  MeditationDto ({
+  MeditationDto({
     this.id,
     this.name,
     this.author,
@@ -59,4 +59,53 @@ class MeditationDto {
   }
 }
 
+@JsonSerializable()
+class MeditationCategoryDto {
+  @JsonKey(name: "id")
+  final String? id;
+  @JsonKey(name: "name")
+  final String? name;
 
+  MeditationCategoryDto({
+    this.id,
+    this.name,
+  });
+
+  factory MeditationCategoryDto.fromJson(Map<String, dynamic> json) {
+    return _$MeditationCategoryDtoFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$MeditationCategoryDtoToJson(this);
+  }
+}
+
+@JsonSerializable()
+class MeditationMediaUrlDto {
+  @JsonKey(name: "downloadURL")
+  final String? downloadURL;
+  @JsonKey(name: "lastModifiedTS")
+  final int? lastModifiedTS;
+  @JsonKey(name: "name")
+  final String? name;
+  @JsonKey(name: "ref")
+  final String? ref;
+  @JsonKey(name: "type")
+  final String? type;
+
+  MeditationMediaUrlDto({
+    required this.downloadURL,
+    required this.lastModifiedTS,
+    required this.name,
+    required this.ref,
+    required this.type,
+  });
+
+  factory MeditationMediaUrlDto.fromJson(Map<String, dynamic> json) {
+    return _$MeditationMediaUrlDtoFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$MeditationMediaUrlDtoToJson(this);
+  }
+}

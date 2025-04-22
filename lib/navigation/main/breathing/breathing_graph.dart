@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/breathing/breathing_page.dart';
 import 'package:heal_v/app/main/feature/breathing/breathing_page_bloc.dart';
+import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import 'package:heal_v/main.dart';
 
+import '../../../app/main/feature/breathing/audio/breathing_audio_page.dart';
+import '../../../app/main/feature/breathing/audio/breathing_audio_page_bloc.dart';
 import '../../app_routes.dart';
 
 part 'breathing_graph.g.dart';
@@ -18,6 +23,25 @@ base class BreathingRoute extends GoRouteData {
       create: (context) => BreathingPageBloc(getIt.get())..add(BreathingPageEvent.initial()),
       lazy: false,
       child: const BreathingPage(),
+    );
+  }
+}
+
+@TypedGoRoute<BreathingAudioRoute>(path: BreathingsRoutes.breathingAudio, routes: <TypedRoute<RouteData>>[])
+@immutable
+base class BreathingAudioRoute extends GoRouteData {
+  final String breathing;
+
+  const BreathingAudioRoute({required this.breathing});
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BlocProvider(
+      lazy: false,
+      create: (_) => BreathingAudioPageBloc(),
+      child: BreathingAudioPage(
+        breathing: MeditationBreathing.fromMap(jsonDecode(breathing)),
+      ),
     );
   }
 }

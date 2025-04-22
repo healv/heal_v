@@ -36,3 +36,8 @@ abstract final class MeditationsRoutes {
   static const String progress = '/profileProgress';
   static const String journalHistory = '/profileJournalHistory';
 }
+
+abstract final class BreathingsRoutes {
+  /// Nested routes
+  static const String breathingAudio = '/breathingAudio';
+}

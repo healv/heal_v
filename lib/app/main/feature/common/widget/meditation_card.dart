@@ -11,14 +11,17 @@ import 'package:shimmer/shimmer.dart';
 class MeditationCard extends StatefulWidget {
   final List<MeditationBreathing> items;
   final bool loading;
+  final ValueChanged<MeditationBreathing>? onItemPlayTap;
 
   const MeditationCard({
     super.key,
     required this.items,
+    this.onItemPlayTap,
   }) : loading = false;
 
   MeditationCard.loading({
     super.key,
+    this.onItemPlayTap,
   })  : loading = true,
         items = List.generate(7, (index) => const MeditationBreathing());
 
@@ -85,7 +88,7 @@ class _MeditationCardState extends State<MeditationCard> {
                           GestureDetector(
                             onTap: () {
                               if (item.isEnable == true) {
-                                // todo navigate to player page
+                                widget.onItemPlayTap?.call(item);
                               } else {
                                 final title = item.type == MeditationTypeEnum.meditations ? tr('meditation_locked') : tr('breathing_locked');
                                 final description = item.type == MeditationTypeEnum.meditations ? tr('meditation_locked_description') : tr('breathing_locked_description');

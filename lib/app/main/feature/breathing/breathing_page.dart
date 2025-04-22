@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/breathing/breathing_page_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:heal_v/app/main/feature/common/widget/meditation_card.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
+import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../common/tools/sound_player.dart';
@@ -60,7 +63,12 @@ class _BreathingPageState extends State<BreathingPage> {
             child: EmptyWidget(),
           );
         }
-        return MeditationCard(items: state.items?.meditationBreathing ?? []);
+        return MeditationCard(
+          items: state.items?.meditationBreathing ?? [],
+          onItemPlayTap: (item) {
+            BreathingAudioRoute(breathing: jsonEncode(item)).push(context);
+          },
+        );
       },
     );
   }
@@ -98,6 +106,7 @@ class _BreathingPageState extends State<BreathingPage> {
   }
 
   Widget _categories(BuildContext context) {
+    final bloc = context.read<BreathingPageBloc>();
     return BlocBuilder<BreathingPageBloc, BreathingPageState>(
       builder: (BuildContext context, BreathingPageState state) {
         final categories = state.categories;
@@ -112,7 +121,6 @@ class _BreathingPageState extends State<BreathingPage> {
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () async {
                         await SoundPlayer.checkAndPlayClickSound();
-                        final bloc = context.read<BreathingPageBloc>();
                         bloc.add(BreathingPageEvent.updateCategory(category: categories![index]));
                         bloc.add(BreathingPageEvent.filterByCategory(category: categories[index]));
                       },

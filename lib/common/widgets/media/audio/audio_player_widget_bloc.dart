@@ -7,10 +7,10 @@ import 'package:heal_v/common/utils/constants.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:volume_controller/volume_controller.dart';
 
-import '../../../app/main/feature/common/model/meditation_breathing_ui_model.dart';
-import '../../bloc/base_event.dart';
-import '../../bloc/base_state.dart';
-import '../../dart/optional.dart';
+import '../../../../app/main/feature/common/model/meditation_breathing_ui_model.dart';
+import '../../../bloc/base_event.dart';
+import '../../../bloc/base_state.dart';
+import '../../../dart/optional.dart';
 
 part 'audio_player_widget_event.dart';
 part 'audio_player_widget_state.dart';
@@ -31,6 +31,7 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
     on<_Replay10Seconds>(_handleReplay10SecondsEvent);
     on<_ChangeVolumeState>(_handleChangeVolumeStateEvent);
     on<_SubscribeToVolumeState>(_handleSubscribeVolumeStateEvent);
+    on<_ChangeLoopMode>(_handleChangeLoopModeEvent);
   }
 
   Future<void> _handleInitialEvent(_Initial event, Emitter<AudioPlayerWidgetState> emitter) async {
@@ -70,6 +71,9 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
       if (playerState.processingState == ProcessingState.completed) {
         _player.pause();
         _player.seek(Duration.zero);
+        if (state.loopMode == LoopMode.one) {
+          _player.play();
+        }
       }
       log("AUDIO_PLAYER_STATE_CHANGED: $playerState");
       return state.copyWith(playerState: Optional.value(playerState));
@@ -123,6 +127,11 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
       log("AUDIO_PLAYER_VOLUME_CHANGED: $volume");
       return state.copyWith(volume: Optional.value(volume));
     });
+  }
+
+  Future<void> _handleChangeLoopModeEvent(_ChangeLoopMode event, Emitter<AudioPlayerWidgetState> emitter) async {
+    await _player.setLoopMode(event.loopMode);
+    emitter(state.copyWith(loopMode: Optional.value(event.loopMode)));
   }
 
   @override

@@ -24,9 +24,13 @@ enum AppIcons {
   play('assets/icons/ic_play.svg'),
   pause('assets/icons/ic_pause.svg'),
   shuffle('assets/icons/ic_shuffle.svg'),
+  repeat('assets/icons/ic_repeat.svg'),
   volumeOff('assets/icons/ic_volume_off.svg'),
   volumeOn('assets/icons/ic_volume_on.svg'),
-  heart('assets/icons/ic_heart.svg');
+  heart('assets/icons/ic_heart.svg'),
+  close('assets/icons/ic_close.svg'),
+  fullScreen('assets/icons/ic_full_screen.svg'),
+  share('assets/icons/ic_share.svg');
 
   final String path;
 

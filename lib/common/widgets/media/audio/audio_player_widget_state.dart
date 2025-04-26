@@ -8,6 +8,7 @@ final class AudioPlayerWidgetState extends BaseState {
   final Duration? buffer;
   final PlayerState? playerState;
   final double? volume;
+  final LoopMode? loopMode;
 
   const AudioPlayerWidgetState._({
     this.item,
@@ -16,12 +17,13 @@ final class AudioPlayerWidgetState extends BaseState {
     this.buffer,
     this.playerState,
     this.volume,
+    this.loopMode,
   });
 
   factory AudioPlayerWidgetState.initial() => const AudioPlayerWidgetState._();
 
   @override
-  List<Object?> get props => [item, position, duration, buffer, playerState,volume];
+  List<Object?> get props => [item, position, duration, buffer, playerState, volume, loopMode];
 
   AudioPlayerWidgetState copyWith({
     Optional<MeditationBreathing?>? item,
@@ -30,6 +32,7 @@ final class AudioPlayerWidgetState extends BaseState {
     Optional<Duration?>? buffer,
     Optional<PlayerState?>? playerState,
     Optional<double?>? volume,
+    Optional<LoopMode?>? loopMode,
   }) {
     return AudioPlayerWidgetState._(
       item: item?.isValid == true ? item?.value : this.item,
@@ -38,6 +41,7 @@ final class AudioPlayerWidgetState extends BaseState {
       buffer: buffer?.isValid == true ? buffer?.value : this.buffer,
       playerState: playerState?.isValid == true ? playerState?.value : this.playerState,
       volume: volume?.isValid == true ? volume?.value : this.volume,
+      loopMode: loopMode?.isValid == true ? loopMode?.value : this.loopMode,
     );
   }
 }

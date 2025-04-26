@@ -10,6 +10,9 @@ import 'package:heal_v/app/main/feature/meditation/meditation_page.dart';
 import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
 import 'package:heal_v/main.dart';
 
+import '../../../app/main/feature/media/audio/meditation_breathing_audio_page.dart';
+import '../../../app/main/feature/media/audio/meditation_breathing_audio_page_bloc.dart';
+import '../../../common/widgets/media/audio/audio_player_widget_bloc.dart';
 import '../../app_routes.dart';
 
 part 'meditation_graph.g.dart';
@@ -23,6 +26,37 @@ base class MeditationRoute extends GoRouteData {
       create: (context) => MeditationPageBloc(getIt.get())..add(MeditationPageEvent.initial()),
       lazy: false,
       child: const MeditationPage(),
+    );
+  }
+}
+
+@TypedGoRoute<MeditationAudioRoute>(path: MeditationsRoutes.meditationAudio, routes: <TypedRoute<RouteData>>[])
+@immutable
+base class MeditationAudioRoute extends GoRouteData {
+  final String breathing;
+
+  const MeditationAudioRoute({required this.breathing});
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (_) => MeditationBreathingAudioPageBloc()
+            ..add(
+              MeditationBreathingAudioPageEvent.initial(MeditationBreathing.fromMap(jsonDecode(breathing))),
+            ),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (_) => AudioPlayerWidgetBloc()
+            ..add(
+              AudioPlayerWidgetEvent.initial(MeditationBreathing.fromMap(jsonDecode(breathing))),
+            ),
+        ),
+      ],
+      child: const MeditationBreathingAudioPage(),
     );
   }
 }

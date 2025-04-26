@@ -1,7 +1,7 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:heal_v/common/widgets/media/audio_player_widget_bloc.dart';
+import 'package:heal_v/common/widgets/media/audio/audio_player_widget_bloc.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:just_audio/just_audio.dart';
@@ -36,13 +36,14 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
 
   @override
   Widget build(BuildContext context) {
+    final audioPlayerWidgetBloc = context.read<AudioPlayerWidgetBloc>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0), child: _progressBar(context)),
-        const SizedBox(height: 30),
-        Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0), child: _playerControl(context)),
-        const SizedBox(height: 46),
+        _progressBar(context),
+        const SizedBox(height: 20),
+        _playerControl(context, audioPlayerWidgetBloc),
+        const SizedBox(height: 29),
       ],
     );
   }
@@ -52,18 +53,18 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
       buildWhen: (oldState, newState) => oldState.duration != newState.duration || oldState.position != newState.position || oldState.buffer != newState.buffer,
       builder: (context, state) {
         return ProgressBar(
-          barHeight: 5,
+          barHeight: 6,
           baseBarColor: context.quizDialogItemColor,
           progressBarColor: context.primary,
           thumbColor: context.primary,
           thumbRadius: 3.0,
           buffered: state.buffer,
-          bufferedBarColor: context.background,
-          timeLabelTextStyle: TextStyle(fontSize: 12, color: context.primary, letterSpacing: 0.2, fontWeight: FontWeight.w400),
+          bufferedBarColor: context.background.withValues(alpha: 0.5),
+          timeLabelTextStyle: TextStyle(fontSize: 12, color: context.onBackground, letterSpacing: 0.2, fontWeight: FontWeight.w400),
           progress: state.position ?? const Duration(),
           total: state.duration ?? const Duration(),
-          timeLabelPadding: 0,
-          timeLabelLocation: TimeLabelLocation.above,
+          timeLabelPadding: 8,
+          timeLabelLocation: TimeLabelLocation.below,
           onSeek: (position) {
             context.read<AudioPlayerWidgetBloc>().add(AudioPlayerWidgetEvent.progressSeek(position));
           },
@@ -72,22 +73,21 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
     );
   }
 
-  Widget _playerControl(BuildContext context) {
+  Widget _playerControl(BuildContext context, AudioPlayerWidgetBloc audioPlayerWidgetBloc) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _volume(context),
+        _volume(context, audioPlayerWidgetBloc),
         _replay10(context),
-        _playPause(context),
+        _playPause(context, audioPlayerWidgetBloc),
         _forward10(context),
-        _shuffle(context),
+        _shuffle(context, audioPlayerWidgetBloc),
       ],
     );
   }
 
-  Widget _volume(BuildContext context) {
-    final audioPlayerWidgetBloc = context.read<AudioPlayerWidgetBloc>();
+  Widget _volume(BuildContext context, AudioPlayerWidgetBloc audioPlayerWidgetBloc) {
     return BlocSelector<AudioPlayerWidgetBloc, AudioPlayerWidgetState, double?>(
       selector: (AudioPlayerWidgetState state) => state.volume,
       builder: (BuildContext context, double? volume) {
@@ -95,7 +95,17 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
           onPressed: () {
             audioPlayerWidgetBloc.add(AudioPlayerWidgetEvent.changeVolumeState(volume != 0.0));
           },
-          icon: volume == 0.0 ? AppIcons.volumeOn.svgAsset(width: 26, height: 20) : AppIcons.volumeOff.svgAsset(width: 26, height: 20),
+          icon: volume == 0.0
+              ? AppIcons.volumeOn.svgAsset(
+                  width: 26,
+                  height: 20,
+                  colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
+                )
+              : AppIcons.volumeOff.svgAsset(
+                  width: 26,
+                  height: 20,
+                  colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
+                ),
         );
       },
     );
@@ -106,18 +116,17 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
       onPressed: () {
         context.read<AudioPlayerWidgetBloc>().add(AudioPlayerWidgetEvent.replay10Seconds());
       },
-      icon: AppIcons.replay10.svgAsset(width: 26, height: 20),
+      icon: AppIcons.replay10.svgAsset(width: 26, height: 20, colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn)),
     );
   }
 
-  Widget _playPause(BuildContext context) {
-    final audioPlayerWidgetBloc = context.read<AudioPlayerWidgetBloc>();
+  Widget _playPause(BuildContext context, AudioPlayerWidgetBloc audioPlayerWidgetBloc) {
     return Container(
-      width: 80,
-      height: 80,
-      decoration: const BoxDecoration(
+      width: 64,
+      height: 64,
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Color(0XFFC7C8C2),
+        color: context.primary,
       ),
       child: BlocSelector<AudioPlayerWidgetBloc, AudioPlayerWidgetState, PlayerState?>(
         selector: (state) => state.playerState,
@@ -132,17 +141,17 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
             },
             child: Center(
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 100),
+                duration: const Duration(milliseconds: 300),
                 child: playerState?.playing == true
                     ? AppIcons.pause.svgAsset(
                         colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
-                        width: 26,
-                        height: 20,
+                        width: 20,
+                        height: 26,
                       )
                     : AppIcons.play.svgAsset(
                         colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
-                        width: 26,
-                        height: 20,
+                        width: 20,
+                        height: 26,
                       ),
               ),
             ),
@@ -157,15 +166,35 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
       onPressed: () {
         context.read<AudioPlayerWidgetBloc>().add(AudioPlayerWidgetEvent.forward10Seconds());
       },
-      icon: AppIcons.forward10.svgAsset(width: 26, height: 20),
+      icon: AppIcons.forward10.svgAsset(width: 26, height: 20, colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn)),
     );
   }
 
-  // todo need to understand
-  Widget _shuffle(BuildContext context) {
-    return IconButton(
-      onPressed: () {},
-      icon: AppIcons.shuffle.svgAsset(width: 20, height: 20),
+  // todo need to understand shuffle logic
+  Widget _shuffle(BuildContext context, AudioPlayerWidgetBloc audioPlayerWidgetBloc) {
+    return BlocSelector<AudioPlayerWidgetBloc, AudioPlayerWidgetState, LoopMode?>(
+      selector: (AudioPlayerWidgetState state) => state.loopMode,
+      builder: (BuildContext context, LoopMode? loopMode) {
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          child: IconButton(
+            onPressed: () {
+              audioPlayerWidgetBloc.add(AudioPlayerWidgetEvent.changeLoopMode(loopMode == LoopMode.one ? LoopMode.all : LoopMode.one));
+            },
+            icon: loopMode == LoopMode.one
+                ? AppIcons.shuffle.svgAsset(
+                    width: 20,
+                    height: 20,
+                    colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
+                  )
+                : AppIcons.repeat.svgAsset(
+                    width: 20,
+                    height: 20,
+                    colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
+                  ),
+          ),
+        );
+      },
     );
   }
 }

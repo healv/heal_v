@@ -25,7 +25,9 @@ sealed class AudioPlayerWidgetEvent extends BaseEvent {
 
   factory AudioPlayerWidgetEvent.changeVolumeState(bool mute) => _ChangeVolumeState(mute: mute);
 
-  factory AudioPlayerWidgetEvent.subscribeToVolumeState() => _SubscribeToVolumeState();
+  factory AudioPlayerWidgetEvent.subscribeToVolumeState() => const _SubscribeToVolumeState();
+
+  factory AudioPlayerWidgetEvent.changeLoopMode(LoopMode loopMode) => _ChangeLoopMode(loopMode: loopMode);
 }
 
 final class _Initial extends AudioPlayerWidgetEvent {
@@ -80,4 +82,10 @@ final class _ChangeVolumeState extends AudioPlayerWidgetEvent {
 
 final class _SubscribeToVolumeState extends AudioPlayerWidgetEvent {
   const _SubscribeToVolumeState();
+}
+
+final class _ChangeLoopMode extends AudioPlayerWidgetEvent {
+  final LoopMode loopMode;
+
+  const _ChangeLoopMode({required this.loopMode});
 }

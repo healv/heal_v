@@ -35,4 +35,13 @@ abstract final class MeditationsRoutes {
   static const String settings = '/profileSettings';
   static const String progress = '/profileProgress';
   static const String journalHistory = '/profileJournalHistory';
+  static const String meditationAudio = '/meditationAudio';
+}
+
+abstract final class BreathingsRoutes {
+  static const String breathingAudio = '/breathingAudio';
+}
+
+abstract final class StretchingRoutes {
+  static const String stretchingVideo = '/stretchingVideo';
 }

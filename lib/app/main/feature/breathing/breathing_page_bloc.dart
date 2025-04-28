@@ -10,7 +10,6 @@ import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_
 import 'package:heal_v/feature/heal_v/api/breathing/repo/breathing_repo.dart';
 
 part 'breathing_page_event.dart';
-
 part 'breathing_page_state.dart';
 
 class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState> {
@@ -50,7 +49,7 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
   }
 
   Future<void> _handleFilterByCategoryEvent(FilterByCategory event, Emitter<BreathingPageState> emitter) async {
-    final filteredData = state.items?.meditationBreathing?.where((e) => e.category?.trim() == event.category.name?.trim()).toList();
+    final filteredData = state.items?.meditationBreathing?.where((e) => e.category?.firstWhere((category) => category.name?.trim() == event.category.name?.trim()) != null).toList();
     emitter(state.copyWith(filteredItems: Optional.value(filteredData)));
   }
 

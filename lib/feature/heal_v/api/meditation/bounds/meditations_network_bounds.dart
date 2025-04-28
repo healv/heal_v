@@ -33,9 +33,25 @@ class MeditationsNetworkBounds extends HttpBounds<MeditationBreathings, ApiWrapp
                   id: e.id,
                   name: e.name,
                   author: e.author,
-                  category: e.category,
-                  photoUrl: e.photoUrl,
-                  audioUrl: e.audioUrl,
+                  category: e.category?.map((categoryElement) => MeditationBreathingCategory(id: categoryElement.id, name: categoryElement.name)).toList(),
+                  photoUrl: e.photoUrl
+                      ?.map((photoUrlElement) => MeditationBreathingMediaUrl(
+                            downloadURL: photoUrlElement.downloadURL,
+                            lastModifiedTS: photoUrlElement.lastModifiedTS,
+                            name: photoUrlElement.name,
+                            ref: photoUrlElement.ref,
+                            type: photoUrlElement.type,
+                          ))
+                      .toList(),
+                  audioUrl: e.audioUrl
+                      ?.map((audioUrlElement) => MeditationBreathingMediaUrl(
+                            downloadURL: audioUrlElement.downloadURL,
+                            lastModifiedTS: audioUrlElement.lastModifiedTS,
+                            name: audioUrlElement.name,
+                            ref: audioUrlElement.ref,
+                            type: audioUrlElement.type,
+                          ))
+                      .toList(),
                   duration: '15',
                   description: 'Both can be full-body practices, although stretching focuses on one muscle group at a time while yoga can include full-body movements.',
                   isEnable: e.name == '6' || e.name == '5' || e.name == '5',

@@ -11,14 +11,17 @@ import 'package:shimmer/shimmer.dart';
 class MeditationCard extends StatefulWidget {
   final List<MeditationBreathing> items;
   final bool loading;
+  final ValueChanged<MeditationBreathing>? onItemPlayTap;
 
   const MeditationCard({
     super.key,
     required this.items,
+    this.onItemPlayTap,
   }) : loading = false;
 
   MeditationCard.loading({
     super.key,
+    this.onItemPlayTap,
   })  : loading = true,
         items = List.generate(7, (index) => const MeditationBreathing());
 
@@ -55,7 +58,7 @@ class _MeditationCardState extends State<MeditationCard> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          _image(item.photoUrl, item.demoImage ?? emptyString),
+                          _image(item.photoUrl?.first.downloadURL, item.demoImage ?? emptyString),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -85,7 +88,7 @@ class _MeditationCardState extends State<MeditationCard> {
                           GestureDetector(
                             onTap: () {
                               if (item.isEnable == true) {
-                                // todo navigate to player page
+                                widget.onItemPlayTap?.call(item);
                               } else {
                                 final title = item.type == MeditationTypeEnum.meditations ? tr('meditation_locked') : tr('breathing_locked');
                                 final description = item.type == MeditationTypeEnum.meditations ? tr('meditation_locked_description') : tr('breathing_locked_description');
@@ -150,12 +153,12 @@ class _MeditationCardState extends State<MeditationCard> {
     return SizedBox(
       height: 80,
       child: Shimmer.fromColors(
-        baseColor: context.onBackground.withOpacity(0.3),
-        highlightColor: context.onBackground.withOpacity(0.1),
+        baseColor: context.onBackground.withValues(alpha: 0.3),
+        highlightColor: context.onBackground.withValues(alpha: 0.1),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16.0),
           decoration: BoxDecoration(
-            color: context.onBackground.withOpacity(0.7),
+            color: context.onBackground.withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(12.0),
           ),
         ),

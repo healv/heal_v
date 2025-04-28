@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/constants.dart';
@@ -12,11 +14,10 @@ class AuthInterceptor extends Interceptor {
   const AuthInterceptor(this.dio);
 
   @override
-  void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
-    final accessToken =
-        await Store.get(key: StoreKey.accessToken, defaultValue: emptyString);
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final accessToken = await Store.get(key: StoreKey.accessToken, defaultValue: emptyString);
     if (accessToken.isNotEmpty) {
+      log("AUTH_TOKEN_TAG: ${'Bearer $accessToken'}");
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
     super.onRequest(options, handler);
@@ -25,8 +26,7 @@ class AuthInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      final refreshToken = await Store.get(
-          key: StoreKey.refreshToken, defaultValue: emptyString);
+      final refreshToken = await Store.get(key: StoreKey.refreshToken, defaultValue: emptyString);
       if (refreshToken.isNotEmpty) {
         final response = await dio.post<Map<String, dynamic>>(
           '${AuthConstants.baseUrl}auth/refresh',

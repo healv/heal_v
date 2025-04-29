@@ -12,6 +12,8 @@ import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_categorie
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/shared_content/model/shared_content_dto.dart';
+import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dto.dart';
+import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../journal/model/journal_history_dto.dart';
@@ -54,4 +56,10 @@ abstract class HealVNetworkWebService {
 
   @GET('journal')
   Future<HttpResponse<List<JournalHistoryDto>?>> getJournalHistory();
+
+  @GET('stretching')
+  Future<HttpResponse<List<StretchingWeekDto>?>> getStretchingWeeks();
+
+  @GET('stretching/{id}')
+  Future<HttpResponse<StretchingLessonsDto>> getStretchingLessons(@Path('id') String id);
 }

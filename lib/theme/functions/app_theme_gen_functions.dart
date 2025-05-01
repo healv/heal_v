@@ -59,7 +59,7 @@ abstract class AppThemeGenFunctions {
       selectedIconTheme: const IconThemeData(size: 40),
       unselectedIconTheme: const IconThemeData(size: 26),
       selectedLabelStyle: TextStyle(fontSize: 14, color: palette.primary),
-      unselectedLabelStyle: const TextStyle(fontSize: 12, color: Color(0xFF666666)),
+      unselectedLabelStyle:  TextStyle(fontSize: 12, color: palette.onBackground.withValues(alpha: 0.1)),
     );
   }
 

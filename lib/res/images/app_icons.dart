@@ -30,6 +30,7 @@ enum AppIcons {
   heart('assets/icons/ic_heart.svg'),
   close('assets/icons/ic_close.svg'),
   fullScreen('assets/icons/ic_full_screen.svg'),
+  stretchingCompleted('assets/icons/ic_stretching_completed.svg'),
   share('assets/icons/ic_share.svg');
 
   final String path;

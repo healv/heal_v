@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/navigation/main/enums/bottom_navbar_enum.dart';
-import 'package:heal_v/res/images/app_icons.dart';
+import 'package:heal_v/theme/ext/extension.dart';
 
 class MainPage extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -42,23 +42,28 @@ class _MainPageState extends State<MainPage> {
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
-          icon: AppIcons.home.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
+          activeIcon: BottomNavBarEnum.home.svgAsset(context.primary),
+          icon: BottomNavBarEnum.home.svgAsset(context.onBackground.withValues(alpha: 0.1)),
           label: tr(BottomNavBarEnum.home.labelKey),
         ),
         BottomNavigationBarItem(
-          icon: AppIcons.meditation.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
+          activeIcon: BottomNavBarEnum.meditation.svgAsset(context.primary),
+          icon: BottomNavBarEnum.meditation.svgAsset(context.onBackground.withValues(alpha: 0.1)),
           label: tr(BottomNavBarEnum.meditation.labelKey),
         ),
         BottomNavigationBarItem(
-          icon: AppIcons.stretching.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
+          activeIcon: BottomNavBarEnum.stretching.svgAsset(context.primary),
+          icon: BottomNavBarEnum.stretching.svgAsset(context.onBackground.withValues(alpha: 0.1)),
           label: tr(BottomNavBarEnum.stretching.labelKey),
         ),
         BottomNavigationBarItem(
-          icon: AppIcons.breathing.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
+          activeIcon: BottomNavBarEnum.breathing.svgAsset(context.primary),
+          icon: BottomNavBarEnum.breathing.svgAsset(context.onBackground.withValues(alpha: 0.1)),
           label: tr(BottomNavBarEnum.breathing.labelKey),
         ),
         BottomNavigationBarItem(
-          icon: AppIcons.profile.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
+          activeIcon: BottomNavBarEnum.profile.svgAsset(context.primary),
+          icon: BottomNavBarEnum.profile.svgAsset(context.onBackground.withValues(alpha: 0.1)),
           label: tr(BottomNavBarEnum.profile.labelKey),
         ),
       ],

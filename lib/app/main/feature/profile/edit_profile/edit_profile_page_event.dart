@@ -3,7 +3,7 @@ part of 'edit_profile_page_bloc.dart';
 abstract class EditProfilePageEvent extends BaseEvent {
   const EditProfilePageEvent();
 
-  factory EditProfilePageEvent.initial({required User user}) => Initial._(user);
+  factory EditProfilePageEvent.initial({required UserDto user}) => Initial._(user);
 
   factory EditProfilePageEvent.avatarChanged({required String? avatar}) => AvatarChanged._(avatar: avatar);
 
@@ -27,7 +27,7 @@ abstract class EditProfilePageEvent extends BaseEvent {
 }
 
 final class Initial extends EditProfilePageEvent {
-  final User user;
+  final UserDto user;
 
   const Initial._(this.user);
 }

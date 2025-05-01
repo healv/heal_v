@@ -33,7 +33,7 @@ base class ProfileNestedEditProfileRoute extends GoRouteData {
     final user = context.read<AuthBloc>().state.user;
     return BlocProvider(
       lazy: false,
-      create: (_) => EditProfilePageBloc()..add(EditProfilePageEvent.initial(user: user ?? User())),
+      create: (_) => EditProfilePageBloc()..add(EditProfilePageEvent.initial(user: user ?? UserDto())),
       child: const EditProfilePage(),
     );
   }

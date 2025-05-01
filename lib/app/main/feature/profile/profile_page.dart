@@ -61,9 +61,9 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _userName(BuildContext context) {
-    return BlocSelector<AuthBloc, AuthBlocState, User?>(
+    return BlocSelector<AuthBloc, AuthBlocState, UserDto?>(
       selector: (AuthBlocState state) => state.user,
-      builder: (BuildContext context, User? user) {
+      builder: (BuildContext context, UserDto? user) {
         return Text(
           '${user?.name ?? emptyString} ${user?.lastName ?? emptyString}',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: context.onBackground),
@@ -73,9 +73,9 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _userJoinedDate(BuildContext context) {
-    return BlocSelector<AuthBloc, AuthBlocState, User?>(
+    return BlocSelector<AuthBloc, AuthBlocState, UserDto?>(
       selector: (AuthBlocState state) => state.user,
-      builder: (BuildContext context, User? user) {
+      builder: (BuildContext context, UserDto? user) {
         return Text(
           user?.createdAt != null ? 'Joined ${user?.createdAt}' : emptyString,
           style: TextStyle(fontSize: 14, color: context.onBackground),

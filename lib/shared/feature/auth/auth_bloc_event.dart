@@ -7,11 +7,11 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.signIn({required String email, required String password}) => SignIn._(email: email, password: password);
 
-  factory AuthBlocEvent.signInFirebase({required String uid, required String email, required String displayName}) => SignInFirebase._(uid: uid, email: email, displayName: displayName);
+  factory AuthBlocEvent.signInWithGoogle() => const SignInWithGoogle._();
 
   factory AuthBlocEvent.signUp({required String email, required String password, required String name, String? lastName}) => SignUp._(email: email, password: password, name: name, lastName: lastName);
 
-  factory AuthBlocEvent.me({required String accessToken}) => GetMe._(accessToken: accessToken);
+  factory AuthBlocEvent.me() => GetMe._();
 }
 
 class Initial extends AuthBlocEvent {
@@ -25,12 +25,9 @@ class SignIn extends AuthBlocEvent {
   SignIn._({required this.email, required this.password});
 }
 
-class SignInFirebase extends AuthBlocEvent {
-  final String uid;
-  final String email;
-  final String displayName;
+class SignInWithGoogle extends AuthBlocEvent {
 
-  SignInFirebase._({required this.uid, required this.email, required this.displayName});
+  const SignInWithGoogle._();
 }
 
 class SignUp extends AuthBlocEvent {
@@ -43,7 +40,6 @@ class SignUp extends AuthBlocEvent {
 }
 
 class GetMe extends AuthBlocEvent {
-  final String accessToken;
 
-  GetMe._({required this.accessToken});
+  GetMe._();
 }

@@ -34,7 +34,7 @@ abstract class HealVNetworkWebService {
   Future<HttpResponse<SignUpDto?>> signUp(@Body() SignUpPacket body);
 
   @GET('auth/user')
-  Future<HttpResponse<UserDto?>> me();
+  Future<HttpResponse<UserWrapperDto?>> me();
 
   @GET('shared-content')
   Future<HttpResponse<SharedContentDto?>> sharedContent();

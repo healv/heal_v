@@ -13,5 +13,5 @@ abstract interface class AuthRepo {
 
   Stream<Resource<SignUpDto>> signUp(SignUpPacket signUpPacket);
 
-  Stream<Resource<UserDto>> getMe();
+  Stream<Resource<UserWrapperDto>> getMe();
 }

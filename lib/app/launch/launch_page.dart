@@ -24,17 +24,20 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthBlocState>(
-      listener: (context, state) {
-        if (state.accessToken != null) {
-          HomeRoute().go(context);
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          body: _body(context),
-        );
-      },
+    // return BlocConsumer<AuthBloc, AuthBlocState>(
+    //   listener: (context, state) {
+    //     if (state.accessToken != null) {
+    //       HomeRoute().go(context);
+    //     }
+    //   },
+    //   builder: (context, state) {
+    //     return Scaffold(
+    //       body: _body(context),
+    //     );
+    //   },
+    // );
+    return Scaffold(
+      body: _body(context),
     );
   }
 

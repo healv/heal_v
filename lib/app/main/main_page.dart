@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/navigation/main/enums/bottom_navbar_enum.dart';
 import 'package:heal_v/res/images/app_icons.dart';
-import 'package:heal_v/theme/ext/extension.dart';
 
 class MainPage extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -43,23 +42,23 @@ class _MainPageState extends State<MainPage> {
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
-          icon: AppIcons.home.svgAsset(),
+          icon: AppIcons.home.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
           label: tr(BottomNavBarEnum.home.labelKey),
         ),
         BottomNavigationBarItem(
-          icon: AppIcons.meditation.svgAsset(),
+          icon: AppIcons.meditation.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
           label: tr(BottomNavBarEnum.meditation.labelKey),
         ),
         BottomNavigationBarItem(
-          icon: AppIcons.stretching.svgAsset(),
+          icon: AppIcons.stretching.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
           label: tr(BottomNavBarEnum.stretching.labelKey),
         ),
         BottomNavigationBarItem(
-          icon: AppIcons.breathing.svgAsset(),
+          icon: AppIcons.breathing.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
           label: tr(BottomNavBarEnum.breathing.labelKey),
         ),
         BottomNavigationBarItem(
-          icon: AppIcons.profile.svgAsset(),
+          icon: AppIcons.profile.svgAsset(colorFilter: const ColorFilter.mode(Color(0xFFCCCCCC), BlendMode.srcIn)),
           label: tr(BottomNavBarEnum.profile.labelKey),
         ),
       ],

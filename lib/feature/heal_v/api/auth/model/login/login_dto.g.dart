@@ -11,7 +11,7 @@ LoginDto _$LoginDtoFromJson(Map<String, dynamic> json) => LoginDto(
       refreshToken: json['refreshToken'] as String?,
       user: json['user'] == null
           ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+          : UserDto.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LoginDtoToJson(LoginDto instance) => <String, dynamic>{

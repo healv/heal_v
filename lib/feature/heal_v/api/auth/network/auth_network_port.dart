@@ -14,5 +14,5 @@ abstract interface class AuthNetworkPort {
 
   Future<ApiWrapper<SignUpDto?>> signUp(SignUpPacket loginPacket);
 
-  Future<ApiWrapper<UserDto?>> getMe();
+  Future<ApiWrapper<UserWrapperDto?>> getMe();
 }

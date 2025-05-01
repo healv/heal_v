@@ -10,7 +10,7 @@ class SignUpDto {
   @JsonKey(name: "refreshToken")
   final String? refreshToken;
   @JsonKey(name: "user")
-  final User? user;
+  final UserDto? user;
 
   SignUpDto({
     this.accessToken,

@@ -11,7 +11,7 @@ SignUpDto _$SignUpDtoFromJson(Map<String, dynamic> json) => SignUpDto(
       refreshToken: json['refreshToken'] as String?,
       user: json['user'] == null
           ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+          : UserDto.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SignUpDtoToJson(SignUpDto instance) => <String, dynamic>{

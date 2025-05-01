@@ -16,8 +16,8 @@ base class AuthNetworkAdapter implements AuthNetworkPort {
   AuthNetworkAdapter({required this.authNetworkWebService});
 
   @override
-  Future<ApiWrapper<UserDto?>> getMe() {
-    return parseHttpResponse<UserDto>(authNetworkWebService.me, []);
+  Future<ApiWrapper<UserWrapperDto?>> getMe() {
+    return parseHttpResponse<UserWrapperDto>(authNetworkWebService.me, []);
   }
 
   @override

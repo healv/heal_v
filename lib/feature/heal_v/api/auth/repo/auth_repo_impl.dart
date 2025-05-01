@@ -19,7 +19,7 @@ base class AuthRepoImpl implements AuthRepo {
   AuthRepoImpl({required this.port});
 
   @override
-  Stream<Resource<UserDto>> getMe() {
+  Stream<Resource<UserWrapperDto>> getMe() {
     return GetMeNetworkBounds(port: port).call();
   }
 

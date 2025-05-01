@@ -130,12 +130,12 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<UserDto?>> me() async {
+  Future<HttpResponse<UserWrapperDto?>> me() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<UserDto>>(Options(
+    final _options = _setStreamType<HttpResponse<UserWrapperDto>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -152,9 +152,10 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
-    late UserDto? _value;
+    late UserWrapperDto? _value;
     try {
-      _value = _result.data == null ? null : UserDto.fromJson(_result.data!);
+      _value =
+          _result.data == null ? null : UserWrapperDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

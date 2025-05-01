@@ -47,12 +47,15 @@
   "allow": "Allow",
   "deny": "Deny",
   "week": "Week",
-  "meditation_locked_description" : "This meditation is not yet available.\nPlease complete your current session\nto unlock it.",
-  "breathing_locked_description" : "This breathing is not yet available.\nPlease complete your current session\nto unlock it.",
-  "stretching_locked_description" : "This stretching is not yet available.\nPlease complete your current session\nto unlock it.",
+  "meditation_locked_description": "This meditation is not yet available.\nPlease complete your current session\nto unlock it.",
+  "breathing_locked_description": "This breathing is not yet available.\nPlease complete your current session\nto unlock it.",
+  "stretching_locked_description": "This stretching is not yet available.\nPlease complete your current session\nto unlock it.",
   "meditation_locked": "Meditation Locked",
   "stretching_locked": "Stretching Locked",
   "breathing_locked": "Breathing Locked",
-  "okay" : "Okay",
-  "no_data_available": "No data available"
+  "okay": "Okay",
+  "no_data_available": "No data available",
+  "good_morning": "Good Morning",
+  "hope_your_feeling_good_today": "Hope your feeling good today.",
+  "daily_goals": "Daily Goals"
 }

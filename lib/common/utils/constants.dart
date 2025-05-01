@@ -1,3 +1,4 @@
+const String healVTag = 'HEAL_V_TAG:';
 const String emptyString = '';
 const String X = 'x';
 const String plus = '+';

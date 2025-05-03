@@ -3,20 +3,22 @@ import 'package:heal_v/common/utils/network/bounds/http_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/network/auth_network_port.dart';
 
-class GetMeNetworkBounds extends HttpBounds<UserWrapperDto, ApiWrapper<UserWrapperDto?>> {
+class GetMeNetworkBounds extends HttpBounds<UserDto, ApiWrapper<UserDto?>> {
   final AuthNetworkPort port;
+  final String? email;
+  final String? displayName;
 
-  GetMeNetworkBounds({required this.port});
+  GetMeNetworkBounds({required this.port, this.email, this.displayName});
 
   @override
-  Future<ApiWrapper<UserWrapperDto?>?> fetchFromNetwork() {
-    return port.getMe();
+  Future<ApiWrapper<UserDto?>?> fetchFromNetwork() {
+    return port.getMe(email, displayName);
   }
 
   @override
-  Future<UserWrapperDto?> processResponse(ApiWrapper<UserWrapperDto?>? response, {UserWrapperDto? data}) async {
+  Future<UserDto?> processResponse(ApiWrapper<UserDto?>? response, {UserDto? data}) async {
     return switch (response) {
-      Success<UserWrapperDto?>() => response.value,
+      Success<UserDto?>() => response.value,
       _ => data,
     };
   }

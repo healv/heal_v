@@ -22,7 +22,6 @@ import '../../../common/dart/optional.dart';
 import '../../../navigation/auth/auth_graph.dart';
 
 part 'auth_bloc_event.dart';
-
 part 'auth_bloc_state.dart';
 
 final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBlocEffect> {
@@ -35,14 +34,14 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<SignIn>(_handleSignInEvent);
     on<SignInWithGoogle>(_handleSignInFirebaseEvent);
     on<GetMe>(_handleMeEvent);
+    on<LogOut>(_handleLogOutEvent);
   }
 
   Future<void> _subscribeToFirebaseUser() async {
     _authSubscription = FirebaseAuth.instance.authStateChanges().listen((user) async {
       log('$healVTag authStateChanges: user: $user');
       if (state.user != null && user == null) {
-        await _logout();
-        addSideEffect(AuthBlocEffect.loggedOut(ResourceStatusEnum.success));
+        add(AuthBlocEvent.logOut());
       }
     });
   }
@@ -55,11 +54,19 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       Store.set(key: StoreKey.notificationEnable, value: status.isGranted);
     }
 
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      add(AuthBlocEvent.me());
-    } else {
-      addSideEffect(AuthBlocEffect.notLoggedIn());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        add(AuthBlocEvent.me(user.email, user.displayName));
+      } else {
+        addSideEffect(AuthBlocEffect.notLoggedIn());
+      }
+    } on FirebaseAuthException catch (error) {
+      log('$healVTag authorizationError: $error');
+      add(AuthBlocEvent.logOut());
+    } catch (e) {
+      log('$healVTag authorizationError: $e');
+      add(AuthBlocEvent.logOut());
     }
     _subscribeToFirebaseUser();
   }
@@ -70,7 +77,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: event.email, password: event.password);
       log('$healVTag isNewUser: ${userCredential.additionalUserInfo?.isNewUser}');
       if (userCredential.user != null) {
-        add(AuthBlocEvent.me());
+        add(AuthBlocEvent.me(userCredential.user?.email, userCredential.user?.displayName));
       } else {
         log('$healVTag authorizationCode: ${userCredential.additionalUserInfo?.authorizationCode}');
         emitter(state.copyWith(loading: const Optional.value(false)));
@@ -104,7 +111,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       log('$healVTag isNewUser: ${userCredential.additionalUserInfo?.isNewUser}');
       if (userCredential.user != null) {
-        add(AuthBlocEvent.me());
+        add(AuthBlocEvent.me(userCredential.user?.email, userCredential.user?.displayName));
       } else {
         emitter(state.copyWith(loading: const Optional.value(false)));
         addSideEffect(AuthBlocEffect.notLoggedIn());
@@ -126,9 +133,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       final userCredentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: event.email, password: event.password);
       if (userCredentials.user != null) {
         log('$healVTag signUp: user: ${userCredentials.user}');
-        await userCredentials.user?.updateDisplayName('${event.name} ${event.lastName}');
-        await userCredentials.user?.reload();
-        add(AuthBlocEvent.me());
+        add(AuthBlocEvent.me(userCredentials.user?.email, '${event.name} ${event.lastName}'));
       } else {
         emitter(state.copyWith(loading: const Optional.value(false)));
         addSideEffect(AuthBlocEffect.signedUp(ResourceStatusEnum.error));
@@ -142,43 +147,17 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       emitter(state.copyWith(loading: const Optional.value(false)));
       debugPrint("Error Google: $error");
     }
-
-    // await for (final response in repo.signUp(SignUpPacket(email: event.email, password: event.password, name: event.name, lastName: event.lastName))) {
-    //   switch (response.status) {
-    //     case ResourceStatusEnum.success:
-    //       emitter(state.copyWith(
-    //         // accessToken: Optional.value(response.data?.accessToken),
-    //         user: Optional.value(response.data?.user),
-    //         loading: const Optional.value(true),
-    //       ));
-    //       Store.set(key: StoreKey.accessToken, value: response.data?.accessToken);
-    //       Store.set(key: StoreKey.refreshToken, value: response.data?.refreshToken);
-    //       debugPrint(response.data.toString());
-    //       addSideEffect(AuthBlocEffect.signedUp(ResourceStatusEnum.success));
-    //       break;
-    //     case ResourceStatusEnum.error:
-    //       debugPrint(response.error.toString());
-    //       emitter(state.copyWith(loading: const Optional.value(false)));
-    //       addSideEffect(AuthBlocEffect.signedUp(ResourceStatusEnum.error, errorMsg: response.error));
-    //       break;
-    //     case ResourceStatusEnum.loading:
-    //       emitter(state.copyWith(loading: const Optional.value(true)));
-    //       break;
-    //   }
-    // }
   }
 
   Future<void> _handleMeEvent(GetMe event, Emitter<AuthBlocState> emitter) async {
-    await for (final response in repo.getMe()) {
+    await for (final response in repo.getMe(event.email, event.displayName)) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          emitter(state.copyWith(user: Optional.value(response.data?.user), loading: const Optional.value(false)));
+          emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));
           addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
           break;
         case ResourceStatusEnum.error:
-          await _logout();
-          emitter(state.copyWith(loading: const Optional.value(false)));
-          addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.error, errorMsg: response.error));
+          add(AuthBlocEvent.logOut());
           debugPrint(response.error.toString());
           break;
         case ResourceStatusEnum.loading:
@@ -188,9 +167,17 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     }
   }
 
-  Future<void> _logout() async {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
+  Future<void> _handleLogOutEvent(LogOut event, Emitter<AuthBlocState> emitter) async {
+    try {
+      if (FirebaseAuth.instance.currentUser?.providerData.first.providerId == 'google.com') {
+        await GoogleSignIn().signOut();
+      }
+      await FirebaseAuth.instance.signOut();
+      emitter(state.copyWith(loading: const Optional.value(false), user: const Optional.value(null)));
+      addSideEffect(AuthBlocEffect.loggedOut(ResourceStatusEnum.success));
+    } catch (e) {
+      log('$healVTag logout error: ${e.toString()}');
+    }
   }
 
   @override

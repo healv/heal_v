@@ -119,6 +119,7 @@ flutter:
     - assets/translations/
     - assets/icons/
     - assets/sounds/
+    - assets/flags/
 
   fonts:
     - family: icomoon

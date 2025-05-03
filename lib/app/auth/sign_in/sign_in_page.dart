@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,11 +29,12 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPageBloc, SignInPageSideEffect> {
   final emailTextEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
+  StreamSubscription? _authEffectsSubscription;
 
   @override
   void initState() {
     super.initState();
-    context.read<AuthBloc>().sideEffects.listen(_listenAuthEffects);
+    _authEffectsSubscription = context.read<AuthBloc>().sideEffects.listen(_listenAuthEffects);
   }
 
   @override
@@ -303,5 +305,11 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
         context.read<AuthBloc>().add(AuthBlocEvent.signIn(email: emailTextEditingController.text, password: passwordEditingController.text));
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _authEffectsSubscription?.cancel();
   }
 }

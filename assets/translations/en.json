@@ -11,7 +11,9 @@
   "general": "General",
   "notifications": "Notifications",
   "sounds": "Sounds",
+  "sound": "Sound",
   "app_language": "App Language",
+  "language": "Language",
   "perfect_progress": "Perfect \nProgress",
   "in_progress": "In Progress",
   "complete": "Complete",
@@ -59,5 +61,8 @@
   "hope_your_feeling_good_today": "Hope your feeling good today.",
   "daily_goals": "Daily Goals",
   "poses": "Poses",
-  "mins": "Mins"
+  "mins": "Mins",
+  "logout": "Log Out",
+  "cancel": "Cancel",
+  "logOutOfYourAccount": "Log out of your Account?"
 }

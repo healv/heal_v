@@ -1,15 +1,7 @@
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/feature/heal_v/api/auth/bounds/get_me_network_bounds.dart';
-import 'package:heal_v/feature/heal_v/api/auth/bounds/login_firebase_network_bounds.dart';
-import 'package:heal_v/feature/heal_v/api/auth/bounds/login_network_bounds.dart';
-import 'package:heal_v/feature/heal_v/api/auth/bounds/sign_up_network_bounds.dart';
-import 'package:heal_v/feature/heal_v/api/auth/model/login/login_dto.dart';
-import 'package:heal_v/feature/heal_v/api/auth/model/sign_up/sign_up_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/network/auth_network_port.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_firebase_packet.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 
 import 'auth_repo.dart';
 
@@ -19,22 +11,7 @@ base class AuthRepoImpl implements AuthRepo {
   AuthRepoImpl({required this.port});
 
   @override
-  Stream<Resource<UserWrapperDto>> getMe() {
-    return GetMeNetworkBounds(port: port).call();
-  }
-
-  @override
-  Stream<Resource<LoginDto>> login(LoginPacket loginPacket) {
-    return LoginNetworkBounds(port: port, packet: loginPacket).call();
-  }
-
-  @override
-  Stream<Resource<LoginDto>> loginFirebase(LoginFirebasePacket loginFirebasePacket) {
-    return LoginFirebaseNetworkBounds(port: port, packet: loginFirebasePacket).call();
-  }
-
-  @override
-  Stream<Resource<SignUpDto>> signUp(SignUpPacket signUpPacket) {
-    return SignUpNetworkBounds(port: port, packet: signUpPacket).call();
+  Stream<Resource<UserDto>> getMe(String? email, String? displayName) {
+    return GetMeNetworkBounds(port: port, email: email, displayName: displayName).call();
   }
 }

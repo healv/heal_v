@@ -138,22 +138,26 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
   Widget _lessonsShimmer(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) {
-        return Shimmer.fromColors(
-          baseColor: context.onBackground.withValues(alpha: 0.3),
-          highlightColor: context.onBackground.withValues(alpha: 0.1),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: Container(
-              height: 253,
-              decoration: BoxDecoration(
-                color: context.onBackground.withValues(alpha: 0.7),
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-            ),
-          ),
-        );
+        _lessonItemShimmer(context);
       },
       itemCount: 10,
+    );
+  }
+
+  Widget _lessonItemShimmer(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: context.onBackground.withValues(alpha: 0.3),
+      highlightColor: context.onBackground.withValues(alpha: 0.1),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Container(
+          height: 253,
+          decoration: BoxDecoration(
+            color: context.onBackground.withValues(alpha: 0.7),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+        ),
+      ),
     );
   }
 
@@ -185,6 +189,12 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
                     // todo Remove hardcoded photo
                     'https://media.istockphoto.com/id/1310511832/photo/asian-woman-stretching-her-back-in-a-training-gym.jpg?s=1024x1024&w=is&k=20&c=mPm3qGkYFAts-30ewEZ9HiIUB_ZUE7ZXNPJZh-ygq3s=',
                     fit: BoxFit.cover,
+                    loadingBuilder: (_, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return _lessonItemShimmer(context);
+                    },
                   ),
                 ),
               ),
@@ -221,7 +231,7 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
               Positioned(
                 top: 16.0,
                 right: 16.0,
-                child: AppIcons.stretchingCompleted.svgAsset(width: 24, height: 24),
+                child: AppIcons.checked.svgAsset(width: 24, height: 24),
               )
           ],
         ),

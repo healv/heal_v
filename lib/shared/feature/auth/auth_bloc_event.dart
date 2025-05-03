@@ -11,7 +11,9 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.signUp({required String email, required String password, required String name, String? lastName}) => SignUp._(email: email, password: password, name: name, lastName: lastName);
 
-  factory AuthBlocEvent.me() => GetMe._();
+  factory AuthBlocEvent.me(String? email, String? displayName) => GetMe._(email: email, displayName: displayName);
+
+  factory AuthBlocEvent.logOut() => const LogOut._();
 }
 
 class Initial extends AuthBlocEvent {
@@ -26,7 +28,6 @@ class SignIn extends AuthBlocEvent {
 }
 
 class SignInWithGoogle extends AuthBlocEvent {
-
   const SignInWithGoogle._();
 }
 
@@ -40,6 +41,12 @@ class SignUp extends AuthBlocEvent {
 }
 
 class GetMe extends AuthBlocEvent {
+  final String? email;
+  final String? displayName;
 
-  GetMe._();
+  GetMe._({this.email, this.displayName});
+}
+
+class LogOut extends AuthBlocEvent {
+  const LogOut._();
 }

@@ -6,18 +6,6 @@ part of 'user_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserWrapperDto _$UserWrapperDtoFromJson(Map<String, dynamic> json) =>
-    UserWrapperDto(
-      user: json['user'] == null
-          ? null
-          : UserDto.fromJson(json['user'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$UserWrapperDtoToJson(UserWrapperDto instance) =>
-    <String, dynamic>{
-      'user': instance.user,
-    };
-
 UserDto _$UserDtoFromJson(Map<String, dynamic> json) => UserDto(
       email: json['email'] as String?,
       name: json['name'] as String?,

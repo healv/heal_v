@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page_bloc.dart';
+import 'package:heal_v/app/main/feature/profile/language/language_page.dart';
 import 'package:heal_v/app/main/feature/profile/profile_page.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page_bloc.dart';
-import 'package:heal_v/app/main/feature/profile/settings/settings_page.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/main.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
@@ -39,12 +39,12 @@ base class ProfileNestedEditProfileRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<ProfileSettingsRoute>(path: ProfileRoutes.settings, routes: <TypedRoute<RouteData>>[])
+@TypedGoRoute<ProfileLanguageRoute>(path: ProfileRoutes.language, routes: <TypedRoute<RouteData>>[])
 @immutable
-base class ProfileSettingsRoute extends GoRouteData {
+base class ProfileLanguageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const SettingsPage();
+    return const LanguagePage();
   }
 }
 

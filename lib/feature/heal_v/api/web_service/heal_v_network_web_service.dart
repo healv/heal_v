@@ -1,10 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:heal_v/feature/heal_v/api/auth/model/login/login_dto.dart';
-import 'package:heal_v/feature/heal_v/api/auth/model/sign_up/sign_up_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_firebase_packet.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_dto.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_dto.dart';
@@ -24,17 +19,8 @@ part 'heal_v_network_web_service.g.dart';
 abstract class HealVNetworkWebService {
   factory HealVNetworkWebService(Dio dio, {String baseUrl}) = _HealVNetworkWebService;
 
-  @POST('auth/login')
-  Future<HttpResponse<LoginDto?>> login(@Body() LoginPacket body);
-
-  @POST('auth/firebase')
-  Future<HttpResponse<LoginDto?>> loginFirebase(@Body() LoginFirebasePacket body);
-
-  @POST('auth/signup')
-  Future<HttpResponse<SignUpDto?>> signUp(@Body() SignUpPacket body);
-
   @GET('auth/user')
-  Future<HttpResponse<UserWrapperDto?>> me();
+  Future<HttpResponse<UserDto?>> me(@Query('email') String? email, @Query('displayName') String? displayName);
 
   @GET('shared-content')
   Future<HttpResponse<SharedContentDto?>> sharedContent();

@@ -40,9 +40,9 @@ RouteBase get $profileSettingsRoute => GoRouteData.$route(
       factory: $ProfileSettingsRouteExtension._fromState,
     );
 
-extension $ProfileSettingsRouteExtension on ProfileSettingsRoute {
-  static ProfileSettingsRoute _fromState(GoRouterState state) =>
-      ProfileSettingsRoute();
+extension $ProfileSettingsRouteExtension on ProfileLanguageRoute {
+  static ProfileLanguageRoute _fromState(GoRouterState state) =>
+      ProfileLanguageRoute();
 
   String get location => GoRouteData.$location(
         '/profileSettings',

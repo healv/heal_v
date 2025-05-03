@@ -24,118 +24,19 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<LoginDto?>> login(LoginPacket body) async {
+  Future<HttpResponse<UserDto?>> me(
+    String? email,
+    String? displayName,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    final _options = _setStreamType<HttpResponse<LoginDto>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'auth/login',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
-    late LoginDto? _value;
-    try {
-      _value = _result.data == null ? null : LoginDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
-  }
-
-  @override
-  Future<HttpResponse<LoginDto?>> loginFirebase(
-      LoginFirebasePacket body) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    final _options = _setStreamType<HttpResponse<LoginDto>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'auth/firebase',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
-    late LoginDto? _value;
-    try {
-      _value = _result.data == null ? null : LoginDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
-  }
-
-  @override
-  Future<HttpResponse<SignUpDto?>> signUp(SignUpPacket body) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    final _options = _setStreamType<HttpResponse<SignUpDto>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'auth/signup',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
-    late SignUpDto? _value;
-    try {
-      _value = _result.data == null ? null : SignUpDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
-  }
-
-  @override
-  Future<HttpResponse<UserWrapperDto?>> me() async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'email': email,
+      r'displayName': displayName,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<UserWrapperDto>>(Options(
+    final _options = _setStreamType<HttpResponse<UserDto>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -152,10 +53,9 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
-    late UserWrapperDto? _value;
+    late UserDto? _value;
     try {
-      _value =
-          _result.data == null ? null : UserWrapperDto.fromJson(_result.data!);
+      _value = _result.data == null ? null : UserDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

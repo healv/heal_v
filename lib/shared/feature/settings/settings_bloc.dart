@@ -33,7 +33,7 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
   Future<void> _handleUpdateNotificationsStatusEvent(UpdateNotificationsStatus event, Emitter<SettingsState> emitter) async {
     if (event.isEnable) {
       final status = await Permission.notification.status;
-      switch(status) {
+      switch (status) {
         case PermissionStatus.denied:
           await Permission.notification.request();
           break;

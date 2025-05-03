@@ -3,24 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user_dto.g.dart';
 
 @JsonSerializable()
-class UserWrapperDto {
-  @JsonKey(name: "user")
-  final UserDto? user;
-
-  UserWrapperDto({
-    this.user,
-  });
-
-  factory UserWrapperDto.fromJson(Map<String, dynamic> json) {
-    return _$UserWrapperDtoFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$UserWrapperDtoToJson(this);
-  }
-}
-
-@JsonSerializable()
 class UserDto {
   @JsonKey(name: "email")
   final String? email;

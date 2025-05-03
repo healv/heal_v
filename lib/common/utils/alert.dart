@@ -29,6 +29,35 @@ Future<void> showAlertDialog({required String title, required String message}) a
   );
 }
 
+Future<void> showLogOutDialog(VoidCallback okClick) async {
+  return showDialog(
+    context: shellNavigatorGlobalKey.currentContext!,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(tr('logout'), style: const TextStyle(fontSize: 18)),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[Text(tr('logOutOfYourAccount'), style: const TextStyle(fontSize: 16))],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(tr('cancel'), style: TextStyle(color: context.primary, fontSize: 16)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            onPressed: okClick,
+            child: Text(tr('ok'), style: TextStyle(color: context.primary, fontSize: 16)),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 void showLockedDialog(BuildContext context, String title, String description) {
   showDialog(
     context: context,

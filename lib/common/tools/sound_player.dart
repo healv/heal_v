@@ -8,7 +8,7 @@ class SoundPlayer {
   static Future<void> checkAndPlayClickSound() async {
     final isEnable = await Store.get(key: StoreKey.soundsEnable, defaultValue: false);
     if (isEnable) {
-      await _player.setAudioSource(AudioSource.asset('sounds/click_1.mp3'));
+      await _player.setAudioSource(AudioSource.asset('assets/sounds/click_1.mp3'));
       await _player.play();
     }
   }

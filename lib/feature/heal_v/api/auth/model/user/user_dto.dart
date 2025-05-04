@@ -20,6 +20,9 @@ class UserDto {
   final Progress? progress;
   @JsonKey(name: "createdAt")
   final String? createdAt;
+  @JsonKey(name: "birthDate")
+  final String? birthDate;
+
 
   UserDto({
     this.email,
@@ -30,6 +33,7 @@ class UserDto {
     this.preferences,
     this.progress,
     this.createdAt,
+    this.birthDate,
   });
 
   factory UserDto.fromJson(Map<String, dynamic> json) {

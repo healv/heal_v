@@ -56,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 16),
-                  const AvatarWidget(),
+                  const AvatarWidget(isEditable: false),
                   const SizedBox(height: 12),
                   _userName(context),
                   const SizedBox(height: 4),

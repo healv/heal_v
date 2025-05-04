@@ -12,7 +12,17 @@ sealed class EditProfilePageSideEffect implements SideEffect {
 
   factory EditProfilePageSideEffect.emailValidated(ResourceStatusEnum status, {String? errorMsg}) => EmailValidated(status, errorMsg: errorMsg);
 
-  factory EditProfilePageSideEffect.validated(ResourceStatusEnum status, {String? errorMsg}) => Validated(status, errorMsg: errorMsg);
+  factory EditProfilePageSideEffect.passwordValidated(ResourceStatusEnum status, {String? errorMsg}) => PasswordValidated(status, errorMsg: errorMsg);
+
+  factory EditProfilePageSideEffect.validated(
+    ResourceStatusEnum status, {
+    String? name,
+    String? lastName,
+    String? birthDate,
+    String? email,
+    String? errorMsg,
+  }) =>
+      Validated(status, name: name, lastName: lastName, email: email, birthDate: birthDate, errorMsg: errorMsg);
 }
 
 final class FirstNameValidated extends EditProfilePageSideEffect {
@@ -23,6 +33,15 @@ final class EmailValidated extends EditProfilePageSideEffect {
   EmailValidated(super.status, {super.errorMsg});
 }
 
+final class PasswordValidated extends EditProfilePageSideEffect {
+  PasswordValidated(super.status, {super.errorMsg});
+}
+
 final class Validated extends EditProfilePageSideEffect {
-  Validated(super.status, {super.errorMsg});
+  final String? name;
+  final String? lastName;
+  final String? birthDate;
+  final String? email;
+
+  Validated(super.status, {this.name, this.lastName, this.email, this.birthDate, super.errorMsg});
 }

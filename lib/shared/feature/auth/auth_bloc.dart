@@ -11,6 +11,7 @@ import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/update_user_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/repo/auth_repo.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,6 +35,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<SignIn>(_handleSignInEvent);
     on<SignInWithGoogle>(_handleSignInFirebaseEvent);
     on<GetMe>(_handleMeEvent);
+    on<UpdateUser>(_handleUpdateUserEvent);
     on<LogOut>(_handleLogOutEvent);
   }
 
@@ -157,7 +159,27 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
           addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.success));
           break;
         case ResourceStatusEnum.error:
+          emitter(state.copyWith(loading: const Optional.value(false)));
           add(AuthBlocEvent.logOut());
+          debugPrint(response.error.toString());
+          break;
+        case ResourceStatusEnum.loading:
+          emitter(state.copyWith(loading: const Optional.value(true)));
+          break;
+      }
+    }
+  }
+
+  Future<void> _handleUpdateUserEvent(UpdateUser event, Emitter<AuthBlocState> emitter) async {
+    await for (final response in repo.updateUser(UpdateUserPacket(name: event.name, lastName: event.lastName, birthDate: event.birthDate))) {
+      switch (response.status) {
+        case ResourceStatusEnum.success:
+          emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));
+          addSideEffect(AuthBlocEffect.userUpdated(ResourceStatusEnum.success));
+          break;
+        case ResourceStatusEnum.error:
+          emitter(state.copyWith(loading: const Optional.value(false)));
+          addSideEffect(AuthBlocEffect.userUpdated(ResourceStatusEnum.error));
           debugPrint(response.error.toString());
           break;
         case ResourceStatusEnum.loading:

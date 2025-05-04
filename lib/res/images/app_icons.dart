@@ -35,6 +35,9 @@ enum AppIcons {
   journalHistory('assets/icons/ic_journal_history.svg'),
   notifications('assets/icons/ic_notifications.svg'),
   logout('assets/icons/ic_logout.svg'),
+  logoutDialog('assets/icons/ic_logout_dialog.svg'),
+  editProfileSave('assets/icons/ic_edit_profile_save.svg'),
+  person('assets/icons/ic_person.svg'),
   share('assets/icons/ic_share.svg');
 
   final String path;

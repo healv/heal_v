@@ -73,6 +73,8 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
       case NotLoggedIn():
         SignInRoute().go(context);
         break;
+      default:
+        break;
     }
   }
 }

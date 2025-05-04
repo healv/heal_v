@@ -22,6 +22,7 @@
   "journal": "Journal",
   "this_field_is_required": "This field is required",
   "first_name": "First name",
+  "name": "Name",
   "last_name": "Last name",
   "edit": "Edit",
   "email": "Email",
@@ -41,6 +42,7 @@
   "or_login_with": "Or login with",
   "or_sign_up_with": "Or sign up with",
   "error": "Error",
+  "success": "Success",
   "ok": "Ok",
   "search": "Search",
   "no_internet_connection": "No Internet Connection",
@@ -62,7 +64,9 @@
   "daily_goals": "Daily Goals",
   "poses": "Poses",
   "mins": "Mins",
+  "logoutWithQuestionMark": "Log Out?",
   "logout": "Log Out",
   "cancel": "Cancel",
-  "logOutOfYourAccount": "Log out of your Account?"
+  "areYouSureYouWantToLogOut": "Are you sure you want to log out?",
+  "youCanAlwaysLogBackInAnytime": "You can always log back in anytime."
 }

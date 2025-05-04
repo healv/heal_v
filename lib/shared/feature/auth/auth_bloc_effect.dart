@@ -13,6 +13,8 @@ sealed class AuthBlocEffect implements SideEffect {
 
   factory AuthBlocEffect.signedUp(ResourceStatusEnum status, {String? errorMsg}) => SignedUp._(status, errorMsg: errorMsg);
 
+  factory AuthBlocEffect.userUpdated(ResourceStatusEnum status, {String? errorMsg}) => UserUpdated._(status, errorMsg: errorMsg);
+
   factory AuthBlocEffect.notLoggedIn() => NotLoggedIn._(ResourceStatusEnum.success);
 }
 
@@ -26,6 +28,10 @@ final class LoggedIn extends AuthBlocEffect {
 
 final class SignedUp extends AuthBlocEffect {
   SignedUp._(super.status, {super.errorMsg});
+}
+
+final class UserUpdated extends AuthBlocEffect {
+  UserUpdated._(super.status, {super.errorMsg});
 }
 
 final class NotLoggedIn extends AuthBlocEffect {

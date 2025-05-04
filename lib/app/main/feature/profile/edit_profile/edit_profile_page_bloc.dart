@@ -20,12 +20,16 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
     on<FirstNameChanged>(_handleFirstNameChangedEvent);
     on<LastNameChanged>(_handleLastNameChangedEvent);
     on<EmailChanged>(_handleEmailChangedEvent);
+    on<BirthDateChanged>(_handleBirthDateChangedEvent);
     on<ValidateFirstName>(_handleValidateFirstNameEvent);
     on<ValidateEmail>(_handleValidateEmailEvent);
-    on<UpdateUser>(_handleUpdateUserEvent);
     on<FirstNameFocusChanged>(_handleFirstNameFocusChangedEvent);
     on<LastNameFocusChanged>(_handleLastNameFocusChangedEvent);
     on<EmailFocusChanged>(_handleEmailFocusChangedEvent);
+    on<PasswordChanged>(_handlePasswordChangedEvent);
+    on<UpdatePasswordVisibility>(_handleUpdatePasswordVisibilityEvent);
+    on<Validate>(_handleValidateEvent);
+    on<ValidatePassword>(_handleValidatePasswordEvent);
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<EditProfilePageState> emitter) async {
@@ -34,6 +38,7 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
       lastName: Optional.value(event.user.lastName),
       email: Optional.value(event.user.email),
       avatar: Optional.value(event.user.photoURL),
+      birthDate: Optional.value(event.user.birthDate),
     ));
   }
 
@@ -51,6 +56,10 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
 
   Future<void> _handleEmailChangedEvent(EmailChanged event, Emitter<EditProfilePageState> emitter) async {
     emitter(state.copyWith(email: Optional.value(event.email)));
+  }
+
+  Future<void> _handleBirthDateChangedEvent(BirthDateChanged event, Emitter<EditProfilePageState> emitter) async {
+    emitter(state.copyWith(birthDate: Optional.value(event.birthDate)));
   }
 
   Future<void> _handleValidateFirstNameEvent(ValidateFirstName event, Emitter<EditProfilePageState> emitter) async {
@@ -75,14 +84,14 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
     }
   }
 
-  Future<void> _handleUpdateUserEvent(UpdateUser event, Emitter<EditProfilePageState> emitter) async {
-    EditProfilePageSideEffect.validated(ResourceStatusEnum.loading);
-    if (_validateFirstName()) {
-      emitter(state.copyWith(firstNameErrorMsg: const Optional.value(null)));
-      addSideEffect(EditProfilePageSideEffect.validated(ResourceStatusEnum.success));
+  Future<void> _handleValidatePasswordEvent(ValidatePassword event, Emitter<EditProfilePageState> emitter) async {
+    EditProfilePageSideEffect.passwordValidated(ResourceStatusEnum.loading);
+    if (_validatePassword()) {
+      emitter(state.copyWith(passwordErrorMsg: const Optional.value(null)));
+      addSideEffect(EditProfilePageSideEffect.passwordValidated(ResourceStatusEnum.success));
     } else {
-      emitter(state.copyWith(firstNameErrorMsg: Optional.value(tr('this_field_is_required'))));
-      addSideEffect(EditProfilePageSideEffect.validated(ResourceStatusEnum.error));
+      emitter(state.copyWith(passwordErrorMsg: Optional.value(tr('invalid_password'))));
+      addSideEffect(EditProfilePageSideEffect.passwordValidated(ResourceStatusEnum.error));
     }
   }
 
@@ -98,6 +107,15 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
     emitter(state.copyWith(isEmailFocused: event.isFocused));
   }
 
+  Future<void> _handlePasswordChangedEvent(PasswordChanged event, Emitter<EditProfilePageState> emitter) async {
+    emitter(state.copyWith(password: Optional.value(event.password)));
+  }
+
+  Future<void> _handleUpdatePasswordVisibilityEvent(UpdatePasswordVisibility event, Emitter<EditProfilePageState> emitter) async {
+    final isVisible = state.isPasswordHidden;
+    emitter(state.copyWith(isPasswordHidden: !isVisible));
+  }
+
   bool _validateFirstName() {
     final firstName = state.firstName?.trim();
     return firstName != null && firstName.isNotEmpty;
@@ -106,5 +124,56 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
   bool _validateEmail() {
     final firstName = state.email?.trim();
     return firstName != null && firstName.isNotEmpty;
+  }
+
+  bool _validatePassword() {
+    final password = state.password?.trim();
+    return password != null && password.length > 5;
+  }
+
+  Future<void> _handleValidateEvent(Validate event, Emitter<EditProfilePageState> emitter) async {
+    EditProfilePageSideEffect.validated(ResourceStatusEnum.loading);
+    if (!_validateEmail()) {
+      emitter(state.copyWith(emailErrorMsg: Optional.value(tr('this_field_is_required'))));
+      addSideEffect(EditProfilePageSideEffect.emailValidated(ResourceStatusEnum.error));
+    } else {
+      emitter(state.copyWith(emailErrorMsg: const Optional.value(null)));
+      addSideEffect(EditProfilePageSideEffect.emailValidated(ResourceStatusEnum.success));
+    }
+
+    if (!_validateFirstName()) {
+      emitter(state.copyWith(firstNameErrorMsg: Optional.value(tr('this_field_is_required'))));
+      addSideEffect(EditProfilePageSideEffect.firstNameValidated(ResourceStatusEnum.error));
+    } else {
+      emitter(state.copyWith(firstNameErrorMsg: const Optional.value(null)));
+      addSideEffect(EditProfilePageSideEffect.firstNameValidated(ResourceStatusEnum.success));
+    }
+
+    if (!_validatePassword()) {
+      emitter(state.copyWith(passwordErrorMsg: Optional.value(tr('invalid_password'))));
+      addSideEffect(EditProfilePageSideEffect.passwordValidated(ResourceStatusEnum.error));
+    } else {
+      emitter(state.copyWith(passwordErrorMsg: const Optional.value(null)));
+      addSideEffect(EditProfilePageSideEffect.passwordValidated(ResourceStatusEnum.success));
+    }
+
+    if (state.emailErrorMsg == null && state.firstNameErrorMsg == null && state.passwordErrorMsg == null) {
+      emitter(
+        state.copyWith(
+          firstNameErrorMsg: const Optional.value(null),
+          emailErrorMsg: const Optional.value(null),
+          passwordErrorMsg: const Optional.value(null),
+        ),
+      );
+      addSideEffect(EditProfilePageSideEffect.validated(
+        ResourceStatusEnum.success,
+        name: state.firstName,
+        lastName: state.lastName,
+        email: state.email,
+        birthDate: state.birthDate,
+      ));
+    } else {
+      addSideEffect(EditProfilePageSideEffect.validated(ResourceStatusEnum.error));
+    }
   }
 }

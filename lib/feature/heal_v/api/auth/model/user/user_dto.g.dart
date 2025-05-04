@@ -21,6 +21,7 @@ UserDto _$UserDtoFromJson(Map<String, dynamic> json) => UserDto(
           ? null
           : Progress.fromJson(json['progress'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String?,
+      birthDate: json['birthDate'] as String?,
     );
 
 Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
@@ -32,6 +33,7 @@ Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
       'preferences': instance.preferences,
       'progress': instance.progress,
       'createdAt': instance.createdAt,
+      'birthDate': instance.birthDate,
     };
 
 Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(

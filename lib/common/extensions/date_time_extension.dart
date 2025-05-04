@@ -29,4 +29,8 @@ extension DaateTimeExtension on DateTime? {
   String ddMMM() {
     return formatDate('dd MMM');
   }
+
+  String ddMMYYYY() {
+    return formatDate('dd.MM.yyyy');
+  }
 }

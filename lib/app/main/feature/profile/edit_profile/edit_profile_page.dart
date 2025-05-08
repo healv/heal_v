@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/profile/edit_profile/edit_profile_page_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/edit_profile/edit_profile_page_effect.dart';
 import 'package:heal_v/common/extensions/date_time_extension.dart';
@@ -12,6 +14,7 @@ import 'package:heal_v/common/widgets/avatar_widget.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../common/flutter/widgets/framework.dart' show BlocDependentSideEffectState;
 import '../../../../../common/utils/alert.dart';
@@ -31,12 +34,12 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
   final lastNameTextEditingController = TextEditingController();
   final lastNameFocusNode = FocusNode();
   final emailTextEditingController = TextEditingController();
-  final emailFocusNode = FocusNode();
   final birthDateTextEditingController = TextEditingController();
   final ageTextEditingController = TextEditingController();
-  final passwordTextEditingController = TextEditingController();
-  final passwordFocusNode = FocusNode();
   StreamSubscription? _authEffectsSubscription;
+
+  OverlayEntry? _overlayEntry;
+  final GlobalKey _editIconKey = GlobalKey();
 
   @override
   void initState() {
@@ -50,17 +53,6 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
     });
     lastNameFocusNode.addListener(() {
       context.read<EditProfilePageBloc>().add(EditProfilePageEvent.lastNameFocusChanged(lastNameFocusNode.hasFocus));
-    });
-    emailFocusNode.addListener(() {
-      context.read<EditProfilePageBloc>().add(EditProfilePageEvent.emailFocusChanged(emailFocusNode.hasFocus));
-      if (!emailFocusNode.hasFocus) {
-        context.read<EditProfilePageBloc>().add(EditProfilePageEvent.validateEmail());
-      }
-    });
-    passwordFocusNode.addListener(() {
-      if (!passwordFocusNode.hasFocus) {
-        context.read<EditProfilePageBloc>().add(EditProfilePageEvent.validatePassword());
-      }
     });
   }
 
@@ -77,15 +69,6 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
             color: context.onBackground,
           ),
         ),
-        actions: [
-          InkWell(
-            onTap: () {
-              context.read<EditProfilePageBloc>().add(EditProfilePageEvent.validate());
-            },
-            child: AppIcons.editProfileSave.svgAsset(),
-          ),
-          const SizedBox(width: 16.0),
-        ],
       ),
       // appBar: HealVAppBar.simple(title: tr('edit_profile'), isBackEnable: true),
       body: _body(context),
@@ -94,6 +77,7 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
 
   Widget _body(BuildContext context) {
     final bloc = context.read<EditProfilePageBloc>();
+    final authBloc = context.read<AuthBloc>();
     return MultiBlocListener(
       listeners: [
         BlocListener<EditProfilePageBloc, EditProfilePageState>(
@@ -128,8 +112,9 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
             children: [
               const SizedBox(height: 8.0),
               AvatarWidget(
+                key: _editIconKey,
                 onEditClick: () {
-                  //todo need to handle
+                  _overlayEntry == null ? _showPopover(authBloc) : _removePopover();
                 },
               ),
               const SizedBox(height: 8.0),
@@ -140,6 +125,84 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
         ),
       ),
     );
+  }
+
+  void _showPopover(AuthBloc authBloc) {
+    final renderBox = _editIconKey.currentContext!.findRenderObject() as RenderBox;
+    final position = renderBox.localToGlobal(Offset.zero);
+
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          GestureDetector(
+            onTap: _removePopover,
+            behavior: HitTestBehavior.translucent,
+            child: Container(
+              color: Colors.transparent,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+            ),
+          ),
+          Positioned(
+            top: position.dy + position.dy + 16,
+            left: position.dx - position.dx / 3,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                width: 265,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 5,
+                      color: context.onBackground.withValues(alpha: 0.1),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: AppIcons.gallery.svgAsset(),
+                      title: Text(
+                        tr('chooseFromCameraRoll'),
+                        style: TextStyle(
+                          color: context.onBackground,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      onTap: () {
+                        _removePopover();
+                        _pickImage(ImageSource.gallery, authBloc);
+                      },
+                    ),
+                    ListTile(
+                      leading: AppIcons.trash.svgAsset(),
+                      title: Text(
+                        tr('deleteCurrentPhoto'),
+                        style: TextStyle(
+                          color: context.primary,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      onTap: null, // disabled
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
   }
 
   Widget _firstTextFieldsContainer(EditProfilePageBloc bloc) {
@@ -156,8 +219,8 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
           _textFieldAge(),
           const SizedBox(height: 8.0),
           _textFieldBirth(bloc),
-          const SizedBox(height: 8.0),
-          _textFieldPassword(bloc),
+          const SizedBox(height: 16.0),
+          _buttonsRow(bloc),
         ],
       ),
     );
@@ -275,39 +338,18 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
         const SizedBox(height: 4),
         SizedBox(
           width: double.infinity,
-          child: BlocBuilder<EditProfilePageBloc, EditProfilePageState>(
-            buildWhen: (oldState, newState) => oldState.isEmailFocused != newState.isEmailFocused || oldState.email != newState.email || oldState.emailErrorMsg != newState.emailErrorMsg,
-            builder: (context, state) {
-              return TextField(
-                style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
-                controller: emailTextEditingController,
-                focusNode: emailFocusNode,
-                onChanged: (changedEmail) {
-                  context.read<EditProfilePageBloc>().add(EditProfilePageEvent.emailChanged(email: changedEmail));
-                },
-                textCapitalization: TextCapitalization.words,
-                cursorColor: context.onBackground,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)), borderRadius: BorderRadius.circular(12)),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)), borderRadius: BorderRadius.circular(12)),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)), borderRadius: BorderRadius.circular(12)),
-                  errorBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.red), borderRadius: BorderRadius.circular(12)),
-                  suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
-                  suffixIcon: state.isEmailFocused && state.email?.isNotEmpty == true
-                      ? InkWell(
-                          onTap: () {
-                            emailTextEditingController.text = emptyString;
-                            context.read<EditProfilePageBloc>().add(EditProfilePageEvent.emailChanged(email: emptyString));
-                          },
-                          child: _textFieldCloseIcon(),
-                        )
-                      : null,
-                  hintText: state.email?.isNotEmpty != true ? tr('email') : emptyString,
-                  errorText: state.emailErrorMsg,
-                  hintStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
-                ),
-              );
-            },
+          height: 48.0,
+          child: AbsorbPointer(
+            child: TextField(
+              readOnly: true,
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
+              controller: emailTextEditingController,
+              textCapitalization: TextCapitalization.words,
+              cursorColor: context.onBackground,
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)), borderRadius: BorderRadius.circular(12)),
+              ),
+            ),
           ),
         ),
       ],
@@ -374,55 +416,6 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
     );
   }
 
-  Widget _textFieldPassword(EditProfilePageBloc bloc) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _textFieldHeaderText(context, tr('password')),
-        const SizedBox(height: 4),
-        SizedBox(
-          width: double.infinity,
-          child: BlocBuilder<EditProfilePageBloc, EditProfilePageState>(
-            buildWhen: (oldState, newState) => oldState.password != newState.password || oldState.passwordErrorMsg != newState.passwordErrorMsg || oldState.isPasswordHidden != newState.isPasswordHidden,
-            builder: (context, state) {
-              return TextFormField(
-                focusNode: passwordFocusNode,
-                onTapOutside: (_) => context.unFocus(),
-                style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
-                controller: passwordTextEditingController,
-                onChanged: (password) {
-                  bloc.add(EditProfilePageEvent.passwordChanged(password: password));
-                },
-                keyboardType: TextInputType.text,
-                cursorColor: context.onBackground,
-                obscureText: state.isPasswordHidden,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)), borderRadius: BorderRadius.circular(12)),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)), borderRadius: BorderRadius.circular(12)),
-                  errorBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.red), borderRadius: BorderRadius.circular(12)),
-                  focusedErrorBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.red), borderRadius: BorderRadius.circular(12)),
-                  suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
-                  errorText: state.passwordErrorMsg,
-                  hintText: tr('password'),
-                  hintStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: context.onBackground),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      state.isPasswordHidden ? Icons.visibility : Icons.visibility_off,
-                      color: context.onBackground.withValues(alpha: 0.6),
-                    ),
-                    onPressed: () {
-                      bloc.add(EditProfilePageEvent.updatePasswordVisibility());
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _textFieldCloseIcon() {
     return SizedBox(
       width: 8.0,
@@ -432,6 +425,57 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
         color: context.onBackground,
         size: 15.0,
       ),
+    );
+  }
+
+  Widget _buttonsRow(EditProfilePageBloc bloc) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            onPressed: () async {
+              context.pop();
+            },
+            style: OutlinedButton.styleFrom(
+              backgroundColor: context.background,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: context.primary)),
+              elevation: 0,
+              minimumSize: const Size(129, 36),
+            ),
+            child: Text(tr('cancel'),
+                style: TextStyle(
+                  color: context.primary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.2,
+                )),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              bloc.add(EditProfilePageEvent.validate());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: context.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 0,
+              minimumSize: const Size(129, 36),
+            ),
+            child: Text(tr('saveChanges'),
+                style: TextStyle(
+                  color: context.background,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.2,
+                )),
+          ),
+        ),
+      ],
     );
   }
 
@@ -445,8 +489,27 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
       lastDate: DateTime.now(),
     );
     if (data != null && data != birthDateDateTime) {
-      bloc.add(EditProfilePageEvent.birthDateChanged(birthDate: data.toUtc().toIso8601String()));
+      bloc.add(EditProfilePageEvent.birthDateChanged(birthDate: data.toIso8601String()));
     }
+  }
+
+  void _removePopover() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  Future<String?> _pickImage(ImageSource imageSource, AuthBloc authBloc) async {
+    final imagePicker = ImagePicker();
+    try {
+      final pickedFile = await imagePicker.pickImage(source: imageSource);
+      if (pickedFile != null) {
+        log('$healVTag pickedFile: ${pickedFile.path}');
+        authBloc.add(AuthBlocEvent.uploadImage(pickedFile));
+      }
+    } catch (e) {
+      log('Pick image failed:${e.toString()}');
+    }
+    return null;
   }
 
   @override
@@ -455,7 +518,7 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
       case Validated():
         switch (effect.status) {
           case ResourceStatusEnum.success:
-            context.read<AuthBloc>().add(AuthBlocEvent.updateUser(effect.name, effect.lastName, effect.email, effect.birthDate));
+            context.read<AuthBloc>().add(AuthBlocEvent.updateUser(effect.name, effect.lastName, effect.birthDate));
             break;
           default:
             break;
@@ -470,7 +533,9 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
       case UserUpdated():
         switch (effect.status) {
           case ResourceStatusEnum.success:
-            showAlertDialog(title: tr('success'), message: effect.errorMsg.toString());
+            await showAlertDialog(title: tr('success'), message: tr('personalInformationUpdated'));
+            if (!mounted) return;
+            context.pop();
             break;
           case ResourceStatusEnum.error:
             showAlertDialog(title: tr('error'), message: effect.errorMsg.toString());
@@ -492,6 +557,6 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
     emailTextEditingController.dispose();
     birthDateTextEditingController.dispose();
     ageTextEditingController.dispose();
-    passwordTextEditingController.dispose();
+    _removePopover();
   }
 }

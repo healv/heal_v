@@ -8,13 +8,8 @@ class EditProfilePageState extends BaseState {
   final String? email;
   final String? birthDate;
   final String? firstNameErrorMsg;
-  final String? emailErrorMsg;
   final bool isFirstNameFocused;
   final bool isLastNameFocused;
-  final bool isEmailFocused;
-  final String? password;
-  final String? passwordErrorMsg;
-  final bool isPasswordHidden;
 
   const EditProfilePageState._({
     this.avatar,
@@ -23,13 +18,8 @@ class EditProfilePageState extends BaseState {
     this.email,
     this.birthDate,
     this.firstNameErrorMsg,
-    this.emailErrorMsg,
     this.isFirstNameFocused = false,
     this.isLastNameFocused = false,
-    this.isEmailFocused = false,
-    this.password,
-    this.passwordErrorMsg,
-    this.isPasswordHidden = true,
   });
 
   factory EditProfilePageState.initial() => const EditProfilePageState._();
@@ -44,11 +34,6 @@ class EditProfilePageState extends BaseState {
         firstNameErrorMsg,
         isFirstNameFocused,
         isLastNameFocused,
-        isEmailFocused,
-        emailErrorMsg,
-        password,
-        passwordErrorMsg,
-        isPasswordHidden,
       ];
 
   EditProfilePageState copyWith({
@@ -58,13 +43,8 @@ class EditProfilePageState extends BaseState {
     Optional<String?>? email,
     Optional<String?>? birthDate,
     Optional<String?>? firstNameErrorMsg,
-    Optional<String?>? emailErrorMsg,
     bool? isFirstNameFocused,
     bool? isLastNameFocused,
-    bool? isEmailFocused,
-    Optional<String?>? password,
-    Optional<String?>? passwordErrorMsg,
-    bool? isPasswordHidden,
   }) {
     return EditProfilePageState._(
       avatar: avatar?.isValid == true ? avatar?.value : this.avatar,
@@ -73,13 +53,8 @@ class EditProfilePageState extends BaseState {
       email: email?.isValid == true ? email?.value : this.email,
       birthDate: birthDate?.isValid == true ? birthDate?.value : this.birthDate,
       firstNameErrorMsg: firstNameErrorMsg?.isValid == true ? firstNameErrorMsg?.value : this.firstNameErrorMsg,
-      emailErrorMsg: emailErrorMsg?.isValid == true ? emailErrorMsg?.value : this.emailErrorMsg,
       isFirstNameFocused: isFirstNameFocused ?? this.isFirstNameFocused,
       isLastNameFocused: isLastNameFocused ?? this.isLastNameFocused,
-      isEmailFocused: isEmailFocused ?? this.isEmailFocused,
-      password: password?.isValid == true ? password?.value : this.password,
-      passwordErrorMsg: passwordErrorMsg?.isValid == true ? passwordErrorMsg?.value : this.passwordErrorMsg,
-      isPasswordHidden: isPasswordHidden ?? this.isPasswordHidden,
     );
   }
 }

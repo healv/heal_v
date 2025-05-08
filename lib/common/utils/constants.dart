@@ -5,6 +5,7 @@ const String plus = '+';
 const String verticalLine = '|';
 const String zero = '0';
 const String doth = '.';
+const String slash = '/';
 const String armenianCode = 'AM';
 const phoneRegex = r'^\+[0-9]{7,15}$';
 const onlyDigitsRegex = r'^\d+$';

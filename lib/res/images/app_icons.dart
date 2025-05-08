@@ -36,8 +36,9 @@ enum AppIcons {
   notifications('assets/icons/ic_notifications.svg'),
   logout('assets/icons/ic_logout.svg'),
   logoutDialog('assets/icons/ic_logout_dialog.svg'),
-  editProfileSave('assets/icons/ic_edit_profile_save.svg'),
   person('assets/icons/ic_person.svg'),
+  gallery('assets/icons/ic_gallery.svg'),
+  trash('assets/icons/ic_trash.svg'),
   share('assets/icons/ic_share.svg');
 
   final String path;

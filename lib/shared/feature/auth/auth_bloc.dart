@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +16,8 @@ import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/update_user_packet.dart';
 import 'package:heal_v/feature/heal_v/api/auth/repo/auth_repo.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../application.dart';
@@ -36,6 +40,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<SignInWithGoogle>(_handleSignInFirebaseEvent);
     on<GetMe>(_handleMeEvent);
     on<UpdateUser>(_handleUpdateUserEvent);
+    on<UploadImage>(_handleUploadImageEvent);
     on<LogOut>(_handleLogOutEvent);
   }
 
@@ -171,15 +176,46 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleUpdateUserEvent(UpdateUser event, Emitter<AuthBlocState> emitter) async {
-    await for (final response in repo.updateUser(UpdateUserPacket(name: event.name, lastName: event.lastName, birthDate: event.birthDate))) {
+    if (event.name != state.user?.name || state.user?.lastName != event.lastName || state.user?.birthDate != event.birthDate) {
+      await for (final response in repo.updateUser(UpdateUserPacket(name: event.name, lastName: event.lastName, birthDate: event.birthDate))) {
+        switch (response.status) {
+          case ResourceStatusEnum.success:
+            emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));
+            addSideEffect(AuthBlocEffect.userUpdated(ResourceStatusEnum.success));
+            break;
+          case ResourceStatusEnum.error:
+            emitter(state.copyWith(loading: const Optional.value(false)));
+            addSideEffect(AuthBlocEffect.userUpdated(ResourceStatusEnum.error));
+            debugPrint(response.error.toString());
+            break;
+          case ResourceStatusEnum.loading:
+            emitter(state.copyWith(loading: const Optional.value(true)));
+            break;
+        }
+      }
+    }
+  }
+
+  Future<void> _handleUploadImageEvent(UploadImage event, Emitter<AuthBlocState> emitter) async {
+    final type = lookupMimeType(event.xFile.path);
+    final data = FormData();
+    data.files.add(MapEntry(
+      'image',
+      MultipartFile.fromFileSync(
+        event.xFile.path,
+        filename: event.xFile.path.split(Platform.pathSeparator).last,
+        contentType: DioMediaType.parse(type ?? emptyString),
+      ),
+    ));
+    await for (final response in repo.uploadImage(data)) {
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));
-          addSideEffect(AuthBlocEffect.userUpdated(ResourceStatusEnum.success));
+          addSideEffect(AuthBlocEffect.imageUploaded(ResourceStatusEnum.success));
           break;
         case ResourceStatusEnum.error:
           emitter(state.copyWith(loading: const Optional.value(false)));
-          addSideEffect(AuthBlocEffect.userUpdated(ResourceStatusEnum.error));
+          addSideEffect(AuthBlocEffect.imageUploaded(ResourceStatusEnum.error));
           debugPrint(response.error.toString());
           break;
         case ResourceStatusEnum.loading:

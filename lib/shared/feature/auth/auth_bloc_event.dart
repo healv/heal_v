@@ -13,7 +13,9 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.me(String? email, String? displayName) => GetMe._(email: email, displayName: displayName);
 
-  factory AuthBlocEvent.updateUser(String? name, String? lastName, String? email, String? birthDate) => UpdateUser._(email: email, name: name, lastName: lastName, birthDate: birthDate);
+  factory AuthBlocEvent.updateUser(String? name, String? lastName, String? birthDate) => UpdateUser._(name: name, lastName: lastName, birthDate: birthDate);
+
+  factory AuthBlocEvent.uploadImage(XFile xFile) => UploadImage._(xFile: xFile);
 
   factory AuthBlocEvent.logOut() => const LogOut._();
 }
@@ -50,12 +52,17 @@ class GetMe extends AuthBlocEvent {
 }
 
 class UpdateUser extends AuthBlocEvent {
-  final String? email;
   final String? name;
   final String? lastName;
   final String? birthDate;
 
-  UpdateUser._({required this.email, required this.name, required this.lastName, required this.birthDate});
+  UpdateUser._({required this.name, required this.lastName, required this.birthDate});
+}
+
+class UploadImage extends AuthBlocEvent {
+  final XFile xFile;
+
+  UploadImage._({required this.xFile});
 }
 
 class LogOut extends AuthBlocEvent {

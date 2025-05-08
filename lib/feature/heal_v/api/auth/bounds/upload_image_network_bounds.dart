@@ -1,19 +1,19 @@
+import 'package:dio/dio.dart';
 import 'package:heal_v/common/utils/network/api_wrapper.dart';
 import 'package:heal_v/common/utils/network/bounds/http_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_wrapper_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/network/auth_network_port.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/update_user_packet.dart';
 
-class UpdateUserNetworkBounds extends HttpBounds<UserDto, ApiWrapper<UserWrapperDto?>> {
+class UploadImageNetworkBounds extends HttpBounds<UserDto, ApiWrapper<UserWrapperDto?>> {
   final AuthNetworkPort port;
-  final UpdateUserPacket body;
+  final FormData data;
 
-  UpdateUserNetworkBounds({required this.port, required this.body});
+  UploadImageNetworkBounds({required this.port, required this.data});
 
   @override
   Future<ApiWrapper<UserWrapperDto?>?> fetchFromNetwork() {
-    return port.updateUser(body);
+    return port.uploadImage(data);
   }
 
   @override

@@ -68,5 +68,9 @@
   "logout": "Log Out",
   "cancel": "Cancel",
   "areYouSureYouWantToLogOut": "Are you sure you want to log out?",
-  "youCanAlwaysLogBackInAnytime": "You can always log back in anytime."
+  "youCanAlwaysLogBackInAnytime": "You can always log back in anytime.",
+  "saveChanges": "Save Changes",
+  "personalInformationUpdated": "Personal Information Updated.",
+  "chooseFromCameraRoll": "Choose from camera roll",
+  "deleteCurrentPhoto": "Delete current photo"
 }

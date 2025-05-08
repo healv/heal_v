@@ -11,6 +11,7 @@ import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dt
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../auth/model/user/user_wrapper_dto.dart';
 import '../auth/packet/update_user_packet.dart';
 import '../journal/model/journal_history_dto.dart';
 
@@ -24,7 +25,10 @@ abstract class HealVNetworkWebService {
   Future<HttpResponse<UserDto?>> me(@Query('email') String? email, @Query('displayName') String? displayName);
 
   @PUT('auth/update')
-  Future<HttpResponse<UserDto?>> updateUser(@Body() UpdateUserPacket body);
+  Future<HttpResponse<UserWrapperDto?>> updateUser(@Body() UpdateUserPacket body);
+
+  @POST('auth/upload-image')
+  Future<HttpResponse<UserWrapperDto?>> uploadImage(@Body() FormData formData);
 
   @GET('shared-content')
   Future<HttpResponse<SharedContentDto?>> sharedContent();

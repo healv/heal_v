@@ -112,7 +112,7 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
             children: [
               const SizedBox(height: 8.0),
               AvatarWidget(
-                key: _editIconKey,
+                editIconKey: _editIconKey,
                 onEditClick: () {
                   _overlayEntry == null ? _showPopover(authBloc) : _removePopover();
                 },
@@ -144,8 +144,8 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
             ),
           ),
           Positioned(
-            top: position.dy + position.dy + 16,
-            left: position.dx - position.dx / 3,
+            top: position.dy + 32,
+            left: position.dx - position.dx / 2,
             child: Material(
               color: Colors.transparent,
               child: Container(

@@ -27,6 +27,7 @@ import '../../../common/dart/optional.dart';
 import '../../../navigation/auth/auth_graph.dart';
 
 part 'auth_bloc_event.dart';
+
 part 'auth_bloc_state.dart';
 
 final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBlocEffect> {
@@ -210,6 +211,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     await for (final response in repo.uploadImage(data)) {
       switch (response.status) {
         case ResourceStatusEnum.success:
+          emitter(state.copyWith(user: const Optional.value(null)));
           emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));
           addSideEffect(AuthBlocEffect.imageUploaded(ResourceStatusEnum.success));
           break;

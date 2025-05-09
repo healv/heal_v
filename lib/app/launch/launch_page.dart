@@ -51,6 +51,7 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
   Future<void> handleSideEffect(AuthBlocEffect effect) async {
     switch (effect) {
       case LoggedOut():
+        SignInRoute().go(context);
         break;
       case LoggedIn():
         switch (effect.status) {

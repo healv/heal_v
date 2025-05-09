@@ -8,8 +8,9 @@ class AvatarWidget extends StatelessWidget {
   final double radius;
   final bool isEditable;
   final VoidCallback? onEditClick;
+  final GlobalKey? editIconKey;
 
-  const AvatarWidget({super.key, this.radius = 50.0, this.isEditable = true, this.onEditClick});
+  const AvatarWidget({super.key, this.radius = 50.0, this.isEditable = true, this.onEditClick, this.editIconKey});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class AvatarWidget extends StatelessWidget {
                       child: CircleAvatar(
                         radius: 16,
                         backgroundColor: context.primary,
-                        child: InkWell(onTap: onEditClick, child: Icon(Icons.edit, color: context.background, size: 16)),
+                        child: InkWell(key: editIconKey, onTap: onEditClick, child: Icon(Icons.edit, color: context.background, size: 16)),
                       ),
                     ),
                   ],

@@ -138,7 +138,7 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
   Widget _lessonsShimmer(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) {
-        _lessonItemShimmer(context);
+        return _lessonItemShimmer(context);
       },
       itemCount: 10,
     );

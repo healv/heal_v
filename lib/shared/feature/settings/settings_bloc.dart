@@ -10,7 +10,6 @@ import 'package:heal_v/common/utils/store_key.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 part 'settings_event.dart';
-
 part 'settings_state.dart';
 
 class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {

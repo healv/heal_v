@@ -23,7 +23,6 @@ class UserDto {
   @JsonKey(name: "birthDate")
   final String? birthDate;
 
-
   UserDto({
     this.email,
     this.name,

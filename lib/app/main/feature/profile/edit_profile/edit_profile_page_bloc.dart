@@ -10,7 +10,6 @@ import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 
 part 'edit_profile_page_event.dart';
-
 part 'edit_profile_page_state.dart';
 
 class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfilePageState, EditProfilePageSideEffect> {

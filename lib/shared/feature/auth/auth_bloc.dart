@@ -27,7 +27,6 @@ import '../../../common/dart/optional.dart';
 import '../../../navigation/auth/auth_graph.dart';
 
 part 'auth_bloc_event.dart';
-
 part 'auth_bloc_state.dart';
 
 final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBlocEffect> {

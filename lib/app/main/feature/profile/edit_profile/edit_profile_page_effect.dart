@@ -17,7 +17,13 @@ sealed class EditProfilePageSideEffect implements SideEffect {
     String? birthDate,
     String? errorMsg,
   }) =>
-      Validated(status, name: name, lastName: lastName, birthDate: birthDate, errorMsg: errorMsg);
+      Validated(
+        status,
+        name: name,
+        lastName: lastName,
+        birthDate: birthDate,
+        errorMsg: errorMsg,
+      );
 }
 
 final class FirstNameValidated extends EditProfilePageSideEffect {

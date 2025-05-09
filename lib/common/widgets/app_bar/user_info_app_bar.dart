@@ -20,10 +20,10 @@ class UserInfoAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _appBarNew(context);
+    return _appBar(context);
   }
 
-  Widget _appBarNew(BuildContext context) {
+  Widget _appBar(BuildContext context) {
     return PreferredSize(
       preferredSize: preferredSize,
       child: Padding(
@@ -78,58 +78,14 @@ class UserInfoAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget _appBar(BuildContext context) {
-    return PreferredSize(
-      preferredSize: preferredSize,
-      child: Stack(
-        children: [
-          Container(
-            height: preferredSize.height + 20,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.pink.shade100, Colors.white],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(60),
-                bottomRight: Radius.circular(60),
-              ),
-            ),
-          ),
-          Positioned.fill(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 32.0),
-              child: Row(
-                children: [
-                  const SizedBox(width: 16.0),
-                  const AvatarWidget(radius: 25, isEditable: false),
-                  const SizedBox(width: 16.0),
-                  Expanded(
-                    child: loading
-                        ? _loadingShimmer(context)
-                        : Text(
-                            '$title 👋',
-                            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: context.onBackground),
-                          ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _loadingShimmer(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 16.0),
       child: Shimmer.fromColors(
-        baseColor: context.onBackground.withOpacity(0.3),
-        highlightColor: context.onBackground.withOpacity(0.1),
+        baseColor: context.onBackground.withValues(alpha: 0.3),
+        highlightColor: context.onBackground.withValues(alpha: 0.1),
         child: Container(
-          color: context.onBackground.withOpacity(0.3),
+          color: context.onBackground.withValues(alpha: 0.3),
           height: 24,
         ),
       ),

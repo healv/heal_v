@@ -73,8 +73,6 @@ class _HomePageState extends State<HomePage> {
               const Color(0xFFFFEDE5),
               context.quizDialogItemColor.withValues(alpha: 0.8),
             ],
-            // begin: Alignment.topLeft,
-            // end: Alignment.bottomRight,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(24)),
         ),
@@ -96,7 +94,6 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     const Spacer(),
-                    // Tree Image
                     AppIcons.tree.imageAsset(
                       width: 203,
                       height: 206,
@@ -233,13 +230,13 @@ class _HomePageState extends State<HomePage> {
     await SoundPlayer.checkAndPlayClickSound();
     switch (index) {
       case 0:
-        GoRouter.of(context).go(MeditationRoute().location);
+        if (context.mounted) GoRouter.of(context).go(MeditationRoute().location);
         break;
       case 1:
-        GoRouter.of(context).go(BreathingRoute().location);
+        if (context.mounted) GoRouter.of(context).go(BreathingRoute().location);
         break;
       case 2:
-        GoRouter.of(context).go(StretchingRoute().location);
+        if (context.mounted) GoRouter.of(context).go(StretchingRoute().location);
         break;
     }
   }

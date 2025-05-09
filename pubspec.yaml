@@ -60,8 +60,8 @@ dependencies:
   back_button_interceptor: ^7.0.3
   fluttertoast: ^8.2.5
   shared_preferences: ^2.2.3
-  image_picker: ^1.0.8
-  mime: ^1.0.5
+  image_picker: ^1.1.2
+  mime: ^2.0.0
   photo_view: ^0.15.0
   visibility_detector: ^0.4.0+2
   hydrated_bloc: ^9.1.5
@@ -119,6 +119,7 @@ flutter:
     - assets/translations/
     - assets/icons/
     - assets/sounds/
+    - assets/flags/
 
   fonts:
     - family: icomoon

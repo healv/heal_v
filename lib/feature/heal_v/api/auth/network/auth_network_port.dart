@@ -1,18 +1,14 @@
-import 'package:heal_v/feature/heal_v/api/auth/model/login/login_dto.dart';
-import 'package:heal_v/feature/heal_v/api/auth/model/sign_up/sign_up_dto.dart';
+import 'package:dio/dio.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_firebase_packet.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/login/login_packet.dart';
-import 'package:heal_v/feature/heal_v/api/auth/packet/sign_up/sign_up_packet.dart';
+import 'package:heal_v/feature/heal_v/api/auth/packet/update_user_packet.dart';
 
 import '../../../../../common/utils/network/api_wrapper.dart';
+import '../model/user/user_wrapper_dto.dart';
 
 abstract interface class AuthNetworkPort {
-  Future<ApiWrapper<LoginDto?>> login(LoginPacket loginPacket);
+  Future<ApiWrapper<UserDto?>> getMe(String? email, String? displayName);
 
-  Future<ApiWrapper<LoginDto?>> loginFirebase(LoginFirebasePacket loginFirebasePacket);
+  Future<ApiWrapper<UserWrapperDto?>> updateUser(UpdateUserPacket body);
 
-  Future<ApiWrapper<SignUpDto?>> signUp(SignUpPacket loginPacket);
-
-  Future<ApiWrapper<UserDto?>> getMe();
+  Future<ApiWrapper<UserWrapperDto?>> uploadImage(FormData data);
 }

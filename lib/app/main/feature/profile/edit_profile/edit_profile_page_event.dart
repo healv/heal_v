@@ -3,31 +3,27 @@ part of 'edit_profile_page_bloc.dart';
 abstract class EditProfilePageEvent extends BaseEvent {
   const EditProfilePageEvent();
 
-  factory EditProfilePageEvent.initial({required User user}) => Initial._(user);
+  factory EditProfilePageEvent.initial({required UserDto user}) => Initial._(user);
 
   factory EditProfilePageEvent.avatarChanged({required String? avatar}) => AvatarChanged._(avatar: avatar);
 
   factory EditProfilePageEvent.firstNameChanged({required String? firstName}) => FirstNameChanged._(firstName: firstName);
 
-  factory EditProfilePageEvent.emailChanged({required String? email}) => EmailChanged._(email: email);
+  factory EditProfilePageEvent.birthDateChanged({required String? birthDate}) => BirthDateChanged._(birthDate: birthDate);
 
   factory EditProfilePageEvent.lastNameChanged({required String? lastName}) => LastNameChanged._(lastName: lastName);
 
   factory EditProfilePageEvent.validateFirstName() => const ValidateFirstName._();
 
-  factory EditProfilePageEvent.validateEmail() => const ValidateEmail._();
-
-  factory EditProfilePageEvent.updateUser() => const UpdateUser._();
-
   factory EditProfilePageEvent.firstNameFocusChanged(bool isFocused) => FirstNameFocusChanged._(isFocused);
 
-  factory EditProfilePageEvent.emailFocusChanged(bool isFocused) => EmailFocusChanged._(isFocused);
-
   factory EditProfilePageEvent.lastNameFocusChanged(bool isFocused) => LastNameFocusChanged._(isFocused);
+
+  factory EditProfilePageEvent.validate() => const Validate._();
 }
 
 final class Initial extends EditProfilePageEvent {
-  final User user;
+  final UserDto user;
 
   const Initial._(this.user);
 }
@@ -50,22 +46,14 @@ final class LastNameChanged extends EditProfilePageEvent {
   const LastNameChanged._({required this.lastName});
 }
 
-final class EmailChanged extends EditProfilePageEvent {
-  final String? email;
+final class BirthDateChanged extends EditProfilePageEvent {
+  final String? birthDate;
 
-  const EmailChanged._({required this.email});
+  const BirthDateChanged._({required this.birthDate});
 }
 
 final class ValidateFirstName extends EditProfilePageEvent {
   const ValidateFirstName._();
-}
-
-final class ValidateEmail extends EditProfilePageEvent {
-  const ValidateEmail._();
-}
-
-final class UpdateUser extends EditProfilePageEvent {
-  const UpdateUser._();
 }
 
 final class FirstNameFocusChanged extends EditProfilePageEvent {
@@ -80,8 +68,6 @@ final class LastNameFocusChanged extends EditProfilePageEvent {
   const LastNameFocusChanged._(this.isFocused);
 }
 
-final class EmailFocusChanged extends EditProfilePageEvent {
-  final bool isFocused;
-
-  const EmailFocusChanged._(this.isFocused);
+final class Validate extends EditProfilePageEvent {
+  const Validate._();
 }

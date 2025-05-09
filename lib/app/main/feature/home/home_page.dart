@@ -1,4 +1,3 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -33,12 +32,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<SharedContentBloc, SharedContentState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: UserInfoAppBar(
-            title: state.appBarMessage ?? emptyString,
-            loading: state.loading,
+        return SafeArea(
+          child: Scaffold(
+            appBar: UserInfoAppBar(
+              title: state.appBarMessage ?? emptyString,
+              loading: state.loading,
+            ),
+            body: _body(context),
           ),
-          body: _body(context),
         );
       },
     );
@@ -48,10 +49,11 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _progressCard(context),
           const SizedBox(height: 16.0),
-          _forYourJourneyRow(context),
+          _dailyGoals(context),
           const SizedBox(height: 16.0),
           _mainListView(context),
         ],
@@ -67,66 +69,79 @@ class _HomePageState extends State<HomePage> {
         height: 220,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.pink.shade100, Colors.white],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            colors: [
+              const Color(0xFFFFEDE5),
+              context.quizDialogItemColor.withValues(alpha: 0.8),
+            ],
           ),
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(30.0),
-            bottomRight: Radius.circular(30.0),
-            bottomLeft: Radius.circular(30.0),
-          ),
+          borderRadius: const BorderRadius.all(Radius.circular(24)),
         ),
         child: Stack(
           children: [
             Positioned.fill(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(height: 20),
-                        Text(
-                          tr('perfect_progress'),
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: context.onBackground),
-                        ),
+                        _progressTitleColumn(context),
+                        _inProgressColumn(context),
                       ],
                     ),
                     const Spacer(),
-                    // Tree Image
-                    Column(
-                      children: [
-                        const Text(
-                          "75%",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black),
-                        ),
-                        const SizedBox(height: 8),
-                        AppIcons.tree.imageAsset(width: 210, height: 140),
-                      ],
+                    AppIcons.tree.imageAsset(
+                      width: 203,
+                      height: 206,
                     ),
                   ],
                 ),
               ),
             ),
-            Positioned(
-              bottom: 15,
-              left: 20,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _legendItem(context, Colors.green, tr('in_progress')),
-                  const SizedBox(width: 16),
-                  _legendItem(context, Colors.red, tr('complete')),
-                ],
-              ),
-            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _progressTitleColumn(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          tr('progress'),
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: context.primary.withValues(alpha: 0.5),
+          ),
+        ),
+        Text(
+          tr('30%'),
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            color: context.primary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _inProgressColumn(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _legendItem(context, Colors.green, tr('in_progress')),
+        const SizedBox(width: 16),
+        _legendItem(context, Colors.red, tr('complete')),
+      ],
     );
   }
 
@@ -144,24 +159,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _forYourJourneyRow(BuildContext context) {
+  Widget _dailyGoals(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            tr('for_your_journey'),
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700, color: context.onBackground),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              tr('see_all'),
-              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: context.primary),
-            ),
-          )
-        ],
+      child: Text(
+        tr('daily_goals'),
+        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600, color: context.onBackground),
       ),
     );
   }
@@ -194,7 +197,8 @@ class _HomePageState extends State<HomePage> {
         child: Container(
           height: 73,
           decoration: BoxDecoration(
-            color: item.isEnabled == true ? Colors.white : context.onBackground.withOpacity(0.1),
+            border: Border.all(color: item.isEnabled == true ? context.primary.withValues(alpha: 0.3) : context.primary.withValues(alpha: 0.2)),
+            color: item.isEnabled == true ? context.background.withValues(alpha: 0.05) : context.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
@@ -212,7 +216,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 16),
               Text(
                 item.name ?? emptyString,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: context.onBackground),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: context.onBackground),
               ),
             ],
           ),
@@ -226,13 +230,13 @@ class _HomePageState extends State<HomePage> {
     await SoundPlayer.checkAndPlayClickSound();
     switch (index) {
       case 0:
-        GoRouter.of(context).go(MeditationRoute().location);
+        if (context.mounted) GoRouter.of(context).go(MeditationRoute().location);
         break;
       case 1:
-        GoRouter.of(context).go(BreathingRoute().location);
+        if (context.mounted) GoRouter.of(context).go(BreathingRoute().location);
         break;
       case 2:
-        GoRouter.of(context).go(StretchingRoute().location);
+        if (context.mounted) GoRouter.of(context).go(StretchingRoute().location);
         break;
     }
   }

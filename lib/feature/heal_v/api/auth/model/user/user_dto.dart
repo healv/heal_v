@@ -4,24 +4,6 @@ part 'user_dto.g.dart';
 
 @JsonSerializable()
 class UserDto {
-  @JsonKey(name: "user")
-  final User? user;
-
-  UserDto({
-    this.user,
-  });
-
-  factory UserDto.fromJson(Map<String, dynamic> json) {
-    return _$UserDtoFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$UserDtoToJson(this);
-  }
-}
-
-@JsonSerializable()
-class User {
   @JsonKey(name: "email")
   final String? email;
   @JsonKey(name: "name")
@@ -38,8 +20,10 @@ class User {
   final Progress? progress;
   @JsonKey(name: "createdAt")
   final String? createdAt;
+  @JsonKey(name: "birthDate")
+  final String? birthDate;
 
-  User({
+  UserDto({
     this.email,
     this.name,
     this.lastName,
@@ -48,14 +32,15 @@ class User {
     this.preferences,
     this.progress,
     this.createdAt,
+    this.birthDate,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return _$UserFromJson(json);
+  factory UserDto.fromJson(Map<String, dynamic> json) {
+    return _$UserDtoFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$UserToJson(this);
+    return _$UserDtoToJson(this);
   }
 }
 

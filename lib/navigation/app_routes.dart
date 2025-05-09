@@ -22,7 +22,7 @@ abstract final class ProfileRoutes {
   static const String nestedEditProfile = 'profileEditProfile';
 
   /// Non-nested routes
-  static const String settings = '/profileSettings';
+  static const String language = '/language';
   static const String progress = '/profileProgress';
   static const String journalHistory = '/profileJournalHistory';
 }

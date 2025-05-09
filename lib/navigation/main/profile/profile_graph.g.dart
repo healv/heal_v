@@ -8,7 +8,7 @@ part of 'profile_graph.dart';
 
 List<RouteBase> get $appRoutes => [
       $profileRoute,
-      $profileSettingsRoute,
+      $profileLanguageRoute,
       $profileProgressRoute,
       $profileJournalHistoryRoute,
     ];
@@ -35,17 +35,17 @@ extension $ProfileRouteExtension on ProfileRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $profileSettingsRoute => GoRouteData.$route(
-      path: '/profileSettings',
-      factory: $ProfileSettingsRouteExtension._fromState,
+RouteBase get $profileLanguageRoute => GoRouteData.$route(
+      path: '/language',
+      factory: $ProfileLanguageRouteExtension._fromState,
     );
 
-extension $ProfileSettingsRouteExtension on ProfileSettingsRoute {
-  static ProfileSettingsRoute _fromState(GoRouterState state) =>
-      ProfileSettingsRoute();
+extension $ProfileLanguageRouteExtension on ProfileLanguageRoute {
+  static ProfileLanguageRoute _fromState(GoRouterState state) =>
+      ProfileLanguageRoute();
 
   String get location => GoRouteData.$location(
-        '/profileSettings',
+        '/language',
       );
 
   void go(BuildContext context) => context.go(location);

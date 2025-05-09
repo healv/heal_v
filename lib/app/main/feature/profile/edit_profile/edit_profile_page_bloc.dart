@@ -10,7 +10,6 @@ import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 
 part 'edit_profile_page_event.dart';
-
 part 'edit_profile_page_state.dart';
 
 class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfilePageState, EditProfilePageSideEffect> {
@@ -19,13 +18,11 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
     on<AvatarChanged>(_handleAvatarChangedEvent);
     on<FirstNameChanged>(_handleFirstNameChangedEvent);
     on<LastNameChanged>(_handleLastNameChangedEvent);
-    on<EmailChanged>(_handleEmailChangedEvent);
+    on<BirthDateChanged>(_handleBirthDateChangedEvent);
     on<ValidateFirstName>(_handleValidateFirstNameEvent);
-    on<ValidateEmail>(_handleValidateEmailEvent);
-    on<UpdateUser>(_handleUpdateUserEvent);
     on<FirstNameFocusChanged>(_handleFirstNameFocusChangedEvent);
     on<LastNameFocusChanged>(_handleLastNameFocusChangedEvent);
-    on<EmailFocusChanged>(_handleEmailFocusChangedEvent);
+    on<Validate>(_handleValidateEvent);
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<EditProfilePageState> emitter) async {
@@ -34,6 +31,7 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
       lastName: Optional.value(event.user.lastName),
       email: Optional.value(event.user.email),
       avatar: Optional.value(event.user.photoURL),
+      birthDate: Optional.value(event.user.birthDate),
     ));
   }
 
@@ -49,8 +47,8 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
     emitter(state.copyWith(lastName: Optional.value(event.lastName)));
   }
 
-  Future<void> _handleEmailChangedEvent(EmailChanged event, Emitter<EditProfilePageState> emitter) async {
-    emitter(state.copyWith(email: Optional.value(event.email)));
+  Future<void> _handleBirthDateChangedEvent(BirthDateChanged event, Emitter<EditProfilePageState> emitter) async {
+    emitter(state.copyWith(birthDate: Optional.value(event.birthDate)));
   }
 
   Future<void> _handleValidateFirstNameEvent(ValidateFirstName event, Emitter<EditProfilePageState> emitter) async {
@@ -64,28 +62,6 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
     }
   }
 
-  Future<void> _handleValidateEmailEvent(ValidateEmail event, Emitter<EditProfilePageState> emitter) async {
-    EditProfilePageSideEffect.emailValidated(ResourceStatusEnum.loading);
-    if (_validateEmail()) {
-      emitter(state.copyWith(emailErrorMsg: const Optional.value(null)));
-      addSideEffect(EditProfilePageSideEffect.emailValidated(ResourceStatusEnum.success));
-    } else {
-      emitter(state.copyWith(emailErrorMsg: Optional.value(tr('this_field_is_required'))));
-      addSideEffect(EditProfilePageSideEffect.emailValidated(ResourceStatusEnum.error));
-    }
-  }
-
-  Future<void> _handleUpdateUserEvent(UpdateUser event, Emitter<EditProfilePageState> emitter) async {
-    EditProfilePageSideEffect.validated(ResourceStatusEnum.loading);
-    if (_validateFirstName()) {
-      emitter(state.copyWith(firstNameErrorMsg: const Optional.value(null)));
-      addSideEffect(EditProfilePageSideEffect.validated(ResourceStatusEnum.success));
-    } else {
-      emitter(state.copyWith(firstNameErrorMsg: Optional.value(tr('this_field_is_required'))));
-      addSideEffect(EditProfilePageSideEffect.validated(ResourceStatusEnum.error));
-    }
-  }
-
   Future<void> _handleFirstNameFocusChangedEvent(FirstNameFocusChanged event, Emitter<EditProfilePageState> emitter) async {
     emitter(state.copyWith(isFirstNameFocused: event.isFocused));
   }
@@ -94,17 +70,32 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
     emitter(state.copyWith(isLastNameFocused: event.isFocused));
   }
 
-  Future<void> _handleEmailFocusChangedEvent(EmailFocusChanged event, Emitter<EditProfilePageState> emitter) async {
-    emitter(state.copyWith(isEmailFocused: event.isFocused));
-  }
-
   bool _validateFirstName() {
     final firstName = state.firstName?.trim();
     return firstName != null && firstName.isNotEmpty;
   }
 
-  bool _validateEmail() {
-    final firstName = state.email?.trim();
-    return firstName != null && firstName.isNotEmpty;
+  Future<void> _handleValidateEvent(Validate event, Emitter<EditProfilePageState> emitter) async {
+    EditProfilePageSideEffect.validated(ResourceStatusEnum.loading);
+
+    if (!_validateFirstName()) {
+      emitter(state.copyWith(firstNameErrorMsg: Optional.value(tr('this_field_is_required'))));
+      addSideEffect(EditProfilePageSideEffect.firstNameValidated(ResourceStatusEnum.error));
+    } else {
+      emitter(state.copyWith(firstNameErrorMsg: const Optional.value(null)));
+      addSideEffect(EditProfilePageSideEffect.firstNameValidated(ResourceStatusEnum.success));
+    }
+
+    if (state.firstNameErrorMsg == null) {
+      emitter(state.copyWith(firstNameErrorMsg: const Optional.value(null)));
+      addSideEffect(EditProfilePageSideEffect.validated(
+        ResourceStatusEnum.success,
+        name: state.firstName,
+        lastName: state.lastName,
+        birthDate: state.birthDate,
+      ));
+    } else {
+      addSideEffect(EditProfilePageSideEffect.validated(ResourceStatusEnum.error));
+    }
   }
 }

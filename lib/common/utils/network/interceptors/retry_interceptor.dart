@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:heal_v/common/tools/store.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:heal_v/common/utils/constants.dart';
-import 'package:heal_v/common/utils/store_key.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 
 class RetryInterceptor extends Interceptor {
@@ -17,7 +16,7 @@ class RetryInterceptor extends Interceptor {
     if (err.type == DioExceptionType.connectionError) {
       await _waitForInternetConnection();
       try {
-        final accessToken = await Store.get(key: StoreKey.accessToken, defaultValue: emptyString);
+        final accessToken = await FirebaseAuth.instance.currentUser?.getIdToken() ?? emptyString;
         final options = Options(
           method: err.requestOptions.method,
           headers: err.requestOptions.headers,

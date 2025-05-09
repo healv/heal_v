@@ -97,7 +97,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   keyboardType: TextInputType.text,
                   cursorColor: context.onBackground,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
@@ -136,7 +136,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   keyboardType: TextInputType.text,
                   cursorColor: context.onBackground,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
@@ -175,7 +175,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: context.onBackground,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
@@ -215,7 +215,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   cursorColor: context.onBackground,
                   obscureText: state.isPasswordHidden,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
@@ -226,7 +226,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                     suffixIcon: IconButton(
                       icon: Icon(
                         state.isPasswordHidden ? Icons.visibility : Icons.visibility_off,
-                        color: context.onBackground.withOpacity(0.6),
+                        color: context.onBackground.withValues(alpha: 0.6),
                       ),
                       onPressed: () {
                         context.read<SignUpPageBloc>().add(SignUpPageEvent.updatePasswordVisibility());
@@ -264,7 +264,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   cursorColor: context.onBackground,
                   obscureText: state.isRepeatPasswordHidden,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withOpacity(0.3))),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
                     errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                     focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
@@ -275,7 +275,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                     suffixIcon: IconButton(
                       icon: Icon(
                         state.isRepeatPasswordHidden ? Icons.visibility : Icons.visibility_off,
-                        color: context.onBackground.withOpacity(0.6),
+                        color: context.onBackground.withValues(alpha: 0.6),
                       ),
                       onPressed: () {
                         context.read<SignUpPageBloc>().add(SignUpPageEvent.updateRepeatPasswordVisibility());
@@ -317,6 +317,17 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
   void _listenAuthEffects(AuthBlocEffect effect) async {
     switch (effect) {
       case SignedUp():
+        switch (effect.status) {
+          case ResourceStatusEnum.success:
+            HomeRoute().go(context);
+            break;
+          case ResourceStatusEnum.error:
+            showAlertDialog(title: tr('error'), message: effect.errorMsg.toString());
+            break;
+          default:
+            break;
+        }
+      case LoggedIn():
         switch (effect.status) {
           case ResourceStatusEnum.success:
             HomeRoute().go(context);

@@ -46,7 +46,7 @@ abstract class AppThemeGenFunctions {
   }
 
   static _dividerThemeData(AppColorsPalette palette) {
-    return DividerThemeData(color: palette.onBackground.withOpacity(0.1));
+    return DividerThemeData(color: palette.onBackground.withValues(alpha: 0.1));
   }
 
   static BottomNavigationBarThemeData _bottomNavigationBarThemeData(AppColorsPalette palette) {
@@ -59,14 +59,14 @@ abstract class AppThemeGenFunctions {
       selectedIconTheme: const IconThemeData(size: 40),
       unselectedIconTheme: const IconThemeData(size: 26),
       selectedLabelStyle: TextStyle(fontSize: 14, color: palette.primary),
-      unselectedLabelStyle: const TextStyle(fontSize: 12, color: Color(0xFF666666)),
+      unselectedLabelStyle: TextStyle(fontSize: 12, color: palette.onBackground.withValues(alpha: 0.1)),
     );
   }
 
   static DialogTheme _dialogTheme(AppColorsPalette palette) {
     return DialogTheme(
       backgroundColor: palette.background,
-      surfaceTintColor: palette.onBackground.withOpacity(0.1),
+      surfaceTintColor: palette.onBackground.withValues(alpha: 0.1),
       shadowColor: Colors.transparent,
       titleTextStyle: TextStyle(
         fontSize: 16,
@@ -75,7 +75,7 @@ abstract class AppThemeGenFunctions {
       ),
       contentTextStyle: TextStyle(
         fontSize: 13,
-        color: palette.onBackground.withOpacity(0.6),
+        color: palette.onBackground.withValues(alpha: 0.6),
       ),
     );
   }
@@ -106,7 +106,7 @@ abstract class AppThemeGenFunctions {
 
   static ColorScheme _colorScheme(AppColorsPalette palette) {
     return ColorScheme.fromSwatch().copyWith(
-      surface: palette.onBackground.withOpacity(0.8),
+      surface: palette.onBackground.withValues(alpha: 0.8),
       onSurface: palette.onBackground,
       brightness: Brightness.dark,
     );
@@ -151,7 +151,7 @@ abstract class AppThemeGenFunctions {
         if (states.contains(WidgetState.selected)) {
           return palette.primary;
         }
-        return palette.primary.withOpacity(0.3);
+        return palette.primary.withValues(alpha: 0.3);
       }),
       todayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
         if (states.contains(WidgetState.selected)) {
@@ -161,7 +161,7 @@ abstract class AppThemeGenFunctions {
       }),
       headerForegroundColor: palette.onBackground,
       cancelButtonStyle: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(palette.onBackground), // Цвет текста кнопки "Cancel"
+        foregroundColor: WidgetStateProperty.all(palette.onBackground),
       ),
       dayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
         if (states.contains(WidgetState.selected)) {
@@ -176,7 +176,7 @@ abstract class AppThemeGenFunctions {
         return null;
       }),
       confirmButtonStyle: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(palette.primary), // Цвет текста кнопки "OK"
+        foregroundColor: WidgetStateProperty.all(palette.primary),
       ),
     );
   }

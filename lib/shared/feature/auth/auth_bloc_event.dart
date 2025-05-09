@@ -7,11 +7,17 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.signIn({required String email, required String password}) => SignIn._(email: email, password: password);
 
-  factory AuthBlocEvent.signInFirebase({required String uid, required String email, required String displayName}) => SignInFirebase._(uid: uid, email: email, displayName: displayName);
+  factory AuthBlocEvent.signInWithGoogle() => const SignInWithGoogle._();
 
   factory AuthBlocEvent.signUp({required String email, required String password, required String name, String? lastName}) => SignUp._(email: email, password: password, name: name, lastName: lastName);
 
-  factory AuthBlocEvent.me({required String accessToken}) => GetMe._(accessToken: accessToken);
+  factory AuthBlocEvent.me(String? email, String? displayName) => GetMe._(email: email, displayName: displayName);
+
+  factory AuthBlocEvent.updateUser(String? name, String? lastName, String? birthDate) => UpdateUser._(name: name, lastName: lastName, birthDate: birthDate);
+
+  factory AuthBlocEvent.uploadImage(XFile xFile) => UploadImage._(xFile: xFile);
+
+  factory AuthBlocEvent.logOut() => const LogOut._();
 }
 
 class Initial extends AuthBlocEvent {
@@ -25,12 +31,8 @@ class SignIn extends AuthBlocEvent {
   SignIn._({required this.email, required this.password});
 }
 
-class SignInFirebase extends AuthBlocEvent {
-  final String uid;
-  final String email;
-  final String displayName;
-
-  SignInFirebase._({required this.uid, required this.email, required this.displayName});
+class SignInWithGoogle extends AuthBlocEvent {
+  const SignInWithGoogle._();
 }
 
 class SignUp extends AuthBlocEvent {
@@ -43,7 +45,26 @@ class SignUp extends AuthBlocEvent {
 }
 
 class GetMe extends AuthBlocEvent {
-  final String accessToken;
+  final String? email;
+  final String? displayName;
 
-  GetMe._({required this.accessToken});
+  GetMe._({this.email, this.displayName});
+}
+
+class UpdateUser extends AuthBlocEvent {
+  final String? name;
+  final String? lastName;
+  final String? birthDate;
+
+  UpdateUser._({required this.name, required this.lastName, required this.birthDate});
+}
+
+class UploadImage extends AuthBlocEvent {
+  final XFile xFile;
+
+  UploadImage._({required this.xFile});
+}
+
+class LogOut extends AuthBlocEvent {
+  const LogOut._();
 }

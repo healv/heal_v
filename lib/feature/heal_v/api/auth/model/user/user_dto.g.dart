@@ -7,16 +7,6 @@ part of 'user_dto.dart';
 // **************************************************************************
 
 UserDto _$UserDtoFromJson(Map<String, dynamic> json) => UserDto(
-      user: json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
-      'user': instance.user,
-    };
-
-User _$UserFromJson(Map<String, dynamic> json) => User(
       email: json['email'] as String?,
       name: json['name'] as String?,
       lastName: json['lastName'] as String?,
@@ -31,9 +21,10 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           ? null
           : Progress.fromJson(json['progress'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String?,
+      birthDate: json['birthDate'] as String?,
     );
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
       'email': instance.email,
       'name': instance.name,
       'lastName': instance.lastName,
@@ -42,6 +33,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'preferences': instance.preferences,
       'progress': instance.progress,
       'createdAt': instance.createdAt,
+      'birthDate': instance.birthDate,
     };
 
 Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(

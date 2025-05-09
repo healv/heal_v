@@ -5,12 +5,14 @@ import 'package:heal_v/feature/heal_v/api/auth/network/auth_network_port.dart';
 
 class GetMeNetworkBounds extends HttpBounds<UserDto, ApiWrapper<UserDto?>> {
   final AuthNetworkPort port;
+  final String? email;
+  final String? displayName;
 
-  GetMeNetworkBounds({required this.port});
+  GetMeNetworkBounds({required this.port, this.email, this.displayName});
 
   @override
   Future<ApiWrapper<UserDto?>?> fetchFromNetwork() {
-    return port.getMe();
+    return port.getMe(email, displayName);
   }
 
   @override

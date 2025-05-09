@@ -24,17 +24,8 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthBlocState>(
-      listener: (context, state) {
-        if (state.accessToken != null) {
-          HomeRoute().go(context);
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          body: _body(context),
-        );
-      },
+    return Scaffold(
+      body: _body(context),
     );
   }
 
@@ -48,6 +39,7 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
   Future<void> handleSideEffect(AuthBlocEffect effect) async {
     switch (effect) {
       case LoggedOut():
+        SignInRoute().go(context);
         break;
       case LoggedIn():
         switch (effect.status) {
@@ -69,6 +61,8 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
         break;
       case NotLoggedIn():
         SignInRoute().go(context);
+        break;
+      default:
         break;
     }
   }

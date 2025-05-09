@@ -10,7 +10,6 @@ import 'package:heal_v/common/utils/store_key.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 part 'settings_event.dart';
-
 part 'settings_state.dart';
 
 class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
@@ -33,7 +32,7 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
   Future<void> _handleUpdateNotificationsStatusEvent(UpdateNotificationsStatus event, Emitter<SettingsState> emitter) async {
     if (event.isEnable) {
       final status = await Permission.notification.status;
-      switch(status) {
+      switch (status) {
         case PermissionStatus.denied:
           await Permission.notification.request();
           break;

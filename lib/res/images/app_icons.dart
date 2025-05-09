@@ -30,6 +30,15 @@ enum AppIcons {
   heart('assets/icons/ic_heart.svg'),
   close('assets/icons/ic_close.svg'),
   fullScreen('assets/icons/ic_full_screen.svg'),
+  checked('assets/icons/ic_checked.svg'),
+  progress('assets/icons/ic_progress.svg'),
+  journalHistory('assets/icons/ic_journal_history.svg'),
+  notifications('assets/icons/ic_notifications.svg'),
+  logout('assets/icons/ic_logout.svg'),
+  logoutDialog('assets/icons/ic_logout_dialog.svg'),
+  person('assets/icons/ic_person.svg'),
+  gallery('assets/icons/ic_gallery.svg'),
+  trash('assets/icons/ic_trash.svg'),
   share('assets/icons/ic_share.svg');
 
   final String path;

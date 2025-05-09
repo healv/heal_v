@@ -39,6 +39,7 @@ enum AppIcons {
   person('assets/icons/ic_person.svg'),
   gallery('assets/icons/ic_gallery.svg'),
   trash('assets/icons/ic_trash.svg'),
+  changePassword('assets/icons/ic_change_password.svg'),
   share('assets/icons/ic_share.svg');
 
   final String path;

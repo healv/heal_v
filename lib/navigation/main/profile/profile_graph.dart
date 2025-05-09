@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_v/app/main/feature/profile/change_password/change_password_page.dart';
+import 'package:heal_v/app/main/feature/profile/change_password/change_password_page_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/language/language_page.dart';
@@ -35,6 +37,19 @@ base class ProfileNestedEditProfileRoute extends GoRouteData {
       lazy: false,
       create: (_) => EditProfilePageBloc()..add(EditProfilePageEvent.initial(user: user ?? UserDto())),
       child: const EditProfilePage(),
+    );
+  }
+}
+
+@TypedGoRoute<ProfileChangePasswordRoute>(path: ProfileRoutes.changePassword, routes: <TypedRoute<RouteData>>[])
+@immutable
+base class ProfileChangePasswordRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BlocProvider(
+      lazy: false,
+      create: (_) => ChangePasswordPageBloc()..add(ChangePasswordPageEvent.initial()),
+      child: const ChangePasswordPage(),
     );
   }
 }

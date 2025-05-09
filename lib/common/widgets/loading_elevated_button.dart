@@ -30,14 +30,12 @@ final class _LoadingElevatedButtonState extends State<LoadingElevatedButton> {
       style: widget.style,
       onPressed: widget.isLoading == true ? () {} : widget.onPressed,
       child: widget.isLoading == true
-          ? Center(
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  color: widget.progressIndicatorColor ?? context.onBackground,
-                  backgroundColor: widget.progressIndicatorBackgroundColor,
-                ),
+          ? SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                color: widget.progressIndicatorColor ?? context.onBackground,
+                backgroundColor: widget.progressIndicatorBackgroundColor,
               ),
             )
           : widget.child,

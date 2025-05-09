@@ -15,11 +15,12 @@ class NoInternetScreen extends StatefulWidget {
 
 class _NoInternetScreenState extends State<NoInternetScreen> {
   int visibleDot = 0;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(milliseconds: 500), (timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       setState(() {
         visibleDot = (visibleDot + 1) % 4;
       });
@@ -55,5 +56,11 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
   }
 }

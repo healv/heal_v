@@ -42,6 +42,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<UpdateUser>(_handleUpdateUserEvent);
     on<UploadImage>(_handleUploadImageEvent);
     on<LogOut>(_handleLogOutEvent);
+    on<ChangePassword>(_handleChangePasswordEvent);
   }
 
   Future<void> _subscribeToFirebaseUser() async {
@@ -236,6 +237,25 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       addSideEffect(AuthBlocEffect.loggedOut(ResourceStatusEnum.success));
     } catch (e) {
       log('$healVTag logout error: ${e.toString()}');
+    }
+  }
+
+  Future<void> _handleChangePasswordEvent(ChangePassword event, Emitter<AuthBlocState> emitter) async {
+    addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.loading));
+    try {
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? user = auth.currentUser;
+
+      AuthCredential credential = EmailAuthProvider.credential(email: user!.email!, password: event.currentPassword);
+      await user.reauthenticateWithCredential(credential);
+      await user.updatePassword(event.newPassword);
+      addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.success));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == wrongPassword || e.code == invalidCredential) {
+        addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error, errorMsg: wrongPassword));
+      }
+    } on Exception catch (e) {
+      addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error));
     }
   }
 

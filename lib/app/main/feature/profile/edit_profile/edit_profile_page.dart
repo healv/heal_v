@@ -70,7 +70,6 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
           ),
         ),
       ),
-      // appBar: HealVAppBar.simple(title: tr('edit_profile'), isBackEnable: true),
       body: _body(context),
     );
   }
@@ -246,7 +245,8 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
         SizedBox(
           width: double.infinity,
           child: BlocBuilder<EditProfilePageBloc, EditProfilePageState>(
-            buildWhen: (oldState, newState) => oldState.firstNameErrorMsg != newState.firstNameErrorMsg || oldState.isFirstNameFocused != newState.isFirstNameFocused || oldState.firstName != newState.firstName,
+            buildWhen: (oldState, newState) =>
+                oldState.firstNameErrorMsg != newState.firstNameErrorMsg || oldState.isFirstNameFocused != newState.isFirstNameFocused || oldState.firstName != newState.firstName,
             builder: (BuildContext context, EditProfilePageState state) {
               return TextField(
                 style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),

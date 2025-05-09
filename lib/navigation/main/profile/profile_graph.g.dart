@@ -8,6 +8,7 @@ part of 'profile_graph.dart';
 
 List<RouteBase> get $appRoutes => [
       $profileRoute,
+      $profileChangePasswordRoute,
       $profileLanguageRoute,
       $profileProgressRoute,
       $profileJournalHistoryRoute,
@@ -23,6 +24,29 @@ extension $ProfileRouteExtension on ProfileRoute {
 
   String get location => GoRouteData.$location(
         '/mainProfile',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $profileChangePasswordRoute => GoRouteData.$route(
+      path: '/changePassword',
+      factory: $ProfileChangePasswordRouteExtension._fromState,
+    );
+
+extension $ProfileChangePasswordRouteExtension on ProfileChangePasswordRoute {
+  static ProfileChangePasswordRoute _fromState(GoRouterState state) =>
+      ProfileChangePasswordRoute();
+
+  String get location => GoRouteData.$location(
+        '/changePassword',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -70,7 +70,16 @@
   "areYouSureYouWantToLogOut": "Are you sure you want to log out?",
   "youCanAlwaysLogBackInAnytime": "You can always log back in anytime.",
   "saveChanges": "Save Changes",
+  "save": "Save",
   "personalInformationUpdated": "Personal Information Updated.",
   "chooseFromCameraRoll": "Choose from camera roll",
-  "deleteCurrentPhoto": "Delete current photo"
+  "deleteCurrentPhoto": "Delete current photo",
+  "yourPasswordsMustMatch": "Your passwords must match.",
+  "changePassword": "Change password",
+  "currentPassword": "Current password",
+  "newPassword": "New password",
+  "confirmYourNewPassword": "Confirm your new password",
+  "yourPasswordHasBeenChanged": "Your password has been changed!",
+  "wrongPassword": "Wrong Password",
+  "somethingWentWrong": "Something went wrong"
 }

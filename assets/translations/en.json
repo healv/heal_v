@@ -81,5 +81,8 @@
   "confirmYourNewPassword": "Confirm your new password",
   "yourPasswordHasBeenChanged": "Your password has been changed!",
   "wrongPassword": "Wrong Password",
-  "somethingWentWrong": "Something went wrong"
+  "somethingWentWrong": "Something went wrong",
+  "deleteNote": "Delete note",
+  "thisActionCannotBeUndone": "This action cannot be undone.",
+  "delete": "Delete"
 }

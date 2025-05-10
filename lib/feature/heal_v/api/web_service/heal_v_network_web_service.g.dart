@@ -65,7 +65,8 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<UserWrapperDto?>> updateUser(UpdateUserPacket body) async {
+  Future<HttpResponse<UserWrapperDto?>> updateUser(
+      UpdateUserPacket body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -90,7 +91,8 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
     late UserWrapperDto? _value;
     try {
-      _value = _result.data == null ? null : UserWrapperDto.fromJson(_result.data!);
+      _value =
+          _result.data == null ? null : UserWrapperDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -124,7 +126,8 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
     late UserWrapperDto? _value;
     try {
-      _value = _result.data == null ? null : UserWrapperDto.fromJson(_result.data!);
+      _value =
+          _result.data == null ? null : UserWrapperDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -158,7 +161,9 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
     late SharedContentDto? _value;
     try {
-      _value = _result.data == null ? null : SharedContentDto.fromJson(_result.data!);
+      _value = _result.data == null
+          ? null
+          : SharedContentDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -192,7 +197,9 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
     late DailyProgressDto? _value;
     try {
-      _value = _result.data == null ? null : DailyProgressDto.fromJson(_result.data!);
+      _value = _result.data == null
+          ? null
+          : DailyProgressDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -227,7 +234,8 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
     late MeditationsDto? _value;
     try {
-      _value = _result.data == null ? null : MeditationsDto.fromJson(_result.data!);
+      _value =
+          _result.data == null ? null : MeditationsDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -262,7 +270,8 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
     late BreathingsDto? _value;
     try {
-      _value = _result.data == null ? null : BreathingsDto.fromJson(_result.data!);
+      _value =
+          _result.data == null ? null : BreathingsDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -272,31 +281,36 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<List<MeditationsCategoriesDto>?>> meditationsCategories() async {
+  Future<HttpResponse<List<MeditationsCategoriesDto>?>>
+      meditationsCategories() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<List<MeditationsCategoriesDto>>>(Options(
+    final _options =
+        _setStreamType<HttpResponse<List<MeditationsCategoriesDto>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          'meditations/categories',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              'meditations/categories',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<MeditationsCategoriesDto>? _value;
     try {
-      _value = _result.data?.map((dynamic i) => MeditationsCategoriesDto.fromJson(i as Map<String, dynamic>)).toList();
+      _value = _result.data
+          ?.map((dynamic i) =>
+              MeditationsCategoriesDto.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -306,31 +320,36 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<List<BreathingsCategoriesDto>?>> breathingsCategories() async {
+  Future<HttpResponse<List<BreathingsCategoriesDto>?>>
+      breathingsCategories() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<List<BreathingsCategoriesDto>>>(Options(
+    final _options =
+        _setStreamType<HttpResponse<List<BreathingsCategoriesDto>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          'breathings/categories',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              'breathings/categories',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<BreathingsCategoriesDto>? _value;
     try {
-      _value = _result.data?.map((dynamic i) => BreathingsCategoriesDto.fromJson(i as Map<String, dynamic>)).toList();
+      _value = _result.data
+          ?.map((dynamic i) =>
+              BreathingsCategoriesDto.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -345,14 +364,52 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<List<JournalHistoryDto>>>(Options(
+    final _options =
+        _setStreamType<HttpResponse<List<JournalHistoryDto>>>(Options(
       method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'journal',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<JournalHistoryDto>? _value;
+    try {
+      _value = _result.data
+          ?.map((dynamic i) =>
+              JournalHistoryDto.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<DeleteJournalDto?>> deleteJournal(String date) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<DeleteJournalDto>>(Options(
+      method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'journal',
+          'journal/${date}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -361,10 +418,12 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<JournalHistoryDto>? _value;
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late DeleteJournalDto? _value;
     try {
-      _value = _result.data?.map((dynamic i) => JournalHistoryDto.fromJson(i as Map<String, dynamic>)).toList();
+      _value = _result.data == null
+          ? null
+          : DeleteJournalDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -379,26 +438,30 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<List<StretchingWeekDto>>>(Options(
+    final _options =
+        _setStreamType<HttpResponse<List<StretchingWeekDto>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          'stretching',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              'stretching',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<StretchingWeekDto>? _value;
     try {
-      _value = _result.data?.map((dynamic i) => StretchingWeekDto.fromJson(i as Map<String, dynamic>)).toList();
+      _value = _result.data
+          ?.map((dynamic i) =>
+              StretchingWeekDto.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -408,7 +471,8 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<StretchingLessonsDto>> getStretchingLessons(String id) async {
+  Future<HttpResponse<StretchingLessonsDto>> getStretchingLessons(
+      String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -442,7 +506,9 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
-    if (T != dynamic && !(requestOptions.responseType == ResponseType.bytes || requestOptions.responseType == ResponseType.stream)) {
+    if (T != dynamic &&
+        !(requestOptions.responseType == ResponseType.bytes ||
+            requestOptions.responseType == ResponseType.stream)) {
       if (T == String) {
         requestOptions.responseType = ResponseType.plain;
       } else {

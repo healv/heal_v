@@ -10,6 +10,7 @@ Future<void> showAlertDialog({required String title, required String message}) a
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
+        surfaceTintColor: Colors.transparent,
         title: Text(title, style: const TextStyle(fontSize: 18)),
         content: SingleChildScrollView(
           child: ListBody(
@@ -32,10 +33,11 @@ Future<void> showAlertDialog({required String title, required String message}) a
 Future<void> showLogOutDialog(VoidCallback okClick) async {
   return showDialog(
     context: shellNavigatorGlobalKey.currentContext!,
-    barrierDismissible: false, // user must tap button!
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor: context.background,
+        surfaceTintColor: Colors.transparent,
         icon: AppIcons.logoutDialog.svgAsset(),
         title: Text(
           tr('logout'),
@@ -74,8 +76,8 @@ Future<void> showLogOutDialog(VoidCallback okClick) async {
             ],
           ),
         ),
-        actionsPadding: const EdgeInsets.only(top: 24.0),
-        actionsAlignment: MainAxisAlignment.center,
+        actionsPadding: const EdgeInsets.only(top: 24.0, bottom: 20.0),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
         actions: <Widget>[
           ElevatedButton(
             onPressed: () async {
@@ -106,6 +108,114 @@ Future<void> showLogOutDialog(VoidCallback okClick) async {
               minimumSize: const Size(129, 36),
             ),
             child: Text(tr('logout'),
+                style: TextStyle(
+                  color: context.background,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.2,
+                )),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> showDeleteJournalDialog(VoidCallback okClick) async {
+  return showDialog(
+    context: shellNavigatorGlobalKey.currentContext!,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: context.background,
+        surfaceTintColor: Colors.transparent,
+        icon: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFFFFDCDC),
+                context.background,
+              ],
+            ),
+            // color: Colors.red.withValues(alpha: 0.1),
+          ),
+          padding: const EdgeInsets.all(10.0),
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: context.background,
+              border: Border.all(
+                color: const Color(0xFFFFE3D6),
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: AppIcons.trash.svgAsset(width: 26.0, height: 26.0),
+            ),
+          ),
+        ),
+        contentPadding: const EdgeInsets.only(top: 8.0, left: 20.0, right: 20.0),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                textAlign: TextAlign.center,
+                '${tr('deleteNote')}?',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: context.onBackground,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                textAlign: TextAlign.center,
+                tr('thisActionCannotBeUndone'),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.onBackground.withValues(alpha: 0.3),
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actionsPadding: const EdgeInsets.only(top: 24.0, bottom: 20.0),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+            },
+            style: OutlinedButton.styleFrom(
+              backgroundColor: context.background,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: context.onBackground.withValues(alpha: 0.2))),
+              elevation: 0,
+              minimumSize: const Size(129, 36),
+            ),
+            child: Text(tr('cancel'),
+                style: TextStyle(
+                  color: context.onBackground,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.2,
+                )),
+          ),
+          ElevatedButton(
+            onPressed: okClick,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 0,
+              minimumSize: const Size(129, 36),
+            ),
+            child: Text(tr('delete'),
                 style: TextStyle(
                   color: context.background,
                   fontSize: 14,

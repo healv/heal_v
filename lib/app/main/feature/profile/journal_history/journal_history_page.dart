@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page_bloc.dart';
+import 'package:heal_v/common/extensions/date_time_extension.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/feature/heal_v/api/journal/model/journal_history_dto.dart';
+import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
@@ -56,7 +58,7 @@ class JournalHistoryPage extends StatelessWidget {
             children: [
               Text(
                 entry.key,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.2, color: context.onBackground),
               ),
               const SizedBox(height: 8),
               ...entry.value.map((item) => _buildItem(context, item)),
@@ -76,36 +78,59 @@ class JournalHistoryPage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFEAE0),
+        color: const Color(0xFFFFF8F5),
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFFFFE3D6),
+        ),
       ),
       child: ListTile(
-        leading: Container(
+        leading: SizedBox(
           width: 40,
           height: 40,
-          decoration: BoxDecoration(
-            color: badgeColor,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Center(
-            child: Text(
-              date.day.toString(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: AppIcons.save.svgAsset(
+                  colorFilter: ColorFilter.mode(badgeColor, BlendMode.srcIn),
+                ),
               ),
-            ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    date.day.toString(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         title: Text(
-          '${date.month} ${date.day}',
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          date.mmmmDD(),
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 14.0,
+            letterSpacing: 0.2,
+            color: context.onBackground,
+          ),
         ),
         subtitle: Text(
           item.message ?? emptyString,
-          style: TextStyle(color: Colors.grey.shade600),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 10.0,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 0.3,
+            color: context.onBackground.withValues(alpha: 0.2),
+          ),
         ),
-        trailing: Icon(Icons.arrow_forward_ios_rounded, color: context.primary, size: 20),
+        trailing: Icon(Icons.arrow_forward_ios_rounded, color: context.onBackground, size: 20),
         onTap: () {
           // Navigate to article or perform action
         },

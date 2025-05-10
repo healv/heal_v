@@ -74,8 +74,8 @@ Future<void> showLogOutDialog(VoidCallback okClick) async {
             ],
           ),
         ),
-        actionsPadding: const EdgeInsets.only(top: 24.0),
-        actionsAlignment: MainAxisAlignment.center,
+        actionsPadding: const EdgeInsets.only(top: 24.0, bottom: 20.0),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
         actions: <Widget>[
           ElevatedButton(
             onPressed: () async {

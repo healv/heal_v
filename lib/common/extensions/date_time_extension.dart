@@ -33,4 +33,12 @@ extension DaateTimeExtension on DateTime? {
   String ddMMYYYY() {
     return formatDate('dd.MM.yyyy');
   }
+
+  String mmmmYYYY() {
+    return formatDate('MMMM yyyy');
+  }
+
+  String mmmmDD(){
+    return formatDate('MMMM dd');
+  }
 }

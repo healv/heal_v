@@ -1,5 +1,6 @@
 import 'package:heal_v/common/utils/network/api_wrapper.dart';
 import 'package:heal_v/common/utils/network/parser.dart';
+import 'package:heal_v/feature/heal_v/api/journal/model/delete_journal_dto.dart';
 import 'package:heal_v/feature/heal_v/api/journal/model/journal_history_dto.dart';
 import 'package:heal_v/feature/heal_v/api/web_service/heal_v_network_web_service.dart';
 
@@ -13,5 +14,10 @@ base class JournalNetworkAdapter implements JournalNetworkPort {
   @override
   Future<ApiWrapper<List<JournalHistoryDto>?>> journalHistory() {
     return parseHttpResponse<List<JournalHistoryDto>>(healVNetworkWebService.getJournalHistory, []);
+  }
+
+  @override
+  Future<ApiWrapper<DeleteJournalDto?>> deleteJournal(String date) {
+    return parseHttpResponse<DeleteJournalDto?>(healVNetworkWebService.deleteJournal, [date]);
   }
 }

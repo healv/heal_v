@@ -1,5 +1,7 @@
 import 'package:heal_v/common/utils/resource.dart';
+import 'package:heal_v/feature/heal_v/api/journal/bounds/delete_journal_network_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/journal/bounds/journal_history_network_bounds.dart';
+import 'package:heal_v/feature/heal_v/api/journal/model/delete_journal_dto.dart';
 import 'package:heal_v/feature/heal_v/api/journal/model/journal_history_dto.dart';
 import 'package:heal_v/feature/heal_v/api/journal/network/journal_network_port.dart';
 
@@ -13,5 +15,10 @@ base class JournalRepoImpl implements JournalRepo {
   @override
   Stream<Resource<List<JournalHistoryDto>>> getJournalHistory() {
     return JournalHistoryNetworkBounds(port: port).call();
+  }
+
+  @override
+  Stream<Resource<DeleteJournalDto?>> deleteJournal(String date) {
+    return DeleteJournalNetworkBounds(port: port, date: date).call();
   }
 }

@@ -13,6 +13,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../auth/model/user/user_wrapper_dto.dart';
 import '../auth/packet/update_user_packet.dart';
+import '../journal/model/delete_journal_dto.dart';
 import '../journal/model/journal_history_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
@@ -50,6 +51,9 @@ abstract class HealVNetworkWebService {
 
   @GET('journal')
   Future<HttpResponse<List<JournalHistoryDto>?>> getJournalHistory();
+
+  @DELETE('journal/{date}')
+  Future<HttpResponse<DeleteJournalDto?>> deleteJournal(@Path('date') String date);
 
   @GET('stretching')
   Future<HttpResponse<List<StretchingWeekDto>?>> getStretchingWeeks();

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heal_v/app/main/feature/profile/journal_history/details/journal_history_details_bloc.dart';
+import 'package:heal_v/app/main/feature/profile/journal_history/details/journal_history_details_bottom_sheet_dialog.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page_bloc.dart';
 import 'package:heal_v/common/extensions/date_time_extension.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
+import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/feature/heal_v/api/journal/model/journal_history_dto.dart';
+import 'package:heal_v/main.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:intl/intl.dart';
@@ -132,7 +136,29 @@ class JournalHistoryPage extends StatelessWidget {
         ),
         trailing: Icon(Icons.arrow_forward_ios_rounded, color: context.onBackground, size: 20),
         onTap: () {
-          // Navigate to article or perform action
+          showModalBottomSheet<JournalHistoryDetailsEffect>(
+              backgroundColor: context.background,
+              context: context,
+              builder: (context) {
+                return BlocProvider(
+                  create: (_) => JournalHistoryDetailsBloc(getIt.get())..add(JournalHistoryDetailsEvent.initial(item)),
+                  child: const JournalHistoryDetailsBottomSheetDialog(),
+                );
+              }).then((effect) {
+            switch (effect) {
+              case JournalDeleted():
+                switch (effect.status) {
+                  case ResourceStatusEnum.success:
+                    if (context.mounted) context.read<JournalHistoryPageBloc>().add(JournalHistoryPageEvent.initial());
+                    break;
+                  default:
+                    break;
+                }
+                break;
+              default:
+                break;
+            }
+          });
         },
       ),
     );
@@ -145,11 +171,11 @@ class JournalHistoryPage extends StatelessWidget {
         itemBuilder: (context, index) => SizedBox(
           height: 50,
           child: Shimmer.fromColors(
-            baseColor: context.onBackground.withOpacity(0.3),
-            highlightColor: context.onBackground.withOpacity(0.1),
+            baseColor: context.onBackground.withValues(alpha: 0.3),
+            highlightColor: context.onBackground.withValues(alpha: 0.1),
             child: Container(
               decoration: BoxDecoration(
-                color: context.onBackground.withOpacity(0.7),
+                color: context.onBackground.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(12.0),
               ),
             ),

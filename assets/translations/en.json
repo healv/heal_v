@@ -84,5 +84,6 @@
   "somethingWentWrong": "Something went wrong",
   "deleteNote": "Delete note",
   "thisActionCannotBeUndone": "This action cannot be undone.",
-  "delete": "Delete"
+  "delete": "Delete",
+  "writeText": "Write text"
 }

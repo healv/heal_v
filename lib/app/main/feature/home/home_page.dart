@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_v/app/main/feature/profile/journal_history/put_journal/put_journal_bloc.dart';
+import 'package:heal_v/app/main/feature/profile/journal_history/put_journal/put_journal_bottom_sheet_dialog.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/tools/sound_player.dart';
 import 'package:heal_v/common/utils/constants.dart';
@@ -12,6 +14,8 @@ import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/shared/feature/shared_content/shared_content_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+
+import '../../../../main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -237,6 +241,19 @@ class _HomePageState extends State<HomePage> {
         break;
       case 2:
         if (context.mounted) GoRouter.of(context).go(StretchingRoute().location);
+        break;
+      case 3:
+        if (context.mounted) {
+          showModalBottomSheet<PutJournalEffect>(
+              backgroundColor: context.background,
+              context: context,
+              builder: (context) {
+                return BlocProvider(
+                  create: (_) => PutJournalBloc(getIt.get())..add(PutJournalEvent.initial()),
+                  child: const PutJournalBottomSheetDialog(),
+                );
+              });
+        }
         break;
     }
   }

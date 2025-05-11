@@ -64,7 +64,7 @@ class StretchingLesson {
   final String? weekId;
   final int? order;
   final String? title;
-  final String? duration;
+  final int? duration;
   final int? poses;
   final List<StretchingLessonMedia>? media;
 
@@ -87,7 +87,7 @@ class StretchingLesson {
     Optional<String>? weekId,
     Optional<int>? order,
     Optional<String>? title,
-    Optional<String>? duration,
+    Optional<int>? duration,
     Optional<int>? poses,
     Optional<List<StretchingLessonMedia>>? media,
   }) {
@@ -112,7 +112,7 @@ class StretchingLesson {
       weekId: map['weekId'],
       order: map['order'] as int?,
       title: map['title'],
-      duration: map['duration'],
+      duration: map['duration'] as int?,
       poses: map['poses'] as int?,
       media: (map['media'] as List<dynamic>?)?.map((element) => StretchingLessonMedia.fromMap(element)).toList(),
     );

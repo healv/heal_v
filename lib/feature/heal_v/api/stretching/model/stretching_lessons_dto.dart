@@ -44,7 +44,7 @@ class StretchingLessonDto {
   @JsonKey(name: "title")
   final String? title;
   @JsonKey(name: "duration")
-  final String? duration;
+  final int? duration;
   @JsonKey(name: "poses")
   final int? poses;
   @JsonKey(name: "media")

@@ -42,7 +42,9 @@ enum AppIcons {
   trash('assets/icons/ic_trash.svg'),
   changePassword('assets/icons/ic_change_password.svg'),
   save('assets/icons/ic_save.svg'),
-  share('assets/icons/ic_share.svg');
+  share('assets/icons/ic_share.svg'),
+  calendar('assets/icons/ic_calendar.svg'),
+  clock('assets/icons/ic_clock.svg');
 
   final String path;
 

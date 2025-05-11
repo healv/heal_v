@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/stretching/model/stretching_lessons_ui_model.dart';
@@ -6,6 +8,7 @@ import 'package:heal_v/app/main/feature/stretching/stretching_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
+import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:shimmer/shimmer.dart';
@@ -125,7 +128,7 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
                             child: EmptyWidget(),
                           );
                         }
-                        return _lessonsListView(context, state.stretchingLessons!.lessons!);
+                        return _lessonsListView(context, week, state.stretchingLessons!.lessons!);
                       },
                     );
                   }).toList() ??
@@ -161,16 +164,16 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
     );
   }
 
-  Widget _lessonsListView(BuildContext context, List<StretchingLesson> lessons) {
+  Widget _lessonsListView(BuildContext context, StretchingWeek week, List<StretchingLesson> lessons) {
     return ListView.builder(
       itemCount: lessons.length,
       itemBuilder: (_, index) {
-        return _lessonItem(context, lessons[index]);
+        return _lessonItem(context, week, lessons[index]);
       },
     );
   }
 
-  Widget _lessonItem(BuildContext context, StretchingLesson lesson) {
+  Widget _lessonItem(BuildContext context, StretchingWeek week, StretchingLesson lesson) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Container(
@@ -182,7 +185,9 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
           children: [
             Positioned.fill(
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  StretchingDetailsRoute(stretchingLesson: jsonEncode(lesson), weekTitle: week.title ?? emptyString).push(context);
+                },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(

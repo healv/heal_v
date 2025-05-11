@@ -3,6 +3,7 @@ import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_dto.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_dto.dart';
+import 'package:heal_v/feature/heal_v/api/journal/model/put_journal_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_categories_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
@@ -15,6 +16,7 @@ import '../auth/model/user/user_wrapper_dto.dart';
 import '../auth/packet/update_user_packet.dart';
 import '../journal/model/delete_journal_dto.dart';
 import '../journal/model/journal_history_dto.dart';
+import '../journal/packet/put_journal_packet.dart';
 
 part 'heal_v_network_web_service.g.dart';
 
@@ -51,6 +53,9 @@ abstract class HealVNetworkWebService {
 
   @GET('journal')
   Future<HttpResponse<List<JournalHistoryDto>?>> getJournalHistory();
+
+  @PUT('journal/{date}')
+  Future<HttpResponse<PutJournalDto?>> putJournal(@Path('date') String date, @Body() PutJournalPacket putJournalPacket);
 
   @DELETE('journal/{date}')
   Future<HttpResponse<DeleteJournalDto?>> deleteJournal(@Path('date') String date);

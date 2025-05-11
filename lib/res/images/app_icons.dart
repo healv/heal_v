@@ -31,6 +31,7 @@ enum AppIcons {
   close('assets/icons/ic_close.svg'),
   fullScreen('assets/icons/ic_full_screen.svg'),
   checked('assets/icons/ic_checked.svg'),
+  greenCheckMark('assets/icons/ic_green_check_mark.svg'),
   progress('assets/icons/ic_progress.svg'),
   journalHistory('assets/icons/ic_journal_history.svg'),
   notifications('assets/icons/ic_notifications.svg'),

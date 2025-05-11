@@ -8,6 +8,7 @@ part of 'stretching_graph.dart';
 
 List<RouteBase> get $appRoutes => [
       $stretchingRoute,
+      $stretchingDetailsRoute,
       $stretchingVideoRoute,
     ];
 
@@ -21,6 +22,36 @@ extension $StretchingRouteExtension on StretchingRoute {
 
   String get location => GoRouteData.$location(
         '/mainStretching',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $stretchingDetailsRoute => GoRouteData.$route(
+      path: '/stretchingDetails',
+      factory: $StretchingDetailsRouteExtension._fromState,
+    );
+
+extension $StretchingDetailsRouteExtension on StretchingDetailsRoute {
+  static StretchingDetailsRoute _fromState(GoRouterState state) =>
+      StretchingDetailsRoute(
+        stretchingLesson: state.uri.queryParameters['stretching-lesson']!,
+        weekTitle: state.uri.queryParameters['week-title']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/stretchingDetails',
+        queryParams: {
+          'stretching-lesson': stretchingLesson,
+          'week-title': weekTitle,
+        },
       );
 
   void go(BuildContext context) => context.go(location);

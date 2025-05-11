@@ -44,5 +44,6 @@ abstract final class BreathingsRoutes {
 }
 
 abstract final class StretchingRoutes {
+  static const String stretchingDetails = '/stretchingDetails';
   static const String stretchingVideo = '/stretchingVideo';
 }

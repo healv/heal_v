@@ -71,10 +71,15 @@ RouteBase get $stretchingVideoRoute => GoRouteData.$route(
 
 extension $StretchingVideoRouteExtension on StretchingVideoRoute {
   static StretchingVideoRoute _fromState(GoRouterState state) =>
-      StretchingVideoRoute();
+      StretchingVideoRoute(
+        stretchingLesson: state.uri.queryParameters['stretching-lesson']!,
+      );
 
   String get location => GoRouteData.$location(
         '/stretchingVideo',
+        queryParams: {
+          'stretching-lesson': stretchingLesson,
+        },
       );
 
   void go(BuildContext context) => context.go(location);

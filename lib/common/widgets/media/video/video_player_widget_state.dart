@@ -2,6 +2,7 @@ part of 'video_player_widget_bloc.dart';
 
 @immutable
 final class VideoPlayerWidgetState extends BaseState {
+  final String? url;
   final Duration? position;
   final Duration? duration;
   final Duration? buffer;
@@ -9,6 +10,7 @@ final class VideoPlayerWidgetState extends BaseState {
   final double? volume;
 
   const VideoPlayerWidgetState._({
+    this.url,
     this.position,
     this.duration,
     this.buffer,
@@ -19,9 +21,10 @@ final class VideoPlayerWidgetState extends BaseState {
   factory VideoPlayerWidgetState.initial() => const VideoPlayerWidgetState._();
 
   @override
-  List<Object?> get props => [position, duration, buffer, isPlaying, volume];
+  List<Object?> get props => [url,position, duration, buffer, isPlaying, volume];
 
   VideoPlayerWidgetState copyWith({
+    Optional<String?>? url,
     Optional<Duration?>? position,
     Optional<Duration?>? duration,
     Optional<Duration?>? buffer,
@@ -29,6 +32,7 @@ final class VideoPlayerWidgetState extends BaseState {
     Optional<double?>? volume,
   }) {
     return VideoPlayerWidgetState._(
+      url: url?.isValid == true ? url?.value : this.url,
       position: position?.isValid == true ? position?.value : this.position,
       duration: duration?.isValid == true ? duration?.value : this.duration,
       buffer: buffer?.isValid == true ? buffer?.value : this.buffer,

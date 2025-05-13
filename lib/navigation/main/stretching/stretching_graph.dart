@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_v/app/main/feature/media/video/stretching_video_page.dart';
-import 'package:heal_v/app/main/feature/media/video/stretching_video_page_bloc.dart';
 import 'package:heal_v/app/main/feature/stretching/details/stretching_details_page.dart';
 import 'package:heal_v/app/main/feature/stretching/details/stretching_details_page_bloc.dart';
 import 'package:heal_v/app/main/feature/stretching/model/stretching_lessons_ui_model.dart';
@@ -12,6 +10,8 @@ import 'package:heal_v/app/main/feature/stretching/stretching_page.dart';
 import 'package:heal_v/app/main/feature/stretching/stretching_page_bloc.dart';
 import 'package:heal_v/common/widgets/media/video/video_player_widget_bloc.dart';
 
+import '../../../app/main/feature/stretching/video/stretching_video_page.dart';
+import '../../../app/main/feature/stretching/video/stretching_video_page_bloc.dart';
 import '../../../main.dart';
 import '../../app_routes.dart';
 
@@ -56,12 +56,27 @@ base class StretchingDetailsRoute extends GoRouteData {
 @TypedGoRoute<StretchingVideoRoute>(path: StretchingRoutes.stretchingVideo, routes: <TypedRoute<RouteData>>[])
 @immutable
 base class StretchingVideoRoute extends GoRouteData {
+  final String stretchingLesson;
+
+  const StretchingVideoRoute({required this.stretchingLesson});
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    final lesson = StretchingLesson.fromMap(jsonDecode(stretchingLesson));
     return MultiBlocProvider(
       providers: [
-        BlocProvider<StretchingVideoPageBloc>(create: (_) => StretchingVideoPageBloc()),
-        BlocProvider<VideoPlayerWidgetBloc>(create: (_) => VideoPlayerWidgetBloc()..add(VideoPlayerWidgetEvent.initial())),
+        BlocProvider<StretchingVideoPageBloc>(
+          create: (_) => StretchingVideoPageBloc()
+            ..add(
+              StretchingVideoPageEvent.initial(lesson),
+            ),
+        ),
+        BlocProvider<VideoPlayerWidgetBloc>(
+          create: (_) => VideoPlayerWidgetBloc()
+            ..add(
+              VideoPlayerWidgetEvent.initial(lesson.media?.first.downloadURL),
+            ),
+        ),
       ],
       child: const StretchingVideoPage(),
     );

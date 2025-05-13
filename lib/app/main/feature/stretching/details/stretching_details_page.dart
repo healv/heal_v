@@ -65,7 +65,7 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
 
   Widget _image(BuildContext context, StretchingLesson stretchingLesson) {
     return Image.network(
-      height: 380,
+      height: MediaQuery.of(context).size.height * 0.50,
       // todo Remove hardcoded photo
       'https://media.istockphoto.com/id/1310511832/photo/asian-woman-stretching-her-back-in-a-training-gym.jpg?s=1024x1024&w=is&k=20&c=mPm3qGkYFAts-30ewEZ9HiIUB_ZUE7ZXNPJZh-ygq3s=',
       fit: BoxFit.cover,

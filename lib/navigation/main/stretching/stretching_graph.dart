@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/media/video/stretching_video_page.dart';
 import 'package:heal_v/app/main/feature/media/video/stretching_video_page_bloc.dart';
-import 'package:heal_v/app/main/feature/stretching/details/stretching_deetails_page.dart';
+import 'package:heal_v/app/main/feature/stretching/details/stretching_details_page.dart';
 import 'package:heal_v/app/main/feature/stretching/details/stretching_details_page_bloc.dart';
 import 'package:heal_v/app/main/feature/stretching/model/stretching_lessons_ui_model.dart';
 import 'package:heal_v/app/main/feature/stretching/stretching_page.dart';

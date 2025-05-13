@@ -37,66 +37,22 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
   @override
   Widget build(BuildContext context) {
     final videoPlayerWidgetBloc = context.read<VideoPlayerWidgetBloc>();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: _progressColumn(context, videoPlayerWidgetBloc)),
-        Expanded(child: BetterPlayer(controller: videoPlayerWidgetBloc.controller)),
-        Expanded(child: _playerControl(context, videoPlayerWidgetBloc)),
-      ],
-    );
-  }
-
-  Widget _progressColumn(BuildContext context, VideoPlayerWidgetBloc videoPlayerWidgetBloc) {
-    return Column(
-      children: [
-        const SizedBox(height: 19),
-        _progress(context, videoPlayerWidgetBloc),
-        const SizedBox(height: 16),
-        _positionDurationText(context, videoPlayerWidgetBloc),
-      ],
-    );
-  }
-
-  Widget _progress(BuildContext context, VideoPlayerWidgetBloc videoPlayerWidgetBloc) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _playPause(context, videoPlayerWidgetBloc),
-          const SizedBox(width: 12),
-          Expanded(child: _progressBar(context, videoPlayerWidgetBloc)),
+          ClipRRect(borderRadius: BorderRadius.circular(16.0), child: BetterPlayer(controller: videoPlayerWidgetBloc.controller)),
+          Column(
+            children: [
+              _progressBar(context, videoPlayerWidgetBloc),
+              const SizedBox(height: 40),
+              _playerControl(context, videoPlayerWidgetBloc),
+            ],
+          )
         ],
       ),
-    );
-  }
-
-  Widget _playPause(BuildContext context, VideoPlayerWidgetBloc videoPlayerWidgetBloc) {
-    return BlocSelector<VideoPlayerWidgetBloc, VideoPlayerWidgetState, bool?>(
-      selector: (VideoPlayerWidgetState state) => state.isPlaying,
-      builder: (BuildContext context, bool? isPlaying) {
-        final icon = isPlaying == true ? AppIcons.pause : AppIcons.play;
-        return InkWell(
-          onTap: () {
-            if (isPlaying == true) {
-              videoPlayerWidgetBloc.add(VideoPlayerWidgetEvent.pause());
-            } else {
-              videoPlayerWidgetBloc.add(VideoPlayerWidgetEvent.play());
-            }
-          },
-          child: icon.svgAsset(
-            width: 16,
-            height: 16,
-            colorFilter: ColorFilter.mode(
-              context.onBackground,
-              BlendMode.srcIn,
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -106,40 +62,21 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
       builder: (context, state) {
         return ProgressBar(
           barHeight: 8,
-          baseBarColor: context.textSecondary,
-          progressBarColor: context.onBackground,
-          thumbColor: context.onBackground,
-          thumbRadius: 3.0,
+          baseBarColor: context.quizDialogItemColor,
+          progressBarColor: context.primary,
+          thumbColor: context.primary,
+          thumbRadius: 6.0,
           buffered: state.buffer,
-          bufferedBarColor: context.unselectedItemColor,
+          bufferedBarColor: context.background.withValues(alpha: 0.5),
           timeLabelTextStyle: TextStyle(fontSize: 12, color: context.onBackground, letterSpacing: 0.2, fontWeight: FontWeight.w400),
           progress: state.position ?? const Duration(),
           total: state.duration ?? const Duration(),
           timeLabelPadding: 8,
           timeLabelType: TimeLabelType.remainingTime,
-          timeLabelLocation: TimeLabelLocation.none,
+          timeLabelLocation: TimeLabelLocation.below,
           onSeek: (position) {
             context.read<VideoPlayerWidgetBloc>().add(VideoPlayerWidgetEvent.progressSeek(position));
           },
-        );
-      },
-    );
-  }
-
-  Widget _positionDurationText(BuildContext context, VideoPlayerWidgetBloc videoPlayerWidgetBloc) {
-    return BlocBuilder<VideoPlayerWidgetBloc, VideoPlayerWidgetState>(
-      buildWhen: (oldState, newState) => oldState.position != newState.position || oldState.duration != newState.duration,
-      builder: (BuildContext context, VideoPlayerWidgetState state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Text(
-                '${formatDuration(state.position ?? Duration.zero)}/${formatDuration(state.duration ?? Duration.zero)}',
-              ),
-            ),
-          ],
         );
       },
     );
@@ -182,12 +119,12 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
               ? AppIcons.volumeOn.svgAsset(
                   width: 26,
                   height: 20,
-                  colorFilter: ColorFilter.mode(context.onBackground, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
                 )
               : AppIcons.volumeOff.svgAsset(
                   width: 26,
                   height: 20,
-                  colorFilter: ColorFilter.mode(context.onBackground, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
                 ),
         );
       },
@@ -199,17 +136,17 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
       onPressed: () {
         context.read<VideoPlayerWidgetBloc>().add(VideoPlayerWidgetEvent.replay10Seconds());
       },
-      icon: AppIcons.replay10.svgAsset(width: 26, height: 20, colorFilter: ColorFilter.mode(context.onBackground, BlendMode.srcIn)),
+      icon: AppIcons.replay10.svgAsset(width: 26, height: 20, colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn)),
     );
   }
 
   Widget _controllerPlayPause(BuildContext context, VideoPlayerWidgetBloc videoPlayerWidgetBloc) {
     return Container(
-      width: 80,
-      height: 80,
-      decoration: const BoxDecoration(
+      width: 64,
+      height: 64,
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Color(0XFFC7C8C2),
+        color: context.primary,
       ),
       child: BlocSelector<VideoPlayerWidgetBloc, VideoPlayerWidgetState, bool?>(
         selector: (VideoPlayerWidgetState state) => state.isPlaying,
@@ -227,7 +164,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 child: icon.svgAsset(
-                  colorFilter: ColorFilter.mode(context.onBackground, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
                   width: 20,
                   height: 26,
                 ),
@@ -244,7 +181,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
       onPressed: () {
         context.read<VideoPlayerWidgetBloc>().add(VideoPlayerWidgetEvent.forward10Seconds());
       },
-      icon: AppIcons.forward10.svgAsset(width: 26, height: 20, colorFilter: ColorFilter.mode(context.onBackground, BlendMode.srcIn)),
+      icon: AppIcons.forward10.svgAsset(width: 26, height: 20, colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn)),
     );
   }
 
@@ -253,7 +190,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
       onPressed: () {
         videoPlayerWidgetBloc.add(VideoPlayerWidgetEvent.enterFullScreen());
       },
-      icon: AppIcons.fullScreen.svgAsset(width: 26, height: 20, colorFilter: ColorFilter.mode(context.onBackground, BlendMode.srcIn)),
+      icon: AppIcons.fullScreen.svgAsset(width: 26, height: 20, colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn)),
     );
   }
 }

@@ -3,7 +3,7 @@ part of 'video_player_widget_bloc.dart';
 sealed class VideoPlayerWidgetEvent extends BaseEvent {
   const VideoPlayerWidgetEvent();
 
-  factory VideoPlayerWidgetEvent.initial() => const _Initial();
+  factory VideoPlayerWidgetEvent.initial(String? url) => _Initial(url: url);
 
   factory VideoPlayerWidgetEvent.positionChanged(Duration position) => _PositionChanged(position: position);
 
@@ -31,7 +31,9 @@ sealed class VideoPlayerWidgetEvent extends BaseEvent {
 }
 
 final class _Initial extends VideoPlayerWidgetEvent {
-  const _Initial();
+  final String? url;
+
+  const _Initial({required this.url});
 }
 
 final class _PositionChanged extends VideoPlayerWidgetEvent {

@@ -17,6 +17,7 @@ part 'video_player_widget_state.dart';
 class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayerWidgetState> {
   final controller = BetterPlayerController(
     const BetterPlayerConfiguration(
+      aspectRatio: 1,
       controlsConfiguration: BetterPlayerControlsConfiguration(
         showControls: false,
       ),
@@ -94,10 +95,11 @@ class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayer
   }
 
   Future<void> _handleInitialEvent(_Initial event, Emitter<VideoPlayerWidgetState> emitter) async {
+    // todo remove hardcoded url
+    final url = event.url ?? "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4";
+    emitter(state.copyWith(url: Optional.value(url)));
     controller.setupDataSource(
-      BetterPlayerDataSource.network(
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-      ),
+      BetterPlayerDataSource.network(url),
     );
     controller.play();
   }
@@ -149,7 +151,7 @@ class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayer
   Future<void> _handleForward10SecondsEvent(_Forward10Seconds event, Emitter<VideoPlayerWidgetState> emitter) async {
     final duration = controller.videoPlayerController?.value.duration ?? Duration.zero;
     final position = await controller.videoPlayerController?.position ?? Duration.zero;
-    if ((duration.inSeconds ?? 0) - position.inSeconds < 10) {
+    if ((duration.inSeconds) - position.inSeconds < 10) {
       await controller.seekTo(duration);
     } else {
       await controller.seekTo(Duration(seconds: position.inSeconds + 10));

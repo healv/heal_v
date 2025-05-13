@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -213,7 +215,7 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
   Widget _startButton(BuildContext context, StretchingLesson? stretchingLesson) {
     return ElevatedButton(
       onPressed: () {
-        StretchingVideoRoute().push(context);
+        StretchingVideoRoute(stretchingLesson: jsonEncode(stretchingLesson)).push(context);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: context.primary,

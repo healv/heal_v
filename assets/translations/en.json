@@ -86,5 +86,6 @@
   "thisActionCannotBeUndone": "This action cannot be undone.",
   "delete": "Delete",
   "writeText": "Write text",
+  "incorrectPassword": "Incorrect password",
   "start": "Start"
 }

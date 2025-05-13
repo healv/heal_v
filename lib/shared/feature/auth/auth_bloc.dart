@@ -24,6 +24,7 @@ import '../../../application.dart';
 import '../../../common/bloc/base_event.dart';
 import '../../../common/bloc/base_state.dart';
 import '../../../common/dart/optional.dart';
+import '../../../common/tools/localization_tools.dart';
 import '../../../navigation/auth/auth_graph.dart';
 
 part 'auth_bloc_event.dart';
@@ -252,7 +253,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.success));
     } on FirebaseAuthException catch (e) {
       if (e.code == wrongPassword || e.code == invalidCredential) {
-        addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error, errorMsg: wrongPassword));
+        addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error, errorMsg: tr('incorrectPassword')));
       }
     } on Exception catch (e) {
       addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error));

@@ -105,10 +105,22 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: context.onBackground,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
-                    errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-                    focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.primary),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
                     errorText: state.emailErrorMsg,
                     labelText: tr('email'),
@@ -145,10 +157,22 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
                   cursorColor: context.onBackground,
                   obscureText: state.isPasswordHidden,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
-                    errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-                    focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.primary),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
                     suffixIcon: IconButton(
                       icon: Icon(

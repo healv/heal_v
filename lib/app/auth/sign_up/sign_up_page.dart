@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -27,11 +29,12 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
   final emailTextEditingController = TextEditingController();
   final passwordEditingController = TextEditingController();
   final repeatPasswordEditingController = TextEditingController();
+  StreamSubscription? _authEffectsSubscription;
 
   @override
   void initState() {
     super.initState();
-    context.read<AuthBloc>().sideEffects.listen(_listenAuthEffects);
+    _authEffectsSubscription = context.read<AuthBloc>().sideEffects.listen(_listenAuthEffects);
   }
 
   @override
@@ -97,10 +100,22 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   keyboardType: TextInputType.text,
                   cursorColor: context.onBackground,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
-                    errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-                    focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.primary),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
                     errorText: state.firstNameErrorMsg,
                     labelText: tr('first_name'),
@@ -136,10 +151,22 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   keyboardType: TextInputType.text,
                   cursorColor: context.onBackground,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
-                    errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-                    focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.primary),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
                     errorText: state.lastNameErrorMsg,
                     labelText: tr('last_name'),
@@ -175,10 +202,22 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: context.onBackground,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
-                    errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-                    focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.primary),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
                     errorText: state.emailErrorMsg,
                     labelText: tr('email'),
@@ -215,10 +254,22 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   cursorColor: context.onBackground,
                   obscureText: state.isPasswordHidden,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
-                    errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-                    focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.primary),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
                     errorText: state.passwordErrorMsg,
                     labelText: tr('password'),
@@ -264,10 +315,22 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
                   cursorColor: context.onBackground,
                   obscureText: state.isRepeatPasswordHidden,
                   decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3))),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.primary)),
-                    errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-                    focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: context.primary),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
                     errorText: state.repeatPasswordErrorMsg,
                     labelText: tr('repeat_password'),
@@ -319,7 +382,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
       case SignedUp():
         switch (effect.status) {
           case ResourceStatusEnum.success:
-            HomeRoute().go(context);
+            if (context.mounted) HomeRoute().go(context);
             break;
           case ResourceStatusEnum.error:
             showAlertDialog(title: tr('error'), message: effect.errorMsg.toString());
@@ -330,7 +393,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
       case LoggedIn():
         switch (effect.status) {
           case ResourceStatusEnum.success:
-            HomeRoute().go(context);
+            if (context.mounted) HomeRoute().go(context);
             break;
           case ResourceStatusEnum.error:
             showAlertDialog(title: tr('error'), message: effect.errorMsg.toString());
@@ -357,5 +420,11 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
             );
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _authEffectsSubscription?.cancel();
   }
 }

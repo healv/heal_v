@@ -87,5 +87,11 @@
   "delete": "Delete",
   "writeText": "Write text",
   "incorrectPassword": "Incorrect password",
-  "start": "Start"
+  "start": "Start",
+  "back": "Back",
+  "forgotYourPassword": "Forgot your password",
+  "resetPassword": "Reset password",
+  "noUserFoundForThatEmail": "No user found for that email.",
+  "enterYourEmailAddressAndWeWillSendYouALink": "Enter your email address and we'll send you a link to reset your password",
+  "resetLinkSentToYourEmail": "Reset link sent to your email. Please check your inbox to proceed"
 }

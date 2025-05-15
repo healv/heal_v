@@ -6,6 +6,7 @@ abstract final class AppRoutes {
 abstract final class AuthRoutes {
   static const String signIn = '/signIn';
   static const String signUp = '/signUp';
+  static const String forgotPassword = '/forgotPassword';
   static const String permission = '/permission';
 }
 

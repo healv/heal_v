@@ -20,6 +20,8 @@ sealed class AuthBlocEvent extends BaseEvent {
   factory AuthBlocEvent.logOut() => const LogOut._();
 
   factory AuthBlocEvent.changePassword(String currentPassword, String newPassword) => ChangePassword._(currentPassword: currentPassword, newPassword: newPassword);
+
+  factory AuthBlocEvent.resetPassword(String email) => ResetPassword._(email: email);
 }
 
 class Initial extends AuthBlocEvent {
@@ -76,4 +78,10 @@ class ChangePassword extends AuthBlocEvent {
   final String newPassword;
 
   const ChangePassword._({required this.currentPassword, required this.newPassword});
+}
+
+class ResetPassword extends AuthBlocEvent {
+  final String email;
+
+  const ResetPassword._({required this.email});
 }

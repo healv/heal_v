@@ -44,6 +44,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<UploadImage>(_handleUploadImageEvent);
     on<LogOut>(_handleLogOutEvent);
     on<ChangePassword>(_handleChangePasswordEvent);
+    on<ResetPassword>(_handleResetPasswordEvent);
   }
 
   Future<void> _subscribeToFirebaseUser() async {
@@ -255,7 +256,23 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       if (e.code == wrongPassword || e.code == invalidCredential) {
         addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error, errorMsg: tr('incorrectPassword')));
       }
-    } on Exception catch (e) {
+    } on Exception {
+      addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error));
+    }
+  }
+
+  Future<void> _handleResetPasswordEvent(ResetPassword event, Emitter<AuthBlocState> emitter) async {
+    addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.loading));
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: event.email);
+      addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.success));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == userNotFound) {
+        addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.error, errorMsg: userNotFound));
+      } else {
+        addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.error, errorMsg: e.message));
+      }
+    } on Exception {
       addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error));
     }
   }

@@ -14,4 +14,5 @@ const String semicolon = ',';
 const String flagIconsPath = 'assets/icons/flags/';
 const String svgType = '.svg';
 const String wrongPassword = 'wrong-password';
+const String userNotFound = 'user-not-found';
 const String invalidCredential = 'invalid-credential';

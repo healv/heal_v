@@ -202,7 +202,9 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
       child: Align(
         alignment: Alignment.centerRight,
         child: TextButton(
-          onPressed: () {},
+          onPressed: () {
+            ForgotPasswordRoute().push(context);
+          },
           child: Text(tr('forgot_password')),
         ),
       ),

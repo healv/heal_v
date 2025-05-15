@@ -9,6 +9,7 @@ part of 'auth_graph.dart';
 List<RouteBase> get $appRoutes => [
       $signInRoute,
       $signUpRoute,
+      $forgotPasswordRoute,
       $permissionRoute,
     ];
 
@@ -44,6 +45,29 @@ extension $SignUpRouteExtension on SignUpRoute {
 
   String get location => GoRouteData.$location(
         '/signUp',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $forgotPasswordRoute => GoRouteData.$route(
+      path: '/forgotPassword',
+      factory: $ForgotPasswordRouteExtension._fromState,
+    );
+
+extension $ForgotPasswordRouteExtension on ForgotPasswordRoute {
+  static ForgotPasswordRoute _fromState(GoRouterState state) =>
+      ForgotPasswordRoute();
+
+  String get location => GoRouteData.$location(
+        '/forgotPassword',
       );
 
   void go(BuildContext context) => context.go(location);

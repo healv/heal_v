@@ -4,8 +4,8 @@ import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_dto.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_dto.dart';
 import 'package:heal_v/feature/heal_v/api/journal/model/put_journal_dto.dart';
-import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_categories_dto.dart';
-import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_dto.dart';
+import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_complete_dto.dart';
+import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_week_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/shared_content/model/shared_content_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dto.dart';
@@ -16,6 +16,7 @@ import '../auth/packet/update_user_packet.dart';
 import '../journal/model/delete_journal_dto.dart';
 import '../journal/model/journal_history_dto.dart';
 import '../journal/packet/put_journal_packet.dart';
+import '../meditation/model/meditation_lessons_dto.dart';
 import '../stretching/model/stretching_complete_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
@@ -48,6 +49,18 @@ abstract class HealVNetworkWebService {
   @PATCH('/stretching/{weekId}/lesson/{lessonId}/complete')
   Future<HttpResponse<StretchingCompleteDto>> completeStretchingLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
+  @GET('meditation')
+  Future<HttpResponse<List<MeditationWeekDto>?>> getMeditationWeeks();
+
+  @GET('meditation/{weekId}')
+  Future<HttpResponse<MeditationLessonsDto>> getMeditationLessons(@Path('weekId') String id);
+
+  @GET('meditation/{weekId}/lesson/{lessonId}')
+  Future<HttpResponse<MeditationLessonDto>> getMeditationLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
+
+  @PATCH('/meditation/{weekId}/lesson/{lessonId}/complete')
+  Future<HttpResponse<MeditationCompleteDto>> completeMeditationLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
+
   //-------------------------------------------------------------------------------------------------------------------------------
 
   @GET('shared-content')
@@ -56,14 +69,8 @@ abstract class HealVNetworkWebService {
   @GET('daily-progress')
   Future<HttpResponse<DailyProgressDto?>> getDailyProgress();
 
-  @GET('meditations')
-  Future<HttpResponse<MeditationsDto?>> meditations(@Query('search') String? searchQuery);
-
   @GET('breathings')
   Future<HttpResponse<BreathingsDto?>> breathings(@Query('search') String? searchQuery);
-
-  @GET('meditations/categories')
-  Future<HttpResponse<List<MeditationsCategoriesDto>?>> meditationsCategories();
 
   @GET('breathings/categories')
   Future<HttpResponse<List<BreathingsCategoriesDto>?>> breathingsCategories();

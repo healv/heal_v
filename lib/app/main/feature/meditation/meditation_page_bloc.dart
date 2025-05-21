@@ -6,11 +6,9 @@ import 'package:heal_v/common/bloc/base_event.dart';
 import 'package:heal_v/common/bloc/base_state.dart';
 import 'package:heal_v/common/dart/optional.dart';
 import 'package:heal_v/common/utils/resource.dart';
-import 'package:heal_v/feature/heal_v/api/meditation/model/meditations_categories_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/repo/meditations_repo.dart';
 
 part 'meditation_page_event.dart';
-
 part 'meditation_page_state.dart';
 
 class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageState> {
@@ -18,9 +16,7 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
 
   MeditationPageBloc(this.repo) : super(MeditationPageState.initial()) {
     on<Initial>(_handleInitialEvent);
-    on<UpdateCategory>(_handleUpdateCategoryEvent);
     on<GetMeditations>(_handleGetMeditationsEvent);
-    on<FilterByCategory>(_handleFilterByCategoryEvent);
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<MeditationPageState> emitter) async {
@@ -28,7 +24,7 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
   }
 
   Future<void> _handleGetMeditationsEvent(GetMeditations event, Emitter<MeditationPageState> emitter) async {
-    await for (final response in repo.meditations(searchQuery: event.searchQuery)) {
+    await for (final response in repo.getMeditationWeeks()) {
       switch (response.status) {
         case ResourceStatusEnum.success:
           // final list = response.data?.meditationBreathing ?? [];
@@ -36,11 +32,8 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
 
           emitter(state.copyWith(
             loading: const Optional.value(false),
-            items: Optional.value(response.data),
+            // items: Optional.value(response.data),
           ));
-          if (state.selectedCategory != null) {
-            add(MeditationPageEvent.filterByCategory(category: state.selectedCategory!));
-          }
           break;
         case ResourceStatusEnum.error:
           emitter(state.copyWith(loading: const Optional.value(false)));
@@ -50,14 +43,5 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
           break;
       }
     }
-  }
-
-  Future<void> _handleFilterByCategoryEvent(FilterByCategory event, Emitter<MeditationPageState> emitter) async {
-    final filteredData = state.items?.meditationBreathing?.where((e) => e.category == event.category.name).toList();
-    emitter(state.copyWith(filteredItems: Optional.value(filteredData)));
-  }
-
-  Future<void> _handleUpdateCategoryEvent(UpdateCategory event, Emitter<MeditationPageState> emitter) async {
-    emitter(state.copyWith(selectedCategory: Optional.value(event.category)));
   }
 }

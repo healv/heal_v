@@ -10,29 +10,29 @@ class UserDto {
   final String? name;
   @JsonKey(name: "lastName")
   final String? lastName;
-  @JsonKey(name: "photoURL")
-  final String? photoURL;
-  @JsonKey(name: "subscription")
-  final Subscription? subscription;
-  @JsonKey(name: "preferences")
-  final Preferences? preferences;
-  @JsonKey(name: "progress")
-  final Progress? progress;
-  @JsonKey(name: "createdAt")
-  final String? createdAt;
   @JsonKey(name: "birthDate")
   final String? birthDate;
+  @JsonKey(name: "avatar")
+  final AvatarDto? avatar;
+  @JsonKey(name: "progress")
+  final ProgressDto? progress;
+
+  // @JsonKey(name: "photoURL")
+  // final String? photoURL;
+  // @JsonKey(name: "subscription")
+  // final Subscription? subscription;
+  // @JsonKey(name: "preferences")
+  // final Preferences? preferences;
+  // @JsonKey(name: "createdAt")
+  // final String? createdAt;
 
   UserDto({
     this.email,
     this.name,
     this.lastName,
-    this.photoURL,
-    this.subscription,
-    this.preferences,
-    this.progress,
-    this.createdAt,
     this.birthDate,
+    this.avatar,
+    this.progress,
   });
 
   factory UserDto.fromJson(Map<String, dynamic> json) {
@@ -45,64 +45,95 @@ class UserDto {
 }
 
 @JsonSerializable()
-class Subscription {
-  @JsonKey(name: "status")
-  final String? status;
-  @JsonKey(name: "plan")
-  final dynamic plan;
-  @JsonKey(name: "expiresAt")
-  final dynamic expiresAt;
+class AvatarDto {
+  @JsonKey(name: "name")
+  final String? name;
+  @JsonKey(name: "width")
+  final int? width;
+  @JsonKey(name: "height")
+  final int? height;
+  @JsonKey(name: "url")
+  final String? url;
 
-  Subscription({
-    this.status,
-    this.plan,
-    this.expiresAt,
+  AvatarDto({
+    this.name,
+    this.width,
+    this.height,
+    this.url,
   });
 
-  factory Subscription.fromJson(Map<String, dynamic> json) {
-    return _$SubscriptionFromJson(json);
+  factory AvatarDto.fromJson(Map<String, dynamic> json) {
+    return _$AvatarDtoFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$SubscriptionToJson(this);
+    return _$AvatarDtoToJson(this);
   }
 }
 
 @JsonSerializable()
-class Preferences {
-  @JsonKey(name: "notifications")
-  final bool? notifications;
+class ProgressDto {
+  @JsonKey(name: "breathing")
+  final Map<String, Map<String, bool>>? breathing;
+  @JsonKey(name: "meditation")
+  final Map<String, Map<String, bool>>? meditation;
+  @JsonKey(name: "stretching")
+  final Map<String, Map<String, bool>>? stretching;
 
-  Preferences({
-    this.notifications,
+  ProgressDto({
+    this.breathing,
+    this.meditation,
+    this.stretching,
   });
 
-  factory Preferences.fromJson(Map<String, dynamic> json) {
-    return _$PreferencesFromJson(json);
+  factory ProgressDto.fromJson(Map<String, dynamic> json) {
+    return _$ProgressDtoFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$PreferencesToJson(this);
+    return _$ProgressDtoToJson(this);
   }
 }
 
-@JsonSerializable()
-class Progress {
-  @JsonKey(name: "completedLessons")
-  final List<dynamic>? completedLessons;
-  @JsonKey(name: "lastLessonId")
-  final dynamic lastLessonId;
-
-  Progress({
-    this.completedLessons,
-    this.lastLessonId,
-  });
-
-  factory Progress.fromJson(Map<String, dynamic> json) {
-    return _$ProgressFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$ProgressToJson(this);
-  }
-}
+// @JsonSerializable()
+// class Subscription {
+//   @JsonKey(name: "status")
+//   final String? status;
+//   @JsonKey(name: "plan")
+//   final dynamic plan;
+//   @JsonKey(name: "expiresAt")
+//   final dynamic expiresAt;
+//
+//   Subscription({
+//     this.status,
+//     this.plan,
+//     this.expiresAt,
+//   });
+//
+//   factory Subscription.fromJson(Map<String, dynamic> json) {
+//     return _$SubscriptionFromJson(json);
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     return _$SubscriptionToJson(this);
+//   }
+// }
+//
+// @JsonSerializable()
+// class Preferences {
+//   @JsonKey(name: "notifications")
+//   final bool? notifications;
+//
+//   Preferences({
+//     this.notifications,
+//   });
+//
+//   factory Preferences.fromJson(Map<String, dynamic> json) {
+//     return _$PreferencesFromJson(json);
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     return _$PreferencesToJson(this);
+//   }
+// }
+//

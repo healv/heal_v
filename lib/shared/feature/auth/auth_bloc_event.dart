@@ -17,6 +17,8 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.uploadImage(XFile xFile) => UploadImage._(xFile: xFile);
 
+  factory AuthBlocEvent.deleteImage() => const DeleteImage._();
+
   factory AuthBlocEvent.logOut() => const LogOut._();
 
   factory AuthBlocEvent.changePassword(String currentPassword, String newPassword) => ChangePassword._(currentPassword: currentPassword, newPassword: newPassword);
@@ -67,6 +69,10 @@ class UploadImage extends AuthBlocEvent {
   final XFile xFile;
 
   UploadImage._({required this.xFile});
+}
+
+class DeleteImage extends AuthBlocEvent {
+  const DeleteImage._();
 }
 
 class LogOut extends AuthBlocEvent {

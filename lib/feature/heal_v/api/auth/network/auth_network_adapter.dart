@@ -4,7 +4,6 @@ import 'package:heal_v/common/utils/network/parser.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/web_service/heal_v_network_web_service.dart';
 
-import '../model/user/user_wrapper_dto.dart';
 import '../packet/update_user_packet.dart';
 import 'auth_network_port.dart';
 
@@ -19,12 +18,17 @@ base class AuthNetworkAdapter implements AuthNetworkPort {
   }
 
   @override
-  Future<ApiWrapper<UserWrapperDto?>> updateUser(UpdateUserPacket body) {
-    return parseHttpResponse<UserWrapperDto>(authNetworkWebService.updateUser, [body]);
+  Future<ApiWrapper<UserDto?>> updateUser(UpdateUserPacket body) {
+    return parseHttpResponse<UserDto>(authNetworkWebService.updateUser, [body]);
   }
 
   @override
-  Future<ApiWrapper<UserWrapperDto?>> uploadImage(FormData data) {
-    return parseHttpResponse<UserWrapperDto>(authNetworkWebService.uploadImage, [data]);
+  Future<ApiWrapper<UserDto?>> uploadImage(FormData data) {
+    return parseHttpResponse<UserDto>(authNetworkWebService.uploadImage, [data]);
+  }
+
+  @override
+  Future<ApiWrapper<UserDto?>> deleteImage() {
+    return parseHttpResponse<UserDto>(authNetworkWebService.deleteImage, []);
   }
 }

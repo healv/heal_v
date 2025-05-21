@@ -190,7 +190,10 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
                           letterSpacing: 0.2,
                         ),
                       ),
-                      onTap: null, // disabled
+                      onTap: () {
+                        _removePopover();
+                        authBloc.add(AuthBlocEvent.deleteImage());
+                      }, // disabled
                     ),
                   ],
                 ),

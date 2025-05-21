@@ -42,6 +42,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<GetMe>(_handleMeEvent);
     on<UpdateUser>(_handleUpdateUserEvent);
     on<UploadImage>(_handleUploadImageEvent);
+    on<DeleteImage>(_handleDeleteImageEvent);
     on<LogOut>(_handleLogOutEvent);
     on<ChangePassword>(_handleChangePasswordEvent);
     on<ResetPassword>(_handleResetPasswordEvent);
@@ -220,6 +221,26 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
         case ResourceStatusEnum.error:
           emitter(state.copyWith(loading: const Optional.value(false)));
           addSideEffect(AuthBlocEffect.imageUploaded(ResourceStatusEnum.error));
+          debugPrint(response.error.toString());
+          break;
+        case ResourceStatusEnum.loading:
+          emitter(state.copyWith(loading: const Optional.value(true)));
+          break;
+      }
+    }
+  }
+
+  Future<void> _handleDeleteImageEvent(DeleteImage event, Emitter<AuthBlocState> emitter) async {
+    await for (final response in repo.deleteImage()) {
+      switch (response.status) {
+        case ResourceStatusEnum.success:
+          emitter(state.copyWith(user: const Optional.value(null)));
+          emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));
+          addSideEffect(AuthBlocEffect.imageDeleted(ResourceStatusEnum.success));
+          break;
+        case ResourceStatusEnum.error:
+          emitter(state.copyWith(loading: const Optional.value(false)));
+          addSideEffect(AuthBlocEffect.imageDeleted(ResourceStatusEnum.error));
           debugPrint(response.error.toString());
           break;
         case ResourceStatusEnum.loading:

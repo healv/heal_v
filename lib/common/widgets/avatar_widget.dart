@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
@@ -15,7 +16,7 @@ class AvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<AuthBloc, AuthBlocState, String?>(
-      selector: (AuthBlocState state) => state.user?.photoURL,
+      selector: (AuthBlocState state) => state.user?.avatar?.url,
       builder: (BuildContext context, String? url) {
         return Stack(
           alignment: Alignment.center,
@@ -23,7 +24,7 @@ class AvatarWidget extends StatelessWidget {
             CircleAvatar(
               radius: radius,
               backgroundColor: context.onBackground.withValues(alpha: 0.2),
-              backgroundImage: (url != null && url.isNotEmpty) ? NetworkImage(url) : null,
+              backgroundImage: (url != null && url.isNotEmpty) ? NetworkImage('${AuthConstants.baseHost}$url') : null,
               child: url == null || url.isEmpty
                   ? ClipOval(
                       child: Stack(

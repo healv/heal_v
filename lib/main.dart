@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -45,11 +43,6 @@ void main() async {
     await ThemeHelper.init();
     await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    if (Platform.isAndroid) {
-      log('FCM token: ${await FirebaseMessaging.instance.getToken()}');
-    } else {
-      log('FCM token: ${await FirebaseMessaging.instance.getAPNSToken()}');
-    }
 
     runApp(
       EasyLocalization(

@@ -5,7 +5,6 @@ import 'package:heal_v/app/main/feature/stretching/model/stretching_week_ui_mode
 import 'package:heal_v/app/main/feature/stretching/stretching_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
-import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
@@ -28,9 +27,16 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar.simple(
-        title: tr('stretching'),
-        isBackEnable: false,
+      appBar: AppBar(
+        titleSpacing: 16,
+        title: Text(
+          tr('stretching'),
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.w700,
+            color: context.onBackground,
+          ),
+        ),
       ),
       body: _body(context),
     );
@@ -40,7 +46,7 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
     final stretchingPageBloc = context.read<StretchingPageBloc>();
     return Column(
       children: [
-        const SizedBox(height: 22),
+        const SizedBox(height: 16),
         _weeks(context, stretchingPageBloc),
         const SizedBox(height: 24),
         Expanded(child: _lessons(context, stretchingPageBloc)),
@@ -55,50 +61,46 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
         final weeks = record.weeks;
         final selectedWeekId = record.selectedWeekId;
         _tabController = TabController(length: weeks.length, vsync: this);
-        return Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: SizedBox(
-            height: 28,
-            child: ListView.builder(
-                itemCount: weeks.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, index) {
-                  final isSelected = weeks[index].id == selectedWeekId;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: InkWell(
-                      onTap: () {
-                        if (!isSelected) {
-                          if (weeks[index].isAccessible == true) {
-                            stretchingPageBloc.add(StretchingPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString));
-                            _tabController.animateTo(index);
-                          } else {
-                            showLockedDialog(context, tr('stretching_locked'), tr('stretching_locked_description'));
-                          }
-                        }
-                      },
-                      child: Container(
-                        width: 80,
-                        height: 28,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1000),
-                          color: isSelected ? Colors.pink.shade100 : Colors.transparent,
-                          border: isSelected ? null : Border.all(color: Colors.black.withValues(alpha: 0.1)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            weeks[index].title ?? emptyString,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400,
-                              color: isSelected ? Colors.pink.shade500 : Colors.black.withValues(alpha: 0.1),
-                            ),
-                          ),
-                        ),
+        return SizedBox(
+          height: 28,
+          child: ListView.separated(
+            itemCount: weeks.length,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 12.0),
+            itemBuilder: (_, index) {
+              final isSelected = weeks[index].id == selectedWeekId;
+              return InkWell(
+                onTap: () {
+                  if (!isSelected) {
+                    if (weeks[index].isAccessible == true) {
+                      stretchingPageBloc.add(StretchingPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString));
+                      _tabController.animateTo(index);
+                    } else {
+                      showLockedDialog(context, tr('stretching_locked'), tr('stretching_locked_description'));
+                    }
+                  }
+                },
+                child: Container(
+                  width: 80,
+                  height: 28,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(1000),
+                    color: isSelected ? Colors.pink.shade100 : Colors.transparent,
+                    border: isSelected ? null : Border.all(color: Colors.black.withValues(alpha: 0.1)),
+                  ),
+                  child: Center(
+                    child: Text(
+                      weeks[index].title ?? emptyString,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: isSelected ? Colors.pink.shade500 : Colors.black.withValues(alpha: 0.1),
                       ),
                     ),
-                  );
-                }),
+                  ),
+                ),
+              );
+            },
           ),
         );
       },

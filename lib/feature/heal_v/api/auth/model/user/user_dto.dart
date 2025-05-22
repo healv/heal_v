@@ -19,9 +19,6 @@ class UserDto {
   @JsonKey(name: "createdAt")
   final String? createdAt;
 
-  // @JsonKey(name: "preferences")
-  // final Preferences? preferences;
-
   UserDto({
     this.email,
     this.name,
@@ -91,22 +88,3 @@ class ProgressDto {
     return _$ProgressDtoToJson(this);
   }
 }
-//
-// @JsonSerializable()
-// class Preferences {
-//   @JsonKey(name: "notifications")
-//   final bool? notifications;
-//
-//   Preferences({
-//     this.notifications,
-//   });
-//
-//   factory Preferences.fromJson(Map<String, dynamic> json) {
-//     return _$PreferencesFromJson(json);
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     return _$PreferencesToJson(this);
-//   }
-// }
-//

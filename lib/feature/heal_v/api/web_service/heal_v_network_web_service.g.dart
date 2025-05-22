@@ -14,7 +14,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'http://13.51.69.176/api/';
+    baseUrl ??= 'http://13.51.69.176';
   }
 
   final Dio _dio;
@@ -43,7 +43,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'user',
+          '/api/user',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -78,7 +78,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'user/update',
+          '/api/user/update',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -112,7 +112,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'user/upload-image',
+          '/api/user/upload-image',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -146,7 +146,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'user/delete-image',
+          '/api/user/delete-image',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -181,7 +181,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
             .compose(
               _dio.options,
-              'stretching',
+              '/api/stretching',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -219,7 +219,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'stretching/${id}',
+          '/api/stretching/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -256,7 +256,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'stretching/${weekId}/lesson/${lessonId}',
+          '/api/stretching/${weekId}/lesson/${lessonId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -294,7 +294,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
             .compose(
               _dio.options,
-              '/stretching/${weekId}/lesson/${lessonId}/complete',
+              '/api/stretching/${weekId}/lesson/${lessonId}/complete',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -329,7 +329,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
             .compose(
               _dio.options,
-              'meditation',
+              '/api/meditation',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -367,7 +367,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'meditation/${id}',
+          '/api/meditation/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -404,7 +404,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'meditation/${weekId}/lesson/${lessonId}',
+          '/api/meditation/${weekId}/lesson/${lessonId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -442,7 +442,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
             .compose(
               _dio.options,
-              '/meditation/${weekId}/lesson/${lessonId}/complete',
+              '/api/meditation/${weekId}/lesson/${lessonId}/complete',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -3,19 +3,22 @@ part of 'stretching_details_page_bloc.dart';
 sealed class StretchingDetailsPageEvent extends BaseEvent {
   StretchingDetailsPageEvent();
 
-  factory StretchingDetailsPageEvent.initial(
-    StretchingLesson stretchingLesson,
-    String weekTitle,
-  ) =>
+  factory StretchingDetailsPageEvent.initial({
+    required String weekTitle,
+    required String weekId,
+    required String lessonId,
+  }) =>
       Initial._(
-        stretchingLesson: stretchingLesson,
         weekTitle: weekTitle,
+        weekId: weekId,
+        lessonId: lessonId,
       );
 }
 
 final class Initial extends StretchingDetailsPageEvent {
-  final StretchingLesson stretchingLesson;
   final String weekTitle;
+  final String weekId;
+  final String lessonId;
 
-  Initial._({required this.stretchingLesson, required this.weekTitle});
+  Initial._({required this.weekTitle, required this.weekId, required this.lessonId});
 }

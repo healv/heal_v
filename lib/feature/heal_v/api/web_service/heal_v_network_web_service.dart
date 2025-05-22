@@ -21,44 +21,44 @@ import '../stretching/model/stretching_complete_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
 
-@RestApi(baseUrl: AuthConstants.baseUrl)
+@RestApi(baseUrl: AuthConstants.baseHost)
 abstract class HealVNetworkWebService {
   factory HealVNetworkWebService(Dio dio, {String baseUrl}) = _HealVNetworkWebService;
 
-  @GET('user')
+  @GET('/api/user')
   Future<HttpResponse<UserDto?>> me(@Query('email') String? email, @Query('displayName') String? displayName);
 
-  @PUT('user/update')
+  @PUT('/api/user/update')
   Future<HttpResponse<UserDto?>> updateUser(@Body() UpdateUserPacket body);
 
-  @PUT('user/upload-image')
+  @PUT('/api/user/upload-image')
   Future<HttpResponse<UserDto?>> uploadImage(@Body() FormData formData);
 
-  @DELETE('user/delete-image')
+  @DELETE('/api/user/delete-image')
   Future<HttpResponse<UserDto?>> deleteImage();
 
-  @GET('stretching')
+  @GET('/api/stretching')
   Future<HttpResponse<List<StretchingWeekDto>?>> getStretchingWeeks();
 
-  @GET('stretching/{weekId}')
+  @GET('/api/stretching/{weekId}')
   Future<HttpResponse<StretchingLessonsDto>> getStretchingLessons(@Path('weekId') String id);
 
-  @GET('stretching/{weekId}/lesson/{lessonId}')
+  @GET('/api/stretching/{weekId}/lesson/{lessonId}')
   Future<HttpResponse<StretchingLessonDto>> getStretchingLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
-  @PATCH('/stretching/{weekId}/lesson/{lessonId}/complete')
+  @PATCH('/api/stretching/{weekId}/lesson/{lessonId}/complete')
   Future<HttpResponse<StretchingCompleteDto>> completeStretchingLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
-  @GET('meditation')
+  @GET('/api/meditation')
   Future<HttpResponse<List<MeditationWeekDto>?>> getMeditationWeeks();
 
-  @GET('meditation/{weekId}')
+  @GET('/api/meditation/{weekId}')
   Future<HttpResponse<MeditationLessonsDto>> getMeditationLessons(@Path('weekId') String id);
 
-  @GET('meditation/{weekId}/lesson/{lessonId}')
+  @GET('/api/meditation/{weekId}/lesson/{lessonId}')
   Future<HttpResponse<MeditationLessonDto>> getMeditationLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
-  @PATCH('/meditation/{weekId}/lesson/{lessonId}/complete')
+  @PATCH('/api/meditation/{weekId}/lesson/{lessonId}/complete')
   Future<HttpResponse<MeditationCompleteDto>> completeMeditationLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
   //-------------------------------------------------------------------------------------------------------------------------------

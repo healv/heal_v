@@ -17,6 +17,7 @@ UserDto _$UserDtoFromJson(Map<String, dynamic> json) => UserDto(
       progress: json['progress'] == null
           ? null
           : ProgressDto.fromJson(json['progress'] as Map<String, dynamic>),
+      createdAt: json['createdAt'] as String?,
     );
 
 Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
@@ -26,6 +27,7 @@ Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
       'birthDate': instance.birthDate,
       'avatar': instance.avatar,
       'progress': instance.progress,
+      'createdAt': instance.createdAt,
     };
 
 AvatarDto _$AvatarDtoFromJson(Map<String, dynamic> json) => AvatarDto(

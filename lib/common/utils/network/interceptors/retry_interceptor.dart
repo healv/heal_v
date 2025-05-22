@@ -25,7 +25,7 @@ class RetryInterceptor extends Interceptor {
           options.headers?['Authorization'] = 'Bearer $accessToken';
         }
         final response = await dio.request(
-          '${AuthConstants.baseUrl}${err.requestOptions.path}',
+          '${AuthConstants.baseHost}${err.requestOptions.path}',
           options: options,
           data: err.requestOptions.data,
           queryParameters: err.requestOptions.queryParameters,

@@ -16,15 +16,11 @@ class UserDto {
   final AvatarDto? avatar;
   @JsonKey(name: "progress")
   final ProgressDto? progress;
+  @JsonKey(name: "createdAt")
+  final String? createdAt;
 
-  // @JsonKey(name: "photoURL")
-  // final String? photoURL;
-  // @JsonKey(name: "subscription")
-  // final Subscription? subscription;
   // @JsonKey(name: "preferences")
   // final Preferences? preferences;
-  // @JsonKey(name: "createdAt")
-  // final String? createdAt;
 
   UserDto({
     this.email,
@@ -33,6 +29,7 @@ class UserDto {
     this.birthDate,
     this.avatar,
     this.progress,
+    this.createdAt,
   });
 
   factory UserDto.fromJson(Map<String, dynamic> json) {
@@ -94,30 +91,6 @@ class ProgressDto {
     return _$ProgressDtoToJson(this);
   }
 }
-
-// @JsonSerializable()
-// class Subscription {
-//   @JsonKey(name: "status")
-//   final String? status;
-//   @JsonKey(name: "plan")
-//   final dynamic plan;
-//   @JsonKey(name: "expiresAt")
-//   final dynamic expiresAt;
-//
-//   Subscription({
-//     this.status,
-//     this.plan,
-//     this.expiresAt,
-//   });
-//
-//   factory Subscription.fromJson(Map<String, dynamic> json) {
-//     return _$SubscriptionFromJson(json);
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     return _$SubscriptionToJson(this);
-//   }
-// }
 //
 // @JsonSerializable()
 // class Preferences {

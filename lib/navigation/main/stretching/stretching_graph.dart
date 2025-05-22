@@ -5,11 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/stretching/details/stretching_details_page.dart';
 import 'package:heal_v/app/main/feature/stretching/details/stretching_details_page_bloc.dart';
-import 'package:heal_v/app/main/feature/stretching/model/stretching_lessons_ui_model.dart';
 import 'package:heal_v/app/main/feature/stretching/stretching_page.dart';
 import 'package:heal_v/app/main/feature/stretching/stretching_page_bloc.dart';
 import 'package:heal_v/common/widgets/media/video/video_player_widget_bloc.dart';
+import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 
+import '../../../app/main/feature/stretching/model/stretching_lessons_ui_model.dart';
 import '../../../app/main/feature/stretching/video/stretching_video_page.dart';
 import '../../../app/main/feature/stretching/video/stretching_video_page_bloc.dart';
 import '../../../main.dart';
@@ -33,12 +34,14 @@ base class StretchingRoute extends GoRouteData {
 @TypedGoRoute<StretchingDetailsRoute>(path: StretchingRoutes.stretchingDetails, routes: <TypedRoute<RouteData>>[])
 @immutable
 base class StretchingDetailsRoute extends GoRouteData {
-  final String stretchingLesson;
   final String weekTitle;
+  final String weekId;
+  final String lessonId;
 
   const StretchingDetailsRoute({
-    required this.stretchingLesson,
     required this.weekTitle,
+    required this.weekId,
+    required this.lessonId,
   });
 
   @override
@@ -46,7 +49,7 @@ base class StretchingDetailsRoute extends GoRouteData {
     return BlocProvider<StretchingDetailsPageBloc>(
       create: (_) => StretchingDetailsPageBloc(getIt.get())
         ..add(
-          StretchingDetailsPageEvent.initial(StretchingLesson.fromMap(jsonDecode(stretchingLesson)), weekTitle),
+          StretchingDetailsPageEvent.initial(weekTitle: weekTitle, weekId: weekId, lessonId: lessonId),
         ),
       child: const StretchingDetailsPage(),
     );
@@ -62,20 +65,14 @@ base class StretchingVideoRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final lesson = StretchingLesson.fromMap(jsonDecode(stretchingLesson));
+    final lesson = StretchingLesson.fromJson(jsonDecode(stretchingLesson));
     return MultiBlocProvider(
       providers: [
         BlocProvider<StretchingVideoPageBloc>(
-          create: (_) => StretchingVideoPageBloc()
-            ..add(
-              StretchingVideoPageEvent.initial(lesson),
-            ),
+          create: (_) => StretchingVideoPageBloc()..add(StretchingVideoPageEvent.initial(lesson)),
         ),
         BlocProvider<VideoPlayerWidgetBloc>(
-          create: (_) => VideoPlayerWidgetBloc()
-            ..add(
-              VideoPlayerWidgetEvent.initial(lesson.media?.first.downloadURL),
-            ),
+          create: (_) => VideoPlayerWidgetBloc()..add(VideoPlayerWidgetEvent.initial('${AuthConstants.baseHost}${lesson.media?.url}')),
         ),
       ],
       child: const StretchingVideoPage(),

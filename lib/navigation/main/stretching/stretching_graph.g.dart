@@ -42,15 +42,17 @@ RouteBase get $stretchingDetailsRoute => GoRouteData.$route(
 extension $StretchingDetailsRouteExtension on StretchingDetailsRoute {
   static StretchingDetailsRoute _fromState(GoRouterState state) =>
       StretchingDetailsRoute(
-        stretchingLesson: state.uri.queryParameters['stretching-lesson']!,
         weekTitle: state.uri.queryParameters['week-title']!,
+        weekId: state.uri.queryParameters['week-id']!,
+        lessonId: state.uri.queryParameters['lesson-id']!,
       );
 
   String get location => GoRouteData.$location(
         '/stretchingDetails',
         queryParams: {
-          'stretching-lesson': stretchingLesson,
           'week-title': weekTitle,
+          'week-id': weekId,
+          'lesson-id': lessonId,
         },
       );
 

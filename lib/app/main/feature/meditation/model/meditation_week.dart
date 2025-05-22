@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../../common/dart/optional.dart';
 
-part 'meditation_week_ui_model.g.dart';
+part 'meditation_week.g.dart';
 
 @JsonSerializable()
 @immutable

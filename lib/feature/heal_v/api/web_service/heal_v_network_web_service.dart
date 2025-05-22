@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
-import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_dto.dart';
-import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_dto.dart';
+import 'package:heal_v/feature/heal_v/api/breathing/model/breathing_complete_dto.dart';
+import 'package:heal_v/feature/heal_v/api/breathing/model/breathing_week_dto.dart';
 import 'package:heal_v/feature/heal_v/api/journal/model/put_journal_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_complete_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_week_dto.dart';
@@ -12,6 +12,7 @@ import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.d
 import 'package:retrofit/retrofit.dart';
 
 import '../auth/packet/update_user_packet.dart';
+import '../breathing/model/breathing_lessons_dto.dart';
 import '../journal/model/delete_journal_dto.dart';
 import '../journal/model/journal_history_dto.dart';
 import '../journal/packet/put_journal_packet.dart';
@@ -60,16 +61,22 @@ abstract class HealVNetworkWebService {
   @PATCH('/api/meditation/{weekId}/lesson/{lessonId}/complete')
   Future<HttpResponse<MeditationCompleteDto>> completeMeditationLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
+  @GET('/api/breathing')
+  Future<HttpResponse<List<BreathingWeekDto>?>> getBreathingWeeks();
+
+  @GET('/api/breathing/{weekId}')
+  Future<HttpResponse<BreathingLessonsDto>> getBreathingLessons(@Path('weekId') String id);
+
+  @GET('/api/meditation/{weekId}/lesson/{lessonId}')
+  Future<HttpResponse<BreathingLessonDto>> getBreathingLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
+
+  @PATCH('/api/breathing/{weekId}/lesson/{lessonId}/complete')
+  Future<HttpResponse<BreathingCompleteDto>> completeBreathingLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
+
   //-------------------------------------------------------------------------------------------------------------------------------
 
   @GET('daily-progress')
   Future<HttpResponse<DailyProgressDto?>> getDailyProgress();
-
-  @GET('breathings')
-  Future<HttpResponse<BreathingsDto?>> breathings(@Query('search') String? searchQuery);
-
-  @GET('breathings/categories')
-  Future<HttpResponse<List<BreathingsCategoriesDto>?>> breathingsCategories();
 
   @GET('journal')
   Future<HttpResponse<List<JournalHistoryDto>?>> getJournalHistory();

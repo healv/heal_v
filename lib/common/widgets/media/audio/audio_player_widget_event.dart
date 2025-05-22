@@ -3,7 +3,7 @@ part of 'audio_player_widget_bloc.dart';
 sealed class AudioPlayerWidgetEvent extends BaseEvent {
   const AudioPlayerWidgetEvent();
 
-  factory AudioPlayerWidgetEvent.initial(MeditationBreathing item) => _Initial(item);
+  factory AudioPlayerWidgetEvent.initial(String mediaUrl) => _Initial(mediaUrl);
 
   factory AudioPlayerWidgetEvent.subscribeToPosition() => const _SubscribeToPosition();
 
@@ -31,9 +31,9 @@ sealed class AudioPlayerWidgetEvent extends BaseEvent {
 }
 
 final class _Initial extends AudioPlayerWidgetEvent {
-  final MeditationBreathing item;
+  final String  mediaUrl;
 
-  const _Initial(this.item);
+  const _Initial(this.mediaUrl);
 }
 
 final class _SubscribeToPosition extends AudioPlayerWidgetEvent {

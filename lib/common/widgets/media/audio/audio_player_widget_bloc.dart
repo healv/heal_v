@@ -3,11 +3,9 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/common/bloc/base_bloc.dart';
-import 'package:heal_v/common/utils/constants.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:volume_controller/volume_controller.dart';
 
-import '../../../../app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import '../../../bloc/base_event.dart';
 import '../../../bloc/base_state.dart';
 import '../../../dart/optional.dart';
@@ -35,9 +33,9 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
   }
 
   Future<void> _handleInitialEvent(_Initial event, Emitter<AudioPlayerWidgetState> emitter) async {
-    await _player.setUrl(event.item.audioUrl?.first.downloadURL ?? emptyString);
+    await _player.setUrl(event.mediaUrl);
     emitter(state.copyWith(
-      item: Optional.value(event.item),
+      mediaUrl: Optional.value(event.mediaUrl),
       duration: Optional.value(_player.duration),
     ));
     add(AudioPlayerWidgetEvent.subscribeToPlayerState());

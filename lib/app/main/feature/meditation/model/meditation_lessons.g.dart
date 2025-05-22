@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'meditation_lessons_ui_model.dart';
+part of 'meditation_lessons.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -18,57 +18,76 @@ MeditationLessons _$MeditationLessonsFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$MeditationLessonsToJson(MeditationLessons instance) =>
     <String, dynamic>{
-      'lessons': instance.lessons,
       'id': instance.id,
       'title': instance.title,
       'order': instance.order,
+      'lessons': instance.lessons,
     };
 
 MeditationLesson _$MeditationLessonFromJson(Map<String, dynamic> json) =>
     MeditationLesson(
-      completed: json['completed'] as bool?,
-      opened: json['opened'] as bool?,
       id: json['id'] as String?,
-      weekId: json['weekId'] as String?,
-      order: (json['order'] as num?)?.toInt(),
       title: json['title'] as String?,
+      order: (json['order'] as num?)?.toInt(),
       duration: (json['duration'] as num?)?.toInt(),
-      poses: (json['poses'] as num?)?.toInt(),
-      media: (json['media'] as List<dynamic>?)
-          ?.map(
-              (e) => MeditationLessonMedia.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      shortDescription: json['shortDescription'] as String?,
+      description: json['description'] as String?,
+      preview: json['preview'] == null
+          ? null
+          : MeditationLessonPreview.fromJson(
+              json['preview'] as Map<String, dynamic>),
+      media: json['media'] == null
+          ? null
+          : MeditationLessonMedia.fromJson(
+              json['media'] as Map<String, dynamic>),
+      isCompleted: json['isCompleted'] as bool?,
+      isAccessible: json['isAccessible'] as bool?,
     );
 
 Map<String, dynamic> _$MeditationLessonToJson(MeditationLesson instance) =>
     <String, dynamic>{
-      'completed': instance.completed,
-      'opened': instance.opened,
       'id': instance.id,
-      'weekId': instance.weekId,
-      'order': instance.order,
       'title': instance.title,
+      'order': instance.order,
       'duration': instance.duration,
-      'poses': instance.poses,
+      'shortDescription': instance.shortDescription,
+      'description': instance.description,
+      'preview': instance.preview,
       'media': instance.media,
+      'isCompleted': instance.isCompleted,
+      'isAccessible': instance.isAccessible,
+    };
+
+MeditationLessonPreview _$MeditationLessonPreviewFromJson(
+        Map<String, dynamic> json) =>
+    MeditationLessonPreview(
+      name: json['name'] as String?,
+      width: (json['width'] as num?)?.toInt(),
+      height: (json['height'] as num?)?.toInt(),
+      url: json['url'] as String?,
+    );
+
+Map<String, dynamic> _$MeditationLessonPreviewToJson(
+        MeditationLessonPreview instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'width': instance.width,
+      'height': instance.height,
+      'url': instance.url,
     };
 
 MeditationLessonMedia _$MeditationLessonMediaFromJson(
         Map<String, dynamic> json) =>
     MeditationLessonMedia(
-      downloadURL: json['downloadURL'] as String?,
-      lastModifiedTS: (json['lastModifiedTS'] as num?)?.toInt(),
       name: json['name'] as String?,
-      ref: json['ref'] as String?,
-      type: json['type'] as String?,
+      ext: json['ext'] as String?,
+      url: json['url'] as String?,
     );
 
 Map<String, dynamic> _$MeditationLessonMediaToJson(
         MeditationLessonMedia instance) =>
     <String, dynamic>{
-      'downloadURL': instance.downloadURL,
-      'lastModifiedTS': instance.lastModifiedTS,
       'name': instance.name,
-      'ref': instance.ref,
-      'type': instance.type,
+      'ext': instance.ext,
+      'url': instance.url,
     };

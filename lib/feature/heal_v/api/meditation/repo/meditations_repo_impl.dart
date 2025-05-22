@@ -1,5 +1,5 @@
-import 'package:heal_v/app/main/feature/meditation/model/meditation_lessons_ui_model.dart';
-import 'package:heal_v/app/main/feature/meditation/model/meditation_week_ui_model.dart';
+import 'package:heal_v/app/main/feature/meditation/model/meditation_lessons.dart';
+import 'package:heal_v/app/main/feature/meditation/model/meditation_week.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/bounds/complete_meditation_lesson_network_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/bounds/meditation_weeks_network_bounds.dart';

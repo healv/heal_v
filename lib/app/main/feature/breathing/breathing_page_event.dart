@@ -5,31 +5,29 @@ sealed class BreathingPageEvent extends BaseEvent {
 
   factory BreathingPageEvent.initial() => Initial._();
 
-  factory BreathingPageEvent.breathings({String? searchQuery}) => GetBreathings._(searchQuery);
+  factory BreathingPageEvent.getBreathingWeeks() => GetBreathingWeeks._();
 
-  factory BreathingPageEvent.filterByCategory({required BreathingsCategoriesDto category}) => FilterByCategory._(category);
+  factory BreathingPageEvent.getBreathingLessons({required String id}) => GetBreathingLessons._(id);
 
-  factory BreathingPageEvent.updateCategory({required BreathingsCategoriesDto category}) => UpdateCategory._(category);
+  factory BreathingPageEvent.changeSelectedWeek({required String id}) => ChangeSelectedWeek._(id);
 }
 
 final class Initial extends BreathingPageEvent {
   Initial._();
 }
 
-final class GetBreathings extends BreathingPageEvent {
-  final String? searchQuery;
-
-  GetBreathings._(this.searchQuery);
+final class GetBreathingWeeks extends BreathingPageEvent {
+  GetBreathingWeeks._();
 }
 
-final class FilterByCategory extends BreathingPageEvent {
-  final BreathingsCategoriesDto category;
+final class GetBreathingLessons extends BreathingPageEvent {
+  final String id;
 
-  FilterByCategory._(this.category);
+  GetBreathingLessons._(this.id);
 }
 
-final class UpdateCategory extends BreathingPageEvent {
-  final BreathingsCategoriesDto category;
+final class ChangeSelectedWeek extends BreathingPageEvent {
+  final String id;
 
-  UpdateCategory._(this.category);
+  ChangeSelectedWeek._(this.id);
 }

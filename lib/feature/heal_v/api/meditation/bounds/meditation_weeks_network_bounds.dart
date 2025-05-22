@@ -3,7 +3,7 @@ import 'package:heal_v/common/utils/network/bounds/http_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_week_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/network/meditations_network_port.dart';
 
-import '../../../../../app/main/feature/meditation/model/meditation_week_ui_model.dart';
+import '../../../../../app/main/feature/meditation/model/meditation_week.dart';
 
 class MeditationWeeksNetworkBounds extends HttpBounds<List<MeditationWeek>, ApiWrapper<List<MeditationWeekDto>?>> {
   final MeditationsNetworkPort port;

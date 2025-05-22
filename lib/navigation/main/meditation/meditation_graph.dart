@@ -8,11 +8,14 @@ import 'package:heal_v/app/main/feature/meditation/meditation_details/meditation
 import 'package:heal_v/app/main/feature/meditation/meditation_details/meditation_details_page_bloc.dart';
 import 'package:heal_v/app/main/feature/meditation/meditation_page.dart';
 import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
+import 'package:heal_v/app/main/feature/meditation/model/meditation_lessons.dart';
 import 'package:heal_v/main.dart';
 
-import '../../../app/main/feature/media/audio/meditation_breathing_audio_page.dart';
-import '../../../app/main/feature/media/audio/meditation_breathing_audio_page_bloc.dart';
+import '../../../app/main/feature/media/audio/audio_page.dart';
+import '../../../app/main/feature/media/audio/audio_page_bloc.dart';
+import '../../../common/utils/constants.dart';
 import '../../../common/widgets/media/audio/audio_player_widget_bloc.dart';
+import '../../../feature/heal_v/api/auth/utils/auth_constants.dart';
 import '../../app_routes.dart';
 
 part 'meditation_graph.g.dart';
@@ -33,30 +36,31 @@ base class MeditationRoute extends GoRouteData {
 @TypedGoRoute<MeditationAudioRoute>(path: MeditationsRoutes.meditationAudio, routes: <TypedRoute<RouteData>>[])
 @immutable
 base class MeditationAudioRoute extends GoRouteData {
-  final String breathing;
+  final String meditation;
 
-  const MeditationAudioRoute({required this.breathing});
+  const MeditationAudioRoute({required this.meditation});
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    final meditationLesson = MeditationLesson.fromJson(jsonDecode(meditation));
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           lazy: false,
-          create: (_) => MeditationBreathingAudioPageBloc()
+          create: (_) => AudioPageBloc()
             ..add(
-              MeditationBreathingAudioPageEvent.initial(MeditationBreathing.fromMap(jsonDecode(breathing))),
+              AudioPageEvent.initial(meditationLesson.title ?? emptyString, meditationLesson.description ?? emptyString, '${AuthConstants.baseHost}${meditationLesson.preview?.url ?? emptyString}'),
             ),
         ),
         BlocProvider(
           lazy: false,
           create: (_) => AudioPlayerWidgetBloc()
             ..add(
-              AudioPlayerWidgetEvent.initial(MeditationBreathing.fromMap(jsonDecode(breathing))),
+              AudioPlayerWidgetEvent.initial('${AuthConstants.baseHost}${meditationLesson.media?.url ?? emptyString}'),
             ),
         ),
       ],
-      child: const MeditationBreathingAudioPage(),
+      child: const AudioPage(),
     );
   }
 }

@@ -7,7 +7,6 @@ import 'package:heal_v/feature/heal_v/api/journal/model/put_journal_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_complete_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_week_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
-import 'package:heal_v/feature/heal_v/api/shared_content/model/shared_content_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
 import 'package:retrofit/retrofit.dart';
@@ -62,9 +61,6 @@ abstract class HealVNetworkWebService {
   Future<HttpResponse<MeditationCompleteDto>> completeMeditationLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
   //-------------------------------------------------------------------------------------------------------------------------------
-
-  @GET('shared-content')
-  Future<HttpResponse<SharedContentDto?>> sharedContent();
 
   @GET('daily-progress')
   Future<HttpResponse<DailyProgressDto?>> getDailyProgress();

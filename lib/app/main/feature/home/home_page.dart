@@ -12,7 +12,6 @@ import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
-import 'package:heal_v/shared/feature/shared_content/shared_content_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../main.dart';
@@ -29,23 +28,15 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<ProgressBloc>().add(ProgressEvent.initial());
-    context.read<SharedContentBloc>().add(SharedContentEvent.initial());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SharedContentBloc, SharedContentState>(
-      builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
-            appBar: UserInfoAppBar(
-              title: state.appBarMessage ?? emptyString,
-              loading: state.loading,
-            ),
-            body: _body(context),
-          ),
-        );
-      },
+    return SafeArea(
+      child: Scaffold(
+        appBar: const UserInfoAppBar(),
+        body: _body(context),
+      ),
     );
   }
 

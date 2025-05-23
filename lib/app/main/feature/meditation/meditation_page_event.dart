@@ -5,15 +5,29 @@ sealed class MeditationPageEvent extends BaseEvent {
 
   factory MeditationPageEvent.initial() => Initial._();
 
-  factory MeditationPageEvent.meditations({String? searchQuery}) => GetMeditations._(searchQuery);
+  factory MeditationPageEvent.getMeditationWeeks() => GetMeditationWeeks._();
+
+  factory MeditationPageEvent.getMeditationLessons({required String id}) => GetMeditationLessons._(id);
+
+  factory MeditationPageEvent.changeSelectedWeek({required String id}) => ChangeSelectedWeek._(id);
 }
 
 final class Initial extends MeditationPageEvent {
   Initial._();
 }
 
-final class GetMeditations extends MeditationPageEvent {
-  final String? searchQuery;
+final class GetMeditationWeeks extends MeditationPageEvent {
+  GetMeditationWeeks._();
+}
 
-  GetMeditations._(this.searchQuery);
+final class GetMeditationLessons extends MeditationPageEvent {
+  final String id;
+
+  GetMeditationLessons._(this.id);
+}
+
+final class ChangeSelectedWeek extends MeditationPageEvent {
+  final String id;
+
+  ChangeSelectedWeek._(this.id);
 }

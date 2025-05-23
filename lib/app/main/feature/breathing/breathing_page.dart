@@ -128,7 +128,7 @@ class _BreathingPageState extends State<BreathingPage> with TickerProviderStateM
                         if (state.breathingLessons == null) {
                           return const SizedBox();
                         }
-                        if (state.breathingLessons!.lessons!.isEmpty) {
+                        if (state.breathingLessons!.lessons?.isEmpty == true) {
                           return const Center(
                             child: EmptyWidget(),
                           );

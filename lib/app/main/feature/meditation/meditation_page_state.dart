@@ -2,44 +2,44 @@ part of 'meditation_page_bloc.dart';
 
 @immutable
 final class MeditationPageState extends BaseState {
-  final bool? categoriesLoading;
-  final bool? loading;
-  final MeditationBreathings? items;
-  final List<MeditationBreathing>? filteredItems;
-  final Map<String, List<MeditationBreathing>>? itemsMap;
+  final List<MeditationWeek>? weeks;
+  final MeditationLessons? meditationLessons;
+  final bool? weeksLoading;
+  final bool? lessonsLoading;
+  final String? selectedWeekId;
 
   const MeditationPageState._({
-    this.categoriesLoading,
-    this.loading,
-    this.items,
-    this.filteredItems,
-    this.itemsMap,
+    this.weeks,
+    this.meditationLessons,
+    this.weeksLoading,
+    this.lessonsLoading,
+    this.selectedWeekId,
   });
 
   factory MeditationPageState.initial() => const MeditationPageState._();
 
   @override
   List<Object?> get props => [
-        categoriesLoading,
-        loading,
-        items,
-        filteredItems,
-        itemsMap,
+        weeks,
+        meditationLessons,
+        weeksLoading,
+        lessonsLoading,
+        selectedWeekId,
       ];
 
   MeditationPageState copyWith({
-    Optional<MeditationBreathings?>? items,
-    Optional<bool?>? categoriesLoading,
-    Optional<bool?>? loading,
-    Optional<List<MeditationBreathing>?>? filteredItems,
-    Optional<Map<String, List<MeditationBreathing>>?>? itemsMap,
+    Optional<List<MeditationWeek>?>? weeks,
+    Optional<MeditationLessons?>? meditationLessons,
+    Optional<bool?>? weeksLoading,
+    Optional<bool?>? lessonsLoading,
+    Optional<String?>? selectedWeekId,
   }) {
     return MeditationPageState._(
-      categoriesLoading: categoriesLoading?.isValid == true ? categoriesLoading?.value : this.categoriesLoading,
-      loading: loading?.isValid == true ? loading?.value : this.loading,
-      items: items?.isValid == true ? items?.value : this.items,
-      filteredItems: filteredItems?.isValid == true ? filteredItems?.value : this.filteredItems,
-      itemsMap: itemsMap?.isValid == true ? itemsMap?.value : this.itemsMap,
+      weeks: weeks?.isValid == true ? weeks?.value : this.weeks,
+      meditationLessons: meditationLessons?.isValid == true ? meditationLessons?.value : this.meditationLessons,
+      weeksLoading: weeksLoading?.isValid == true ? weeksLoading?.value : this.weeksLoading,
+      lessonsLoading: lessonsLoading?.isValid == true ? lessonsLoading?.value : this.lessonsLoading,
+      selectedWeekId: selectedWeekId?.isValid == true ? selectedWeekId?.value : this.selectedWeekId,
     );
   }
 }

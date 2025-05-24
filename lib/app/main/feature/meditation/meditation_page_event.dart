@@ -5,11 +5,11 @@ sealed class MeditationPageEvent extends BaseEvent {
 
   factory MeditationPageEvent.initial() => Initial._();
 
-  factory MeditationPageEvent.getMeditationWeeks() => GetMeditationWeeks._();
+  factory MeditationPageEvent.getMeditationWeeks({bool isLoading = true}) => GetMeditationWeeks._(isLoading);
 
-  factory MeditationPageEvent.getMeditationLessons({required String id}) => GetMeditationLessons._(id);
+  factory MeditationPageEvent.getMeditationLessons({required String id, bool isLoading = true}) => GetMeditationLessons._(id, isLoading);
 
-  factory MeditationPageEvent.changeSelectedWeek({required String id}) => ChangeSelectedWeek._(id);
+  factory MeditationPageEvent.changeSelectedWeek({required String id, bool isLoading = true}) => ChangeSelectedWeek._(id, isLoading);
 }
 
 final class Initial extends MeditationPageEvent {
@@ -17,17 +17,21 @@ final class Initial extends MeditationPageEvent {
 }
 
 final class GetMeditationWeeks extends MeditationPageEvent {
-  GetMeditationWeeks._();
+  final bool isLoading;
+
+  GetMeditationWeeks._(this.isLoading);
 }
 
 final class GetMeditationLessons extends MeditationPageEvent {
   final String id;
+  final bool isLoading;
 
-  GetMeditationLessons._(this.id);
+  GetMeditationLessons._(this.id, this.isLoading);
 }
 
 final class ChangeSelectedWeek extends MeditationPageEvent {
   final String id;
+  final bool isLoading;
 
-  ChangeSelectedWeek._(this.id);
+  ChangeSelectedWeek._(this.id, this.isLoading);
 }

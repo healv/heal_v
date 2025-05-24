@@ -17,11 +17,33 @@ class AudioPlayerWidget extends StatefulWidget {
   }
 }
 
-class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindingObserver {
+class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindingObserver, TickerProviderStateMixin {
+  late final AnimationController _playPauseController;
+  late final AnimationController _repeatController;
+  late final Animation<double> _playPauseRotation;
+  late final Animation<double> _repeatRotation;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _playPauseController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _repeatController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    _repeatRotation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+      parent: _repeatController,
+      curve: Curves.easeInOut,
+    ));
+    _playPauseRotation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+      parent: _playPauseController,
+      curve: Curves.easeInOut,
+    ));
   }
 
   @override
@@ -82,7 +104,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
         _replay10(context),
         _playPause(context, audioPlayerWidgetBloc),
         _forward10(context),
-        _shuffle(context, audioPlayerWidgetBloc),
+        _repeat(context, audioPlayerWidgetBloc),
       ],
     );
   }
@@ -138,21 +160,25 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
               } else {
                 audioPlayerWidgetBloc.add(AudioPlayerWidgetEvent.play());
               }
+              _playPauseController.forward(from: 0);
             },
             child: Center(
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                child: playerState?.playing == true
-                    ? AppIcons.pause.svgAsset(
-                        colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
-                        width: 20,
-                        height: 26,
-                      )
-                    : AppIcons.play.svgAsset(
-                        colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
-                        width: 20,
-                        height: 26,
-                      ),
+              child: RotationTransition(
+                turns: _playPauseRotation,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: playerState?.playing == true
+                      ? AppIcons.pause.svgAsset(
+                          colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
+                          width: 20,
+                          height: 26,
+                        )
+                      : AppIcons.play.svgAsset(
+                          colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
+                          width: 20,
+                          height: 26,
+                        ),
+                ),
               ),
             ),
           );
@@ -170,31 +196,58 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
     );
   }
 
-  // todo need to understand shuffle logic
-  Widget _shuffle(BuildContext context, AudioPlayerWidgetBloc audioPlayerWidgetBloc) {
+  Widget _repeat(BuildContext context, AudioPlayerWidgetBloc audioPlayerWidgetBloc) {
     return BlocSelector<AudioPlayerWidgetBloc, AudioPlayerWidgetState, LoopMode?>(
       selector: (AudioPlayerWidgetState state) => state.loopMode,
       builder: (BuildContext context, LoopMode? loopMode) {
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          child: IconButton(
-            onPressed: () {
-              audioPlayerWidgetBloc.add(AudioPlayerWidgetEvent.changeLoopMode(loopMode == LoopMode.one ? LoopMode.all : LoopMode.one));
-            },
-            icon: loopMode == LoopMode.one
-                ? AppIcons.shuffle.svgAsset(
-                    width: 20,
-                    height: 20,
-                    colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
-                  )
-                : AppIcons.repeat.svgAsset(
-                    width: 20,
-                    height: 20,
-                    colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
-                  ),
+        return RotationTransition(
+          turns: _repeatRotation,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: IconButton(
+              onPressed: () {
+                _repeatController.forward(from: 0);
+                audioPlayerWidgetBloc.add(AudioPlayerWidgetEvent.changeLoopMode(loopMode == LoopMode.one ? LoopMode.all : LoopMode.one));
+              },
+              icon: loopMode == LoopMode.one
+                  ? AppIcons.repeat.svgAsset(
+                      width: 20,
+                      height: 20,
+                      colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
+                    )
+                  : Stack(
+                      children: [
+                        Positioned(
+                          child: AppIcons.repeat.svgAsset(
+                            width: 20,
+                            height: 20,
+                            colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Center(
+                            child: Text(
+                              '1',
+                              style: TextStyle(
+                                color: context.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
           ),
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _repeatController.dispose();
+    _playPauseController.dispose();
   }
 }

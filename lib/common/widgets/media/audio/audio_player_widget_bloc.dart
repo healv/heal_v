@@ -69,17 +69,20 @@ class AudioPlayerWidgetBloc extends SideEffectBloc<AudioPlayerWidgetEvent, Audio
   Future<void> _handleSubscribeToPlayerStateEvent(_SubscribeToPlayerState event, Emitter<AudioPlayerWidgetState> emitter) async {
     await emitter.forEach(_player.playerStateStream, onData: (playerState) {
       if (playerState.processingState == ProcessingState.completed) {
-        log("AUDIO_PLAYER_COMPLETED: $playerState");
-        _player.pause();
-        _player.seek(Duration.zero);
-        if (state.loopMode == LoopMode.one) {
-          _player.play();
-        }
+        _handleTrackCompletion();
       }
       log("AUDIO_PLAYER_STATE_CHANGED: $playerState");
       addSideEffect(AudioPlayerWidgetEffect.audioPlayerStateChanged(playerState: playerState.processingState, loopMode: state.loopMode ?? LoopMode.off));
       return state.copyWith(playerState: Optional.value(playerState));
     });
+  }
+
+  Future<void> _handleTrackCompletion() async {
+    await _player.stop();
+    await _player.seek(Duration.zero);
+    if (state.loopMode == LoopMode.one) {
+      await _player.play();
+    }
   }
 
   Future<void> _handleProgressSeekEvent(_ProgressSeek event, Emitter<AudioPlayerWidgetState> emitter) async {
@@ -132,7 +135,6 @@ class AudioPlayerWidgetBloc extends SideEffectBloc<AudioPlayerWidgetEvent, Audio
   }
 
   Future<void> _handleChangeLoopModeEvent(_ChangeLoopMode event, Emitter<AudioPlayerWidgetState> emitter) async {
-    await _player.setLoopMode(event.loopMode);
     emitter(state.copyWith(loopMode: Optional.value(event.loopMode)));
   }
 

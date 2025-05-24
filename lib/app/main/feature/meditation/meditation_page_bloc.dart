@@ -33,18 +33,18 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(
-            weeksLoading: const Optional.value(false),
+            weeksLoading: event.isLoading == true ? const Optional.value(false) : null,
             weeks: Optional.value(response.data),
           ));
           if (response.data?.isNotEmpty == true) {
-            add(MeditationPageEvent.changeSelectedWeek(id: state.selectedWeekId ?? response.data?.first.id ?? emptyString));
+            add(MeditationPageEvent.changeSelectedWeek(id: state.selectedWeekId ?? response.data?.first.id ?? emptyString, isLoading: event.isLoading));
           }
           break;
         case ResourceStatusEnum.error:
-          emitter(state.copyWith(weeksLoading: const Optional.value(false)));
+          emitter(state.copyWith(weeksLoading: event.isLoading == true ? const Optional.value(false) : null));
           break;
         case ResourceStatusEnum.loading:
-          emitter(state.copyWith(weeksLoading: const Optional.value(true)));
+          emitter(state.copyWith(weeksLoading: event.isLoading == true ? const Optional.value(true) : null));
           break;
       }
     }
@@ -55,15 +55,15 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(
-            lessonsLoading: const Optional.value(false),
+            lessonsLoading: event.isLoading == true ? const Optional.value(false) : null,
             meditationLessons: Optional.value(response.data),
           ));
           break;
         case ResourceStatusEnum.error:
-          emitter(state.copyWith(lessonsLoading: const Optional.value(false)));
+          emitter(state.copyWith(lessonsLoading: event.isLoading == true ? const Optional.value(false) : null));
           break;
         case ResourceStatusEnum.loading:
-          emitter(state.copyWith(lessonsLoading: const Optional.value(true)));
+          emitter(state.copyWith(lessonsLoading: event.isLoading == true ? const Optional.value(true) : null));
           break;
       }
     }
@@ -71,6 +71,6 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
 
   Future<void> _handleChangeSelectedWeekEvent(ChangeSelectedWeek event, Emitter<MeditationPageState> emitter) async {
     emitter(state.copyWith(selectedWeekId: Optional.value(event.id)));
-    add(MeditationPageEvent.getMeditationLessons(id: event.id));
+    add(MeditationPageEvent.getMeditationLessons(id: event.id, isLoading: event.isLoading));
   }
 }

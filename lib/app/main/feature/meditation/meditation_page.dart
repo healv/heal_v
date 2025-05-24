@@ -15,7 +15,6 @@ import '../../../../common/utils/alert.dart';
 import '../../../../common/utils/constants.dart';
 import '../../../../feature/heal_v/api/auth/utils/auth_constants.dart';
 import '../../../../navigation/main/meditation/meditation_graph.dart';
-import '../common/model/lesson_result_type_enum.dart';
 
 class MeditationPage extends StatefulWidget {
   const MeditationPage({super.key});
@@ -163,13 +162,7 @@ class _MeditationPageState extends State<MeditationPage> with TickerProviderStat
       onTap: () {
         if (lesson?.isAccessible == true) {
           MeditationAudioRoute(meditation: jsonEncode(lesson?.toJson()), weekId: week.id ?? emptyString).push(context).then((value) {
-            if (value != null && value is LessonResultTypeEnum) {
-              switch (value) {
-                case LessonResultTypeEnum.completed:
-                  meditationPageBloc.add(MeditationPageEvent.getMeditationWeeks());
-                  break;
-              }
-            }
+            meditationPageBloc.add(MeditationPageEvent.getMeditationWeeks(isLoading: false));
           });
         } else {
           showLockedDialog(context, tr('meditation_locked'), tr('meditation_locked_description'));

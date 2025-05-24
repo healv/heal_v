@@ -5,11 +5,11 @@ sealed class BreathingPageEvent extends BaseEvent {
 
   factory BreathingPageEvent.initial() => Initial._();
 
-  factory BreathingPageEvent.getBreathingWeeks() => GetBreathingWeeks._();
+  factory BreathingPageEvent.getBreathingWeeks({bool isLoading = true}) => GetBreathingWeeks._(isLoading);
 
-  factory BreathingPageEvent.getBreathingLessons({required String id}) => GetBreathingLessons._(id);
+  factory BreathingPageEvent.getBreathingLessons({required String id, bool isLoading = true}) => GetBreathingLessons._(id, isLoading);
 
-  factory BreathingPageEvent.changeSelectedWeek({required String id}) => ChangeSelectedWeek._(id);
+  factory BreathingPageEvent.changeSelectedWeek({required String id, bool isLoading = true}) => ChangeSelectedWeek._(id, isLoading);
 }
 
 final class Initial extends BreathingPageEvent {
@@ -17,17 +17,21 @@ final class Initial extends BreathingPageEvent {
 }
 
 final class GetBreathingWeeks extends BreathingPageEvent {
-  GetBreathingWeeks._();
+  final bool isLoading;
+
+  GetBreathingWeeks._(this.isLoading);
 }
 
 final class GetBreathingLessons extends BreathingPageEvent {
   final String id;
+  final bool isLoading;
 
-  GetBreathingLessons._(this.id);
+  GetBreathingLessons._(this.id, this.isLoading);
 }
 
 final class ChangeSelectedWeek extends BreathingPageEvent {
   final String id;
+  final bool isLoading;
 
-  ChangeSelectedWeek._(this.id);
+  ChangeSelectedWeek._(this.id, this.isLoading);
 }

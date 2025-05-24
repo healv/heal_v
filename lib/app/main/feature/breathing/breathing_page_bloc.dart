@@ -33,18 +33,18 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(
-            weeksLoading: const Optional.value(false),
+            weeksLoading: event.isLoading == true ? const Optional.value(false) : null,
             weeks: Optional.value(response.data),
           ));
           if (response.data?.isNotEmpty == true) {
-            add(BreathingPageEvent.changeSelectedWeek(id: state.selectedWeekId ?? response.data?.first.id ?? emptyString));
+            add(BreathingPageEvent.changeSelectedWeek(id: state.selectedWeekId ?? response.data?.first.id ?? emptyString, isLoading: event.isLoading));
           }
           break;
         case ResourceStatusEnum.error:
-          emitter(state.copyWith(weeksLoading: const Optional.value(false)));
+          emitter(state.copyWith(weeksLoading: event.isLoading == true ? const Optional.value(false) : null));
           break;
         case ResourceStatusEnum.loading:
-          emitter(state.copyWith(weeksLoading: const Optional.value(true)));
+          emitter(state.copyWith(weeksLoading: event.isLoading == true ? const Optional.value(true) : null));
           break;
       }
     }
@@ -55,15 +55,15 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(
-            lessonsLoading: const Optional.value(false),
+            lessonsLoading: event.isLoading == true ? const Optional.value(false) : null,
             breathingLessons: Optional.value(response.data),
           ));
           break;
         case ResourceStatusEnum.error:
-          emitter(state.copyWith(lessonsLoading: const Optional.value(false)));
+          emitter(state.copyWith(lessonsLoading: event.isLoading == true ? const Optional.value(false) : null));
           break;
         case ResourceStatusEnum.loading:
-          emitter(state.copyWith(lessonsLoading: const Optional.value(true)));
+          emitter(state.copyWith(lessonsLoading: event.isLoading == true ? const Optional.value(true) : null));
           break;
       }
     }
@@ -71,6 +71,6 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
 
   Future<void> _handleChangeSelectedWeekEvent(ChangeSelectedWeek event, Emitter<BreathingPageState> emitter) async {
     emitter(state.copyWith(selectedWeekId: Optional.value(event.id)));
-    add(BreathingPageEvent.getBreathingLessons(id: event.id));
+    add(BreathingPageEvent.getBreathingLessons(id: event.id, isLoading: event.isLoading));
   }
 }

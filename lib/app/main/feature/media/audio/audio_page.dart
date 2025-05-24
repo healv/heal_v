@@ -3,10 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart' show AppBar, Colors, Scaffold;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:heal_v/app/main/feature/common/model/lesson_result_type_enum.dart';
 import 'package:heal_v/app/main/feature/media/audio/audio_page_bloc.dart';
+import 'package:heal_v/common/widgets/media/audio/audio_player_widget_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../../../../../common/flutter/widgets/framework.dart';
+import '../../../../../common/tools/localization_tools.dart';
+import '../../../../../common/utils/alert.dart';
 import '../../../../../common/widgets/media/audio/audio_player_widget.dart';
 
 class AudioPage extends StatefulWidget {
@@ -17,6 +23,14 @@ class AudioPage extends StatefulWidget {
 }
 
 class _AudioPageState extends BlocDependentSideEffectState<AudioPage, AudioPageBloc, AudioPageSideEffect> {
+  StreamSubscription? _audioPlayerEffectsSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayerEffectsSubscription = context.read<AudioPlayerWidgetBloc>().sideEffects.listen(_listenVideoPlayerEffects);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,8 +132,33 @@ class _AudioPageState extends BlocDependentSideEffectState<AudioPage, AudioPageB
     );
   }
 
+  void _listenVideoPlayerEffects(AudioPlayerWidgetEffect effect) async {
+    switch (effect) {
+      case AudioPlayerStateChanged():
+        if (effect.playerState == ProcessingState.completed) {
+          if (context.mounted) context.read<AudioPageBloc>().add(AudioPageEvent.lessonCompleted(loopMode: effect.loopMode));
+        }
+        break;
+    }
+  }
+
   @override
-  Future<void> handleSideEffect(AudioPageSideEffect effect) {
-    switch (effect) {}
+  Future<void> handleSideEffect(AudioPageSideEffect effect) async {
+    switch (effect) {
+      case LessonCompletedEffect():
+        if (effect.loopMode == LoopMode.off) {
+          await showAlertDialog(title: tr('success'), message: tr('lessonCompleted'));
+          if (mounted) {
+            context.pop(LessonResultTypeEnum.completed);
+          }
+        }
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _audioPlayerEffectsSubscription?.cancel();
   }
 }

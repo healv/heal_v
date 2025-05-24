@@ -18,7 +18,6 @@ part 'main_graph.g.dart';
   ]),
   TypedStatefulShellBranch<MeditationShellRoute>(routes: <TypedRoute<RouteData>>[
     TypedGoRoute<MeditationRoute>(path: MainRoutes.meditation, routes: [
-      TypedGoRoute<MeditationNestedMeditationDetailsRoute>(path: MeditationsRoutes.nestedMeditationDetails),
     ]),
   ]),
   TypedStatefulShellBranch<StretchingShellRoute>(routes: <TypedRoute<RouteData>>[

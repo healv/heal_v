@@ -42,12 +42,14 @@ extension $BreathingAudioRouteExtension on BreathingAudioRoute {
   static BreathingAudioRoute _fromState(GoRouterState state) =>
       BreathingAudioRoute(
         breathing: state.uri.queryParameters['breathing']!,
+        weekId: state.uri.queryParameters['week-id']!,
       );
 
   String get location => GoRouteData.$location(
         '/breathingAudio',
         queryParams: {
           'breathing': breathing,
+          'week-id': weekId,
         },
       );
 

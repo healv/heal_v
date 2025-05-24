@@ -37,7 +37,7 @@ class BreathingPageBloc extends BaseBloc<BreathingPageEvent, BreathingPageState>
             weeks: Optional.value(response.data),
           ));
           if (response.data?.isNotEmpty == true) {
-            add(BreathingPageEvent.changeSelectedWeek(id: response.data?.first.id ?? emptyString));
+            add(BreathingPageEvent.changeSelectedWeek(id: state.selectedWeekId ?? response.data?.first.id ?? emptyString));
           }
           break;
         case ResourceStatusEnum.error:

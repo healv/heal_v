@@ -15,6 +15,7 @@ import '../../../../common/utils/alert.dart';
 import '../../../../common/utils/constants.dart';
 import '../../../../feature/heal_v/api/auth/utils/auth_constants.dart';
 import '../../../../navigation/main/meditation/meditation_graph.dart';
+import '../common/model/lesson_result_type_enum.dart';
 
 class MeditationPage extends StatefulWidget {
   const MeditationPage({super.key});
@@ -133,7 +134,7 @@ class _MeditationPageState extends State<MeditationPage> with TickerProviderStat
                             child: EmptyWidget(),
                           );
                         }
-                        return _lessonsGridView(context, week, state.meditationLessons!.lessons!);
+                        return _lessonsGridView(context, meditationPageBloc, week, state.meditationLessons!.lessons!);
                       },
                     );
                   }).toList() ??
@@ -143,7 +144,7 @@ class _MeditationPageState extends State<MeditationPage> with TickerProviderStat
     );
   }
 
-  Widget _lessonsGridView(BuildContext context, MeditationWeek week, List<MeditationLesson>? items) {
+  Widget _lessonsGridView(BuildContext context, MeditationPageBloc meditationPageBloc, MeditationWeek week, List<MeditationLesson>? items) {
     return MasonryGridView.count(
       crossAxisCount: 2,
       mainAxisSpacing: 12,
@@ -151,17 +152,25 @@ class _MeditationPageState extends State<MeditationPage> with TickerProviderStat
       itemCount: items?.length ?? 0,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return _lessonItem(context, week, items?[index]);
+        return _lessonItem(context, meditationPageBloc, week, items?[index]);
         // return _image(items?[index].photoUrl);
       },
     );
   }
 
-  Widget _lessonItem(BuildContext context, MeditationWeek week, MeditationLesson? lesson) {
+  Widget _lessonItem(BuildContext context, MeditationPageBloc meditationPageBloc, MeditationWeek week, MeditationLesson? lesson) {
     return InkWell(
       onTap: () {
         if (lesson?.isAccessible == true) {
-          MeditationAudioRoute(meditation: jsonEncode(lesson?.toJson())).push(context);
+          MeditationAudioRoute(meditation: jsonEncode(lesson?.toJson()), weekId: week.id ?? emptyString).push(context).then((value) {
+            if (value != null && value is LessonResultTypeEnum) {
+              switch (value) {
+                case LessonResultTypeEnum.completed:
+                  meditationPageBloc.add(MeditationPageEvent.getMeditationWeeks());
+                  break;
+              }
+            }
+          });
         } else {
           showLockedDialog(context, tr('meditation_locked'), tr('meditation_locked_description'));
         }

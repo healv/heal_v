@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/breathing/breathing_page_bloc.dart';
 import 'package:heal_v/app/main/feature/breathing/model/breathing_lessons.dart';
 import 'package:heal_v/app/main/feature/breathing/model/breathing_week.dart';
+import 'package:heal_v/app/main/feature/common/model/lesson_result_type_enum.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
@@ -133,7 +134,7 @@ class _BreathingPageState extends State<BreathingPage> with TickerProviderStateM
                             child: EmptyWidget(),
                           );
                         }
-                        return _lessonsListView(context, week, state.breathingLessons!.lessons!);
+                        return _lessonsListView(context, breathingPageBloc, week, state.breathingLessons!.lessons!);
                       },
                     );
                   }).toList() ??
@@ -169,21 +170,29 @@ class _BreathingPageState extends State<BreathingPage> with TickerProviderStateM
     );
   }
 
-  Widget _lessonsListView(BuildContext context, BreathingWeek week, List<BreathingLesson> lessons) {
+  Widget _lessonsListView(BuildContext context, BreathingPageBloc breathingPageBloc, BreathingWeek week, List<BreathingLesson> lessons) {
     return ListView.separated(
       itemCount: lessons.length,
       separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 16.0),
       itemBuilder: (_, index) {
-        return _lessonItem(context, week, lessons[index]);
+        return _lessonItem(context, breathingPageBloc, week, lessons[index]);
       },
     );
   }
 
-  Widget _lessonItem(BuildContext context, BreathingWeek week, BreathingLesson lesson) {
+  Widget _lessonItem(BuildContext context, BreathingPageBloc breathingPageBloc, BreathingWeek week, BreathingLesson lesson) {
     return InkWell(
       onTap: () {
         if (lesson.isAccessible == true) {
-          BreathingAudioRoute(breathing: jsonEncode(lesson.toJson())).push(context);
+          BreathingAudioRoute(breathing: jsonEncode(lesson.toJson()), weekId: week.id ?? emptyString).push(context).then((value) {
+            if (value != null && value is LessonResultTypeEnum) {
+              switch (value) {
+                case LessonResultTypeEnum.completed:
+                  breathingPageBloc.add(BreathingPageEvent.getBreathingWeeks());
+                  break;
+              }
+            }
+          });
         } else {
           showLockedDialog(context, tr('breathing_locked'), tr('breathing_locked_description'));
         }

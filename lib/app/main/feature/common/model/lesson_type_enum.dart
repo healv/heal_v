@@ -1,0 +1,4 @@
+enum LessonTypeEnum {
+  meditation,
+  breathing,
+}

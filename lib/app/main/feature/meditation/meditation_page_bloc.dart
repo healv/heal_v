@@ -37,7 +37,7 @@ class MeditationPageBloc extends BaseBloc<MeditationPageEvent, MeditationPageSta
             weeks: Optional.value(response.data),
           ));
           if (response.data?.isNotEmpty == true) {
-            add(MeditationPageEvent.changeSelectedWeek(id: response.data?.first.id ?? emptyString));
+            add(MeditationPageEvent.changeSelectedWeek(id: state.selectedWeekId ?? response.data?.first.id ?? emptyString));
           }
           break;
         case ResourceStatusEnum.error:

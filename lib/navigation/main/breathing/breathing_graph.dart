@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/breathing/breathing_page.dart';
 import 'package:heal_v/app/main/feature/breathing/breathing_page_bloc.dart';
 import 'package:heal_v/app/main/feature/breathing/model/breathing_lessons.dart';
+import 'package:heal_v/app/main/feature/common/model/lesson_type_enum.dart';
 import 'package:heal_v/app/main/feature/media/audio/audio_page_bloc.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
@@ -34,8 +35,9 @@ base class BreathingRoute extends GoRouteData {
 @immutable
 base class BreathingAudioRoute extends GoRouteData {
   final String breathing;
+  final String weekId;
 
-  const BreathingAudioRoute({required this.breathing});
+  const BreathingAudioRoute({required this.breathing, required this.weekId});
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -44,9 +46,17 @@ base class BreathingAudioRoute extends GoRouteData {
       providers: [
         BlocProvider(
           lazy: false,
-          create: (_) => AudioPageBloc()
+          create: (_) => AudioPageBloc(breathingsRepo: getIt.get())
             ..add(
-              AudioPageEvent.initial(breathingLesson.title ?? emptyString, breathingLesson.description ?? emptyString, '${AuthConstants.baseHost}${breathingLesson.preview?.url ?? emptyString}'),
+              AudioPageEvent.initial(
+                lessonTypeEnum: LessonTypeEnum.breathing,
+                id: breathingLesson.id ?? emptyString,
+                weekId: weekId,
+                title: breathingLesson.title ?? emptyString,
+                description: breathingLesson.description ?? emptyString,
+                previewUrl: '${AuthConstants.baseHost}${breathingLesson.preview?.url ?? emptyString}',
+                isCompleted: breathingLesson.isCompleted ?? false,
+              ),
             ),
         ),
         BlocProvider(

@@ -2,18 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:heal_v/common/bloc/base_bloc.dart';
+import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:volume_controller/volume_controller.dart';
 
 import '../../../bloc/base_event.dart';
 import '../../../bloc/base_state.dart';
+import '../../../bloc/side_effect/side_effect.dart';
 import '../../../dart/optional.dart';
 
+part 'audio_player_widget_effect.dart';
 part 'audio_player_widget_event.dart';
 part 'audio_player_widget_state.dart';
 
-class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayerWidgetState> {
+class AudioPlayerWidgetBloc extends SideEffectBloc<AudioPlayerWidgetEvent, AudioPlayerWidgetState, AudioPlayerWidgetEffect> {
   final _player = AudioPlayer();
 
   AudioPlayerWidgetBloc() : super(AudioPlayerWidgetState.initial()) {
@@ -67,6 +69,7 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
   Future<void> _handleSubscribeToPlayerStateEvent(_SubscribeToPlayerState event, Emitter<AudioPlayerWidgetState> emitter) async {
     await emitter.forEach(_player.playerStateStream, onData: (playerState) {
       if (playerState.processingState == ProcessingState.completed) {
+        log("AUDIO_PLAYER_COMPLETED: $playerState");
         _player.pause();
         _player.seek(Duration.zero);
         if (state.loopMode == LoopMode.one) {
@@ -74,6 +77,7 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
         }
       }
       log("AUDIO_PLAYER_STATE_CHANGED: $playerState");
+      addSideEffect(AudioPlayerWidgetEffect.audioPlayerStateChanged(playerState: playerState.processingState, loopMode: state.loopMode ?? LoopMode.off));
       return state.copyWith(playerState: Optional.value(playerState));
     });
   }

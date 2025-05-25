@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
+import 'package:heal_v/common/extensions/firebase_extension.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
@@ -58,11 +59,16 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<AuthBlocState> emitter) async {
-    final permissionGranted = await Permission.notification.isGranted;
-    final permissionAlwaysDenied = await Permission.notification.isPermanentlyDenied;
-    if (!permissionGranted && !permissionAlwaysDenied) {
-      final status = await PermissionRoute().push<PermissionStatus>(shellNavigatorGlobalKey.currentContext!) ?? PermissionStatus.denied;
-      Store.set(key: StoreKey.notificationEnable, value: status.isGranted);
+    final isNotificationEnable = await Store.get<bool?>(key: StoreKey.notificationEnable, defaultValue: null);
+    if (isNotificationEnable == null) {
+      final permissionGranted = await Permission.notification.isGranted;
+      final permissionAlwaysDenied = await Permission.notification.isPermanentlyDenied;
+      if (!permissionGranted && !permissionAlwaysDenied) {
+        final status = await PermissionRoute().push<PermissionStatus>(shellNavigatorGlobalKey.currentContext!) ?? PermissionStatus.denied;
+        await status.isGranted.changeFirebaseNotificationSettings();
+      } else {
+        await true.changeFirebaseNotificationSettings();
+      }
     }
 
     try {

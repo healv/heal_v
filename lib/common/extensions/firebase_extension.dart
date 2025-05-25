@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -9,7 +10,11 @@ extension FirebaseMessagingExtension on bool {
   Future<void> changeFirebaseNotificationSettings() async {
     if (this) {
       await FirebaseMessaging.instance.setAutoInitEnabled(true);
-      log("FCM token: ${await FirebaseMessaging.instance.getToken()}");
+      if (Platform.isAndroid) {
+        log("FCM token: ${await FirebaseMessaging.instance.getToken()}");
+      } else {
+        log("FCM token: ${await FirebaseMessaging.instance.getAPNSToken()}");
+      }
     } else {
       await FirebaseMessaging.instance.setAutoInitEnabled(false);
       await FirebaseMessaging.instance.deleteToken();

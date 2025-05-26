@@ -1,9 +1,12 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page_bloc.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class ProgressPage extends StatelessWidget {
   const ProgressPage({super.key});
@@ -24,20 +27,28 @@ class ProgressPage extends StatelessWidget {
 
   Widget _body(BuildContext context, ProgressPageBloc progressPageBloc) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          _totalsText(context),
-          const SizedBox(height: 16),
-          _totalsRow(context, progressPageBloc),
-          const SizedBox(height: 24),
-          _calendarText(context),
-          const SizedBox(height: 16),
-          _calendarHeaderWidget(context, progressPageBloc),
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            _totalsText(context),
+            const SizedBox(height: 8),
+            _totalsRow(context, progressPageBloc),
+            const SizedBox(height: 16),
+            _calendarText(context),
+            const SizedBox(height: 8),
+            _calendarHeaderWidget(context, progressPageBloc),
+            const SizedBox(height: 6),
+            _calendarWidget(context, progressPageBloc),
+            const SizedBox(height: 16),
+            _goalStatusText(context),
+            const SizedBox(height: 8),
+            _goalsStatusWidget(context),
+          ],
+        ),
       ),
     );
   }
@@ -125,8 +136,218 @@ class ProgressPage extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: context.primary.withValues(alpha: 0.3),
+        color: context.primary.withValues(alpha: 0.6),
       ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _calendarHeaderMonthText(context),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                onTap: () {
+                  progressPageBloc.add(
+                    ProgressPageEvent.previousMonth(),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: AppIcons.arrowLeft.svgAsset(
+                    width: 6.42,
+                    height: 11.17,
+                    colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              InkWell(
+                onTap: () {
+                  progressPageBloc.add(
+                    ProgressPageEvent.nextMonth(),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: AppIcons.arrowRight.svgAsset(
+                    width: 6.42,
+                    height: 11.17,
+                    colorFilter: ColorFilter.mode(context.background, BlendMode.srcIn),
+                  ),
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _calendarHeaderMonthText(BuildContext context) {
+    return BlocSelector<ProgressPageBloc, ProgressPageState, DateTime>(
+        selector: (ProgressPageState state) => state.currentMonth ?? DateTime.now(),
+        builder: (BuildContext context, DateTime currentMonth) {
+          return Text(
+            DateFormat.yMMMM().format(currentMonth),
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              color: context.background,
+            ),
+          );
+        });
+  }
+
+  Widget _calendarWidget(BuildContext context, ProgressPageBloc progressPageBloc) {
+    return BlocSelector<ProgressPageBloc, ProgressPageState, DateTime>(
+      selector: (ProgressPageState state) => state.currentMonth ?? DateTime.now(),
+      builder: (BuildContext context, DateTime currentMonth) {
+        return Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: context.primary),
+            color: context.primary.withValues(alpha: 0.1),
+          ),
+          child: TableCalendar(
+            rowHeight: 40,
+            focusedDay: currentMonth,
+            firstDay: DateTime.utc(2025, 1, 1),
+            lastDay: DateTime.now(),
+            headerVisible: false,
+            calendarStyle: const CalendarStyle(
+              isTodayHighlighted: false,
+              outsideDaysVisible: false,
+            ),
+            calendarBuilders: CalendarBuilders(
+              defaultBuilder: (context, day, focusedDay) {
+                // // Green filled
+                // if (greenDates.any((d) => isSameDayIgnoreTime(d, day))) {
+                //   return _buildCircle(day.day.toString(), Colors.green);
+                // }
+                //
+                // // Orange dashed
+                // if (orangeDashed.any((d) => isSameDayIgnoreTime(d, day))) {
+                //   return _buildDashedCircle(day.day.toString(), Colors.orange);
+                // }
+                //
+                // // Red dashed
+                // if (redDashed.any((d) => isSameDayIgnoreTime(d, day))) {
+                //   return _buildDashedCircle(day.day.toString(), Colors.red);
+                // }
+
+                return _buildCircle(text: day.day.toString(), fillColor: context.background, textColor: context.onBackground);
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildCircle({required String text, required Color fillColor, required Color textColor}) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        color: fillColor,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+            letterSpacing: 0.2,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDashedCircle({required String text, required Color borderColor, required Color textColor}) {
+    return SizedBox(
+      width: 32,
+      height: 32,
+      child: DottedBorder(
+        options: CircularDottedBorderOptions(
+          dashPattern: [3, 3],
+          padding: const EdgeInsets.all(7),
+          color: borderColor,
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _goalStatusText(BuildContext context) {
+    return Text(
+      tr('goalStatus'),
+      style: TextStyle(
+        fontSize: 16.0,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.3,
+        color: context.onBackground,
+      ),
+    );
+  }
+
+  Widget _goalsStatusWidget(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: const Color(0xFFFFEAE0)),
+        borderRadius: BorderRadius.circular(12),
+        color: const Color(0xFFFFFCFA),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _goalStatusRow(context, Colors.red.shade500, tr('youDidNotCompleteAnyGoals')),
+          _goalStatusRow(context, Colors.amber.shade500, tr('youCompletedSomeGoals')),
+          _goalStatusRow(context, Colors.green.shade500, tr('greatJobAllGoalsCompleted')),
+        ],
+      ),
+    );
+  }
+
+  Widget _goalStatusRow(BuildContext context, Color circleColor, String text) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: circleColor,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            color: context.onBackground,
+            letterSpacing: 0.2,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -97,5 +97,9 @@
   "congratulations": "Congratulations",
   "lessonCompleted": "Lesson Completed",
   "totals": "Totals",
-  "calendar": "Calendar"
+  "calendar": "Calendar",
+  "goalStatus": "Goal Status",
+  "youDidNotCompleteAnyGoals": "You didn't complete any goals",
+  "youCompletedSomeGoals": "You completed some goals",
+  "greatJobAllGoalsCompleted": "Great job! All goals completed"
 }

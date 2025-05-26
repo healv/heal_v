@@ -69,7 +69,7 @@ base class ProfileProgressRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return BlocProvider(
-      create: (_) => ProgressPageBloc(),
+      create: (_) => ProgressPageBloc()..add(ProgressPageEvent.initial()),
       child: const ProgressPage(),
     );
   }

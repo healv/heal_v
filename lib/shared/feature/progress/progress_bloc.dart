@@ -28,7 +28,6 @@ class ProgressBloc extends BaseBloc<ProgressEvent, ProgressState> {
             stretching: Optional.value(response.data?.stretching),
             journal: Optional.value(response.data?.journal),
             completed: Optional.value(response.data?.completed),
-            lastUpdated: Optional.value(response.data?.lastUpdated),
             loading: const Optional.value(false),
           ));
           break;

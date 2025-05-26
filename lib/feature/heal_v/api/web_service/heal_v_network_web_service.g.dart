@@ -623,7 +623,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     )
         .compose(
           _dio.options,
-          'daily-progress',
+          '/api/daily-progress',
           queryParameters: queryParameters,
           data: _data,
         )

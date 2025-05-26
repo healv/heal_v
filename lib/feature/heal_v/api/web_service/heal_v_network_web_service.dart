@@ -73,10 +73,10 @@ abstract class HealVNetworkWebService {
   @PATCH('/api/breathing/{weekId}/lesson/{lessonId}/complete')
   Future<HttpResponse<BreathingCompleteDto>> completeBreathingLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
-  //-------------------------------------------------------------------------------------------------------------------------------
-
-  @GET('daily-progress')
+  @GET('/api/daily-progress')
   Future<HttpResponse<DailyProgressDto?>> getDailyProgress();
+
+  //-------------------------------------------------------------------------------------------------------------------------------
 
   @GET('journal')
   Future<HttpResponse<List<JournalHistoryDto>?>> getJournalHistory();

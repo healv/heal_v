@@ -8,20 +8,22 @@ part of 'daily_progress_dto.dart';
 
 DailyProgressDto _$DailyProgressDtoFromJson(Map<String, dynamic> json) =>
     DailyProgressDto(
+      date: json['date'] as String?,
       meditation: json['meditation'] as bool?,
       breathing: json['breathing'] as bool?,
       stretching: json['stretching'] as bool?,
-      journal: json['journal'] as bool?,
+      quiz: json['quiz'] as bool?,
+      journal: json['journal'] as String?,
       completed: json['completed'] as bool?,
-      lastUpdated: json['lastUpdated'] as String?,
     );
 
 Map<String, dynamic> _$DailyProgressDtoToJson(DailyProgressDto instance) =>
     <String, dynamic>{
+      'date': instance.date,
       'meditation': instance.meditation,
       'breathing': instance.breathing,
       'stretching': instance.stretching,
+      'quiz': instance.quiz,
       'journal': instance.journal,
       'completed': instance.completed,
-      'lastUpdated': instance.lastUpdated,
     };

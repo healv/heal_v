@@ -95,5 +95,7 @@
   "enterYourEmailAddressAndWeWillSendYouALink": "Enter your email address and we'll send you a link to reset your password",
   "resetLinkSentToYourEmail": "Reset link sent to your email. Please check your inbox to proceed",
   "congratulations": "Congratulations",
-  "lessonCompleted": "Lesson Completed"
+  "lessonCompleted": "Lesson Completed",
+  "totals": "Totals",
+  "calendar": "Calendar"
 }

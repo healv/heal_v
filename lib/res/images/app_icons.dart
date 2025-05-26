@@ -43,6 +43,9 @@ enum AppIcons {
   save('assets/icons/ic_save.svg'),
   share('assets/icons/ic_share.svg'),
   calendar('assets/icons/ic_calendar.svg'),
+  circleBreathing('assets/icons/ic_circle_breathing.svg'),
+  circleMeditation('assets/icons/ic_circle_meditation.svg'),
+  circleStretching('assets/icons/ic_circle_stretching.svg'),
   clock('assets/icons/ic_clock.svg');
 
   final String path;

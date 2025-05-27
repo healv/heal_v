@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -41,17 +42,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _body(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _progressCard(context),
-          const SizedBox(height: 16.0),
-          _dailyGoals(context),
-          const SizedBox(height: 16.0),
-          _mainListView(context),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _progressCard(context),
+            const SizedBox(height: 16.0),
+            _dailyGoals(context),
+            const SizedBox(height: 16.0),
+            _cards(context),
+          ],
+        ),
       ),
     );
   }
@@ -135,7 +138,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         _legendItem(context, Colors.green, tr('in_progress')),
         const SizedBox(width: 16),
-        _legendItem(context, Colors.red, tr('complete')),
+        _legendItem(context, Colors.green, tr('growing')),
       ],
     );
   }
@@ -164,21 +167,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _mainListView(BuildContext context) {
+  Widget _cards(BuildContext context) {
     return BlocBuilder<ProgressBloc, ProgressState>(
+      buildWhen: (oldState, newState) =>
+          oldState.meditation != newState.meditation || oldState.breathing != newState.breathing || oldState.stretching != newState.stretching || oldState.journal != newState.journal,
       builder: (BuildContext context, ProgressState state) {
         List<ProgressModel> items = [
-          ProgressModel(name: tr('meditation'), icon: AppIcons.meditation, isEnabled: state.meditation),
-          ProgressModel(name: tr('breathing'), icon: AppIcons.breathing, isEnabled: state.breathing),
-          ProgressModel(name: tr('stretching'), icon: AppIcons.stretching, isEnabled: state.stretching),
-          ProgressModel(name: tr('journal'), icon: AppIcons.journal, isEnabled: true),
+          ProgressModel(name: tr('meditation'), icon: AppIcons.meditation, isCompleted: state.meditation),
+          ProgressModel(name: tr('breathing'), icon: AppIcons.breathing, isCompleted: state.breathing),
+          ProgressModel(name: tr('stretching'), icon: AppIcons.stretching, isCompleted: state.stretching),
+          ProgressModel(name: tr('journal'), icon: AppIcons.journal, isCompleted: state.journal?.isNotEmpty == true),
         ];
-        return Expanded(
-          child: ListView.separated(
-            itemBuilder: (context, index) => _cardItem(context, items[index], index),
-            separatorBuilder: (context, index) => const SizedBox(height: 8.0),
-            itemCount: items.length,
-          ),
+
+        return Column(
+          children: items.mapIndexed((index, item) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: _cardItem(context, item, index),
+            );
+          }).toList(),
         );
       },
     );
@@ -186,32 +193,48 @@ class _HomePageState extends State<HomePage> {
 
   Widget _cardItem(BuildContext context, ProgressModel item, int index) {
     return InkWell(
-      onTap: () async => await _onCardItemTap(context, index, item.isEnabled == true),
+      onTap: () async => await _onCardItemTap(context, index, item.isCompleted == true),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           height: 73,
           decoration: BoxDecoration(
-            border: Border.all(color: item.isEnabled == true ? context.primary.withValues(alpha: 0.3) : context.primary.withValues(alpha: 0.2)),
-            color: item.isEnabled == true ? context.background.withValues(alpha: 0.05) : context.primary.withValues(alpha: 0.1),
+            border: Border.all(color: item.isCompleted == true ? context.primary.withValues(alpha: 0.3) : context.primary.withValues(alpha: 0.2)),
+            color: context.background.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              const SizedBox(width: 16),
-              Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(color: context.primary, shape: BoxShape.circle),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: item.icon?.svgAsset(colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
-                ),
+              Row(
+                children: [
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(color: context.primary, shape: BoxShape.circle),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: item.icon?.svgAsset(colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Text(
+                    item.name ?? emptyString,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: context.onBackground),
+                  ),
+                ],
               ),
-              const SizedBox(width: 16),
-              Text(
-                item.name ?? emptyString,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: context.onBackground),
+              Container(
+                width: 26,
+                height: 26,
+                decoration: BoxDecoration(
+                  border: item.isCompleted == true ? null : Border.all(color: context.quizDialogItemColor),
+                  shape: BoxShape.circle,
+                  color: item.isCompleted == true ? context.primary : context.background,
+                ),
+                child: item.isCompleted == true ? Center(child: AppIcons.checkMark.svgAsset()) : null,
               ),
             ],
           ),
@@ -220,8 +243,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _onCardItemTap(BuildContext context, int index, bool isEnabled) async {
-    if (!isEnabled) return;
+  Future<void> _onCardItemTap(BuildContext context, int index, bool isCompleted) async {
+    if (isCompleted) return;
     await SoundPlayer.checkAndPlayClickSound();
     switch (index) {
       case 0:
@@ -253,7 +276,7 @@ class _HomePageState extends State<HomePage> {
 class ProgressModel {
   final String? name;
   final AppIcons? icon;
-  final bool? isEnabled;
+  final bool? isCompleted;
 
-  const ProgressModel({this.name, this.icon, this.isEnabled});
+  const ProgressModel({this.name, this.icon, this.isCompleted});
 }

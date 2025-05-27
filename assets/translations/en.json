@@ -101,5 +101,6 @@
   "goalStatus": "Goal Status",
   "youDidNotCompleteAnyGoals": "You didn't complete any goals",
   "youCompletedSomeGoals": "You completed some goals",
-  "greatJobAllGoalsCompleted": "Great job! All goals completed"
+  "greatJobAllGoalsCompleted": "Great job! All goals completed",
+  "growing": "Growing"
 }

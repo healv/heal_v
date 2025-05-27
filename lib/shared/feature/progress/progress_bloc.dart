@@ -9,6 +9,7 @@ import 'package:heal_v/feature/heal_v/api/progress/repo/daily_progress_repo.dart
 import '../../../common/bloc/base_event.dart';
 
 part 'progress_event.dart';
+
 part 'progress_state.dart';
 
 class ProgressBloc extends BaseBloc<ProgressEvent, ProgressState> {

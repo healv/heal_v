@@ -7,6 +7,7 @@ import 'package:heal_v/feature/heal_v/api/journal/model/put_journal_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_complete_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_week_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
 import 'package:retrofit/retrofit.dart';
@@ -78,7 +79,10 @@ abstract class HealVNetworkWebService {
   Future<HttpResponse<BreathingCompleteDto>> completeBreathingLesson(@Path('weekId') String weekId, @Path('lessonId') String lessonId);
 
   @GET('/api/daily-progress')
-  Future<HttpResponse<DailyProgressDto?>> getDailyProgress();
+  Future<HttpResponse<DailyProgressDto?>> getDailyProgress(@Query('date') String? date);
+
+  @GET('/api/tree-growth')
+  Future<HttpResponse<TreeGrowthDto?>> getTreeGrowth();
 
   //-------------------------------------------------------------------------------------------------------------------------------
 

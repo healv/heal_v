@@ -647,9 +647,10 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<DailyProgressDto?>> getDailyProgress() async {
+  Future<HttpResponse<DailyProgressDto?>> getDailyProgress(String? date) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'date': date};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HttpResponse<DailyProgressDto>>(Options(

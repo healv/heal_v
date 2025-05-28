@@ -8,16 +8,20 @@ import '../utils/store_key.dart';
 
 extension FirebaseMessagingExtension on bool {
   Future<void> changeFirebaseNotificationSettings() async {
-    if (this) {
-      await FirebaseMessaging.instance.setAutoInitEnabled(true);
-      if (Platform.isAndroid) {
-        log("FCM token: ${await FirebaseMessaging.instance.getToken()}");
+    try {
+      if (this) {
+        await FirebaseMessaging.instance.setAutoInitEnabled(true);
+        if (Platform.isAndroid) {
+          log("FCM token: ${await FirebaseMessaging.instance.getToken()}");
+        } else {
+          log("FCM token: ${await FirebaseMessaging.instance.getAPNSToken()}");
+        }
       } else {
-        log("FCM token: ${await FirebaseMessaging.instance.getAPNSToken()}");
+        await FirebaseMessaging.instance.setAutoInitEnabled(false);
+        await FirebaseMessaging.instance.deleteToken();
       }
-    } else {
-      await FirebaseMessaging.instance.setAutoInitEnabled(false);
-      await FirebaseMessaging.instance.deleteToken();
+    } on Exception catch (e) {
+      log(e.toString());
     }
 
     await Store.set(key: StoreKey.notificationEnable, value: this);

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:heal_v/application.dart';
 import 'package:heal_v/common/utils/network/interceptors/auth_interceptor.dart';
+import 'package:heal_v/common/utils/network/interceptors/language_interceptor.dart';
 import 'package:heal_v/common/utils/network/interceptors/retry_interceptor.dart';
 import 'package:heal_v/config/easylocalization/easy_localization_config.dart';
 import 'package:heal_v/feature/heal_v/api/auth/di/auth_module.dart';
@@ -68,6 +69,7 @@ Future<void> _setupDio() async {
         LogInterceptor(requestBody: true, responseBody: true),
       ]);
     dio.interceptors.add(AuthInterceptor(dio));
+    dio.interceptors.add(LanguageInterceptor(dio));
     dio.interceptors.add(RetryInterceptor(dio));
     return dio;
   });

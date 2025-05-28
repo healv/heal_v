@@ -11,6 +11,7 @@ UpdateUserPacket _$UpdateUserPacketFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       lastName: json['lastName'] as String?,
       birthDate: json['birthDate'] as String?,
+      language: json['language'] as String?,
     );
 
 Map<String, dynamic> _$UpdateUserPacketToJson(UpdateUserPacket instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$UpdateUserPacketToJson(UpdateUserPacket instance) =>
       'name': instance.name,
       'lastName': instance.lastName,
       'birthDate': instance.birthDate,
+      'language': instance.language,
     };

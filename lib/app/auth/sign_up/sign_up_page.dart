@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/auth/sign_up/sign_up_page_bloc.dart';
 import 'package:heal_v/app/auth/sign_up/sign_up_page_effect.dart';
+import 'package:heal_v/common/extensions/context_extension.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/alert.dart';
@@ -393,6 +394,7 @@ class _SignUpPageState extends BlocDependentSideEffectState<SignUpPage, SignUpPa
       case LoggedIn():
         switch (effect.status) {
           case ResourceStatusEnum.success:
+            context.setupLanguageAfterLogin();
             if (context.mounted) HomeRoute().go(context);
             break;
           case ResourceStatusEnum.error:

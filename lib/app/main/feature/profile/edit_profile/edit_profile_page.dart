@@ -521,7 +521,7 @@ class _EditProfilePageState extends BlocDependentSideEffectState<EditProfilePage
       case Validated():
         switch (effect.status) {
           case ResourceStatusEnum.success:
-            context.read<AuthBloc>().add(AuthBlocEvent.updateUser(effect.name, effect.lastName, effect.birthDate));
+            context.read<AuthBloc>().add(AuthBlocEvent.updateUser(effect.name, effect.lastName, effect.birthDate, null));
             break;
           default:
             break;

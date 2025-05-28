@@ -18,6 +18,8 @@ class UserDto {
   final ProgressDto? progress;
   @JsonKey(name: "createdAt")
   final String? createdAt;
+  @JsonKey(name: "settings")
+  final SettingsDto? settings;
 
   UserDto({
     this.email,
@@ -27,6 +29,7 @@ class UserDto {
     this.avatar,
     this.progress,
     this.createdAt,
+    this.settings,
   });
 
   factory UserDto.fromJson(Map<String, dynamic> json) {
@@ -86,5 +89,23 @@ class ProgressDto {
 
   Map<String, dynamic> toJson() {
     return _$ProgressDtoToJson(this);
+  }
+}
+
+@JsonSerializable()
+class SettingsDto {
+  @JsonKey(name: "language")
+  final String? language;
+
+  SettingsDto({
+    this.language,
+  });
+
+  factory SettingsDto.fromJson(Map<String, dynamic> json) {
+    return _$SettingsDtoFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$SettingsDtoToJson(this);
   }
 }

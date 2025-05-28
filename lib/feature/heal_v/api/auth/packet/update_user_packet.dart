@@ -12,11 +12,14 @@ final class UpdateUserPacket extends Packet {
   final String? lastName;
   @JsonKey(name: "birthDate")
   final String? birthDate;
+  @JsonKey(name: "language")
+  final String? language;
 
   UpdateUserPacket({
     required this.name,
     required this.lastName,
     required this.birthDate,
+    required this.language,
   });
 
   factory UpdateUserPacket.fromJson(Map<String, dynamic> json) {

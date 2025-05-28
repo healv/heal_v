@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/auth/sign_in/sign_in_page_bloc.dart';
 import 'package:heal_v/app/auth/sign_in/sign_in_page_effect.dart';
+import 'package:heal_v/common/extensions/context_extension.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/alert.dart';
@@ -311,6 +312,7 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
       case LoggedIn():
         switch (effect.status) {
           case ResourceStatusEnum.success:
+            context.setupLanguageAfterLogin();
             HomeRoute().go(context);
             break;
           case ResourceStatusEnum.error:

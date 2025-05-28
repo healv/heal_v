@@ -187,7 +187,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
 
   Future<void> _handleUpdateUserEvent(UpdateUser event, Emitter<AuthBlocState> emitter) async {
     if (event.name != state.user?.name || state.user?.lastName != event.lastName || state.user?.birthDate != event.birthDate) {
-      await for (final response in repo.updateUser(UpdateUserPacket(name: event.name, lastName: event.lastName, birthDate: event.birthDate))) {
+      await for (final response in repo.updateUser(UpdateUserPacket(name: event.name, lastName: event.lastName, birthDate: event.birthDate, language: event.language))) {
         switch (response.status) {
           case ResourceStatusEnum.success:
             emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));

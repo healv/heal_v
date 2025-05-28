@@ -18,6 +18,9 @@ UserDto _$UserDtoFromJson(Map<String, dynamic> json) => UserDto(
           ? null
           : ProgressDto.fromJson(json['progress'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String?,
+      settings: json['settings'] == null
+          ? null
+          : SettingsDto.fromJson(json['settings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
@@ -28,6 +31,7 @@ Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
       'avatar': instance.avatar,
       'progress': instance.progress,
       'createdAt': instance.createdAt,
+      'settings': instance.settings,
     };
 
 AvatarDto _$AvatarDtoFromJson(Map<String, dynamic> json) => AvatarDto(
@@ -61,4 +65,13 @@ Map<String, dynamic> _$ProgressDtoToJson(ProgressDto instance) =>
       'breathing': instance.breathing,
       'meditation': instance.meditation,
       'stretching': instance.stretching,
+    };
+
+SettingsDto _$SettingsDtoFromJson(Map<String, dynamic> json) => SettingsDto(
+      language: json['language'] as String?,
+    );
+
+Map<String, dynamic> _$SettingsDtoToJson(SettingsDto instance) =>
+    <String, dynamic>{
+      'language': instance.language,
     };

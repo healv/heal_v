@@ -1,10 +1,15 @@
-import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_categories_dto.dart';
-import 'package:heal_v/feature/heal_v/api/breathing/model/breathings_dto.dart';
+import 'package:heal_v/feature/heal_v/api/breathing/model/breathing_complete_dto.dart';
+import 'package:heal_v/feature/heal_v/api/breathing/model/breathing_week_dto.dart';
 
 import '../../../../../common/utils/network/api_wrapper.dart';
+import '../model/breathing_lessons_dto.dart';
 
 abstract interface class BreathingsNetworkPort {
-  Future<ApiWrapper<BreathingsDto?>> breathings({String? searchQuery});
+  Future<ApiWrapper<List<BreathingWeekDto>?>> getBreathingWeeks();
 
-  Future<ApiWrapper<List<BreathingsCategoriesDto>?>> breathingsCategories();
+  Future<ApiWrapper<BreathingLessonsDto?>> getBreathingLessons({required String weekId});
+
+  Future<ApiWrapper<BreathingLessonDto?>> getBreathingLesson({required String weekId, required String lessonId});
+
+  Future<ApiWrapper<BreathingCompleteDto?>> completeBreathingLesson({required String weekId, required String lessonId});
 }

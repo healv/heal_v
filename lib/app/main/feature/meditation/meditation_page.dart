@@ -1,17 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:heal_v/app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
+import 'package:heal_v/app/main/feature/meditation/model/meditation_lessons.dart';
+import 'package:heal_v/app/main/feature/meditation/model/meditation_week.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
-import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/shared/feature/empty/empty_widget.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../common/dart/optional.dart';
 import '../../../../common/utils/alert.dart';
 import '../../../../common/utils/constants.dart';
+import '../../../../feature/heal_v/api/auth/utils/auth_constants.dart';
+import '../../../../navigation/main/meditation/meditation_graph.dart';
 
 class MeditationPage extends StatefulWidget {
   const MeditationPage({super.key});
@@ -20,56 +23,127 @@ class MeditationPage extends StatefulWidget {
   State<StatefulWidget> createState() => _MeditationPageState();
 }
 
-class _MeditationPageState extends State<MeditationPage> {
-  int selectedWeekIndex = 0;
+class _MeditationPageState extends State<MeditationPage> with TickerProviderStateMixin {
+  late TabController _tabController;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HealVAppBar.search(
-        title: tr('meditation'),
-        isBackEnable: false,
-        onSearchTextChanged: (value) {
-          context.read<MeditationPageBloc>().add(MeditationPageEvent.meditations(searchQuery: value));
-        },
+      appBar: AppBar(
+        titleSpacing: 16,
+        title: Text(
+          tr('meditation'),
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.w700,
+            color: context.onBackground,
+          ),
+        ),
       ),
       body: _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
+    final meditationPageBloc = context.read<MeditationPageBloc>();
     return Column(
       children: [
-        const SizedBox(height: 32),
-        _weeks(context),
-        Expanded(child: _meditations(context)),
+        const SizedBox(height: 16),
+        _weeks(context, meditationPageBloc),
+        const SizedBox(height: 24),
+        Expanded(child: _lessons(context, meditationPageBloc)),
       ],
     );
   }
 
-  Widget _meditations(BuildContext context) {
+  Widget _weeks(BuildContext context, MeditationPageBloc meditationPageBloc) {
+    return BlocSelector<MeditationPageBloc, MeditationPageState, ({List<MeditationWeek> weeks, String? selectedWeekId})>(
+      selector: (MeditationPageState state) => (weeks: state.weeks ?? [], selectedWeekId: state.selectedWeekId),
+      builder: (BuildContext context, record) {
+        final weeks = record.weeks;
+        final selectedWeekId = record.selectedWeekId;
+        _tabController = TabController(length: weeks.length, vsync: this);
+        return SizedBox(
+          height: 28,
+          child: ListView.separated(
+            itemCount: weeks.length,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 12.0),
+            itemBuilder: (_, index) {
+              final isSelected = weeks[index].id == selectedWeekId;
+              return InkWell(
+                onTap: () {
+                  if (!isSelected) {
+                    if (weeks[index].isAccessible == true) {
+                      meditationPageBloc.add(MeditationPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString));
+                      _tabController.animateTo(index);
+                    } else {
+                      showLockedDialog(context, tr('meditation_locked'), tr('meditation_locked_description'));
+                    }
+                  }
+                },
+                child: Container(
+                  width: 80,
+                  height: 28,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(1000),
+                    color: isSelected ? Colors.pink.shade100 : Colors.transparent,
+                    border: isSelected ? null : Border.all(color: Colors.black.withValues(alpha: 0.1)),
+                  ),
+                  child: Center(
+                    child: Text(
+                      weeks[index].title ?? emptyString,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: isSelected ? Colors.pink.shade500 : Colors.black.withValues(alpha: 0.1),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _lessons(BuildContext context, MeditationPageBloc meditationPageBloc) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: BlocBuilder<MeditationPageBloc, MeditationPageState>(
-        builder: (BuildContext context, MeditationPageState state) {
-          if (state.loading == true) {
-            return _meditationsShimmer(context);
-          }
-          if (state.items == null) {
-            return const SizedBox();
-          }
-          if (state.items!.meditationBreathing!.isEmpty) {
-            return const Center(
-              child: EmptyWidget(),
-            );
-          }
-          return _meditationsGridView(context, state.items?.meditationBreathing);
+      child: BlocSelector<MeditationPageBloc, MeditationPageState, List<MeditationWeek>?>(
+        selector: (MeditationPageState state) => state.weeks,
+        builder: (BuildContext context, weeks) {
+          return TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _tabController,
+              children: weeks?.map((week) {
+                    return BlocBuilder<MeditationPageBloc, MeditationPageState>(
+                      buildWhen: (oldState, newState) => oldState.meditationLessons != newState.meditationLessons || oldState.lessonsLoading != newState.lessonsLoading,
+                      builder: (BuildContext context, MeditationPageState state) {
+                        if (state.lessonsLoading == true) {
+                          return _lessonsShimmer(context);
+                        }
+                        if (state.meditationLessons == null) {
+                          return const SizedBox();
+                        }
+                        if (state.meditationLessons!.lessons?.isEmpty == true) {
+                          return const Center(
+                            child: EmptyWidget(),
+                          );
+                        }
+                        return _lessonsGridView(context, meditationPageBloc, week, state.meditationLessons!.lessons!);
+                      },
+                    );
+                  }).toList() ??
+                  []);
         },
       ),
     );
   }
 
-  Widget _meditationsGridView(BuildContext context, List<MeditationBreathing>? items) {
+  Widget _lessonsGridView(BuildContext context, MeditationPageBloc meditationPageBloc, MeditationWeek week, List<MeditationLesson>? items) {
     return MasonryGridView.count(
       crossAxisCount: 2,
       mainAxisSpacing: 12,
@@ -77,77 +151,45 @@ class _MeditationPageState extends State<MeditationPage> {
       itemCount: items?.length ?? 0,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        final item = items?[index];
-        return GestureDetector(
-          onTap: () {
-            final value = item?.showDescription ?? false;
-            items?[index] = item?.copyWith(showDescription: Optional.value(!value)) ?? const MeditationBreathing();
-            setState(() {});
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: item?.isEnable == true ? context.primary : const Color(0xFFCCCCCC), width: 1),
-              color: context.background,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                  child: _image(items?[index].photoUrl?.first.downloadURL, items?[index].demoImage ?? emptyString),
-                ),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    item?.name ?? emptyString,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: context.onBackground,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    '${item?.category ?? emptyString} ${item?.duration != null ? ' • ${item?.duration}' : emptyString}',
-                    style: TextStyle(
-                      color: context.unselectedItemColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                if (item?.showDescription == true) const SizedBox(height: 8),
-                if (item?.showDescription == true)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(),
-                  ),
-                if (item?.showDescription == true)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      item?.description ?? emptyString,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
-        );
+        return _lessonItem(context, meditationPageBloc, week, items?[index]);
         // return _image(items?[index].photoUrl);
       },
     );
   }
 
-  Widget _meditationsShimmer(BuildContext context) {
+  Widget _lessonItem(BuildContext context, MeditationPageBloc meditationPageBloc, MeditationWeek week, MeditationLesson? lesson) {
+    return InkWell(
+      onTap: () {
+        if (lesson?.isAccessible == true) {
+          MeditationAudioRoute(meditation: jsonEncode(lesson?.toJson()), weekId: week.id ?? emptyString).push(context).then((value) {
+            meditationPageBloc.add(MeditationPageEvent.getMeditationWeeks(isLoading: false));
+          });
+        } else {
+          showLockedDialog(context, tr('meditation_locked'), tr('meditation_locked_description'));
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: lesson?.isCompleted == true ? context.primary : context.onBackground.withValues(alpha: 0.3)),
+          color: context.background,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _image(context, lesson),
+            const SizedBox(height: 12),
+            _title(context, lesson),
+            const SizedBox(height: 4),
+            _duration(context, lesson),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _lessonsShimmer(BuildContext context) {
     return GridView.builder(
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
@@ -171,49 +213,59 @@ class _MeditationPageState extends State<MeditationPage> {
     );
   }
 
-  Widget _image(String? imageUrl, String demoUrl) {
-    return imageUrl != null || imageUrl?.isNotEmpty == true
-        ? ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              imageUrl!,
+  Widget _image(BuildContext context, MeditationLesson? lesson) {
+    return Stack(
+      children: [
+        Container(
+          height: 140.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            image: DecorationImage(
               fit: BoxFit.cover,
-            ),
-          )
-        : ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.asset(key: ValueKey(demoUrl), demoUrl, width: double.infinity, height: 140, fit: BoxFit.cover),
-          );
-  }
-
-  Widget _weeks(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(4, (index) {
-          final isSelected = index == selectedWeekIndex;
-          return SizedBox(
-            height: 60,
-            child: GestureDetector(
-              onTap: () {
-                showLockedDialog(context, tr('meditation_locked'), tr('meditation_locked_description'));
-              },
-              child: Column(
-                children: [
-                  Text('${tr('week')} ${index + 1}', style: TextStyle(color: isSelected ? context.onBackground : context.unselectedItemColor)),
-                  if (isSelected)
-                    Container(
-                      margin: const EdgeInsets.only(top: 4),
-                      height: 2,
-                      width: 60,
-                      color: context.onBackground,
-                    ),
-                ],
+              image: NetworkImage(
+                lesson?.preview?.url != null ? '${AuthConstants.baseHost}${lesson?.preview?.url}' : emptyString,
               ),
             ),
-          );
-        }),
+          ),
+        ),
+        if (lesson?.isAccessible != true)
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    context.onBackground.withValues(alpha: 0.3),
+                    context.onBackground.withValues(alpha: 0.6),
+                  ],
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _title(BuildContext context, MeditationLesson? lesson) {
+    return Text(
+      lesson?.title ?? emptyString,
+      style: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 14,
+        color: context.onBackground,
+      ),
+    );
+  }
+
+  Widget _duration(BuildContext context, MeditationLesson? lesson) {
+    return Text(
+      lesson?.duration != null ? '${lesson!.duration ?? emptyString} ${tr('mins')}' : emptyString,
+      style: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 10.0,
+        color: context.onBackground.withValues(alpha: 0.3),
       ),
     );
   }

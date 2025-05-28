@@ -37,8 +37,8 @@ class _PermissionPageState extends State<PermissionPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                   await Permission.notification.request();
-                   context.pop<PermissionStatus>(await Permission.notification.status);
+                  final status = await Permission.notification.request();
+                  if (context.mounted) context.pop<PermissionStatus>(status);
                 },
                 child: Text(tr('allow')),
               ),

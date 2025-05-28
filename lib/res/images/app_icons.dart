@@ -23,7 +23,6 @@ enum AppIcons {
   forward10('assets/icons/ic_forward_10.svg'),
   play('assets/icons/ic_play.svg'),
   pause('assets/icons/ic_pause.svg'),
-  shuffle('assets/icons/ic_shuffle.svg'),
   repeat('assets/icons/ic_repeat.svg'),
   volumeOff('assets/icons/ic_volume_off.svg'),
   volumeOn('assets/icons/ic_volume_on.svg'),
@@ -31,6 +30,7 @@ enum AppIcons {
   close('assets/icons/ic_close.svg'),
   fullScreen('assets/icons/ic_full_screen.svg'),
   checked('assets/icons/ic_checked.svg'),
+  checkMark('assets/icons/ic_checkmark.svg'),
   greenCheckMark('assets/icons/ic_green_check_mark.svg'),
   progress('assets/icons/ic_progress.svg'),
   journalHistory('assets/icons/ic_journal_history.svg'),
@@ -44,6 +44,9 @@ enum AppIcons {
   save('assets/icons/ic_save.svg'),
   share('assets/icons/ic_share.svg'),
   calendar('assets/icons/ic_calendar.svg'),
+  circleBreathing('assets/icons/ic_circle_breathing.svg'),
+  circleMeditation('assets/icons/ic_circle_meditation.svg'),
+  circleStretching('assets/icons/ic_circle_stretching.svg'),
   clock('assets/icons/ic_clock.svg');
 
   final String path;

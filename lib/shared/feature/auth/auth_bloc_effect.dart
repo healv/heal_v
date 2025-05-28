@@ -17,6 +17,8 @@ sealed class AuthBlocEffect implements SideEffect {
 
   factory AuthBlocEffect.imageUploaded(ResourceStatusEnum status, {String? errorMsg}) => ImageUploaded._(status, errorMsg: errorMsg);
 
+  factory AuthBlocEffect.imageDeleted(ResourceStatusEnum status, {String? errorMsg}) => ImageDeleted._(status, errorMsg: errorMsg);
+
   factory AuthBlocEffect.notLoggedIn() => NotLoggedIn._(ResourceStatusEnum.success);
 
   factory AuthBlocEffect.passwordChanged(ResourceStatusEnum status, {String? errorMsg}) => PasswordChanged._(status, errorMsg: errorMsg);
@@ -42,6 +44,10 @@ final class UserUpdated extends AuthBlocEffect {
 
 final class ImageUploaded extends AuthBlocEffect {
   ImageUploaded._(super.status, {super.errorMsg});
+}
+
+final class ImageDeleted extends AuthBlocEffect {
+  ImageDeleted._(super.status, {super.errorMsg});
 }
 
 final class NotLoggedIn extends AuthBlocEffect {

@@ -2,42 +2,38 @@ part of 'breathing_page_bloc.dart';
 
 @immutable
 final class BreathingPageState extends BaseState {
-  final List<BreathingsCategoriesDto>? categories;
-  final bool? categoriesLoading;
-  final bool? loading;
-  final MeditationBreathings? items;
-  final BreathingsCategoriesDto? selectedCategory;
-  final List<MeditationBreathing>? filteredItems;
+  final List<BreathingWeek>? weeks;
+  final BreathingLessons? breathingLessons;
+  final bool? weeksLoading;
+  final bool? lessonsLoading;
+  final String? selectedWeekId;
 
   const BreathingPageState._({
-    this.categories,
-    this.categoriesLoading,
-    this.loading,
-    this.items,
-    this.selectedCategory,
-    this.filteredItems,
+    this.weeks,
+    this.breathingLessons,
+    this.weeksLoading,
+    this.lessonsLoading,
+    this.selectedWeekId,
   });
 
   factory BreathingPageState.initial() => const BreathingPageState._();
 
   @override
-  List<Object?> get props => [categories, categoriesLoading, loading, items, selectedCategory, filteredItems];
+  List<Object?> get props => [weeks, breathingLessons, weeksLoading, lessonsLoading, selectedWeekId];
 
   BreathingPageState copyWith({
-    Optional<List<BreathingsCategoriesDto>?>? categories,
-    Optional<MeditationBreathings?>? items,
-    Optional<bool?>? categoriesLoading,
-    Optional<bool?>? loading,
-    Optional<BreathingsCategoriesDto?>? selectedCategory,
-    Optional<List<MeditationBreathing>?>? filteredItems,
+    Optional<List<BreathingWeek>?>? weeks,
+    Optional<BreathingLessons?>? breathingLessons,
+    Optional<bool?>? weeksLoading,
+    Optional<bool?>? lessonsLoading,
+    Optional<String?>? selectedWeekId,
   }) {
     return BreathingPageState._(
-      categories: categories?.isValid == true ? categories?.value : this.categories,
-      categoriesLoading: categoriesLoading?.isValid == true ? categoriesLoading?.value : this.categoriesLoading,
-      loading: loading?.isValid == true ? loading?.value : this.loading,
-      items: items?.isValid == true ? items?.value : this.items,
-      selectedCategory: selectedCategory?.isValid == true ? selectedCategory?.value : this.selectedCategory,
-      filteredItems: filteredItems?.isValid == true ? filteredItems?.value : this.filteredItems,
+      weeks: weeks?.isValid == true ? weeks?.value : this.weeks,
+      breathingLessons: breathingLessons?.isValid == true ? breathingLessons?.value : this.breathingLessons,
+      weeksLoading: weeksLoading?.isValid == true ? weeksLoading?.value : this.weeksLoading,
+      lessonsLoading: lessonsLoading?.isValid == true ? lessonsLoading?.value : this.lessonsLoading,
+      selectedWeekId: selectedWeekId?.isValid == true ? selectedWeekId?.value : this.selectedWeekId,
     );
   }
 }

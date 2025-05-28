@@ -10,60 +10,68 @@ UserDto _$UserDtoFromJson(Map<String, dynamic> json) => UserDto(
       email: json['email'] as String?,
       name: json['name'] as String?,
       lastName: json['lastName'] as String?,
-      photoURL: json['photoURL'] as String?,
-      subscription: json['subscription'] == null
+      birthDate: json['birthDate'] as String?,
+      avatar: json['avatar'] == null
           ? null
-          : Subscription.fromJson(json['subscription'] as Map<String, dynamic>),
-      preferences: json['preferences'] == null
-          ? null
-          : Preferences.fromJson(json['preferences'] as Map<String, dynamic>),
+          : AvatarDto.fromJson(json['avatar'] as Map<String, dynamic>),
       progress: json['progress'] == null
           ? null
-          : Progress.fromJson(json['progress'] as Map<String, dynamic>),
+          : ProgressDto.fromJson(json['progress'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String?,
-      birthDate: json['birthDate'] as String?,
+      settings: json['settings'] == null
+          ? null
+          : SettingsDto.fromJson(json['settings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserDtoToJson(UserDto instance) => <String, dynamic>{
       'email': instance.email,
       'name': instance.name,
       'lastName': instance.lastName,
-      'photoURL': instance.photoURL,
-      'subscription': instance.subscription,
-      'preferences': instance.preferences,
+      'birthDate': instance.birthDate,
+      'avatar': instance.avatar,
       'progress': instance.progress,
       'createdAt': instance.createdAt,
-      'birthDate': instance.birthDate,
+      'settings': instance.settings,
     };
 
-Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(
-      status: json['status'] as String?,
-      plan: json['plan'],
-      expiresAt: json['expiresAt'],
+AvatarDto _$AvatarDtoFromJson(Map<String, dynamic> json) => AvatarDto(
+      name: json['name'] as String?,
+      width: (json['width'] as num?)?.toInt(),
+      height: (json['height'] as num?)?.toInt(),
+      url: json['url'] as String?,
     );
 
-Map<String, dynamic> _$SubscriptionToJson(Subscription instance) =>
+Map<String, dynamic> _$AvatarDtoToJson(AvatarDto instance) => <String, dynamic>{
+      'name': instance.name,
+      'width': instance.width,
+      'height': instance.height,
+      'url': instance.url,
+    };
+
+ProgressDto _$ProgressDtoFromJson(Map<String, dynamic> json) => ProgressDto(
+      breathing: (json['breathing'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, Map<String, bool>.from(e as Map)),
+      ),
+      meditation: (json['meditation'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, Map<String, bool>.from(e as Map)),
+      ),
+      stretching: (json['stretching'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, Map<String, bool>.from(e as Map)),
+      ),
+    );
+
+Map<String, dynamic> _$ProgressDtoToJson(ProgressDto instance) =>
     <String, dynamic>{
-      'status': instance.status,
-      'plan': instance.plan,
-      'expiresAt': instance.expiresAt,
+      'breathing': instance.breathing,
+      'meditation': instance.meditation,
+      'stretching': instance.stretching,
     };
 
-Preferences _$PreferencesFromJson(Map<String, dynamic> json) => Preferences(
-      notifications: json['notifications'] as bool?,
+SettingsDto _$SettingsDtoFromJson(Map<String, dynamic> json) => SettingsDto(
+      language: json['language'] as String?,
     );
 
-Map<String, dynamic> _$PreferencesToJson(Preferences instance) =>
+Map<String, dynamic> _$SettingsDtoToJson(SettingsDto instance) =>
     <String, dynamic>{
-      'notifications': instance.notifications,
-    };
-
-Progress _$ProgressFromJson(Map<String, dynamic> json) => Progress(
-      completedLessons: json['completedLessons'] as List<dynamic>?,
-      lastLessonId: json['lastLessonId'],
-    );
-
-Map<String, dynamic> _$ProgressToJson(Progress instance) => <String, dynamic>{
-      'completedLessons': instance.completedLessons,
-      'lastLessonId': instance.lastLessonId,
+      'language': instance.language,
     };

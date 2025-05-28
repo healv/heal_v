@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -13,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:heal_v/application.dart';
 import 'package:heal_v/common/utils/network/interceptors/auth_interceptor.dart';
+import 'package:heal_v/common/utils/network/interceptors/language_interceptor.dart';
 import 'package:heal_v/common/utils/network/interceptors/retry_interceptor.dart';
 import 'package:heal_v/config/easylocalization/easy_localization_config.dart';
 import 'package:heal_v/feature/heal_v/api/auth/di/auth_module.dart';
@@ -20,7 +20,6 @@ import 'package:heal_v/feature/heal_v/api/breathing/di/breathing_module.dart';
 import 'package:heal_v/feature/heal_v/api/journal/di/journal_module.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/di/meditations_module.dart';
 import 'package:heal_v/feature/heal_v/api/progress/di/daily_progress_module.dart';
-import 'package:heal_v/feature/heal_v/api/shared_content/di/shared_content_module.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/di/stretching_module.dart';
 import 'package:heal_v/theme/helpers/theme_helper.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -45,11 +44,6 @@ void main() async {
     await ThemeHelper.init();
     await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    if (Platform.isAndroid) {
-      log('FCM token: ${await FirebaseMessaging.instance.getToken()}');
-    } else {
-      log('FCM token: ${await FirebaseMessaging.instance.getAPNSToken()}');
-    }
 
     runApp(
       EasyLocalization(
@@ -75,6 +69,7 @@ Future<void> _setupDio() async {
         LogInterceptor(requestBody: true, responseBody: true),
       ]);
     dio.interceptors.add(AuthInterceptor(dio));
+    dio.interceptors.add(LanguageInterceptor(dio));
     dio.interceptors.add(RetryInterceptor(dio));
     return dio;
   });
@@ -83,7 +78,6 @@ Future<void> _setupDio() async {
 Future<void> _setupDI() async {
   getIt.registerSingletonAsync(() => SharedPreferences.getInstance());
   await getIt.authModule();
-  await getIt.sharedContentModule();
   await getIt.dailyProgressModule();
   await getIt.meditationsModule();
   await getIt.breathingsModule();

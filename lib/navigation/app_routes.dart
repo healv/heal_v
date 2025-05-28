@@ -30,13 +30,6 @@ abstract final class ProfileRoutes {
 }
 
 abstract final class MeditationsRoutes {
-  /// Nested routes
-  static const String nestedMeditationDetails = 'meditationDetails';
-
-  /// Non-nested routes
-  static const String settings = '/profileSettings';
-  static const String progress = '/profileProgress';
-  static const String journalHistory = '/profileJournalHistory';
   static const String meditationAudio = '/meditationAudio';
 }
 

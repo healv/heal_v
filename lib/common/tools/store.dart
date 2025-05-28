@@ -37,7 +37,7 @@ class Store {
       value = prefs.getString(key);
     } else if (T == int) {
       value = prefs.getInt(key);
-    } else if (T == bool) {
+    } else if (T == bool || null is T) {
       value = prefs.getBool(key);
     } else if (T == List<String>) {
       value = prefs.getStringList(key);

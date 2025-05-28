@@ -30,7 +30,7 @@ class EditProfilePageBloc extends SideEffectBloc<EditProfilePageEvent, EditProfi
       firstName: Optional.value(event.user.name),
       lastName: Optional.value(event.user.lastName),
       email: Optional.value(event.user.email),
-      avatar: Optional.value(event.user.photoURL),
+      avatar: Optional.value(event.user.avatar?.url),
       birthDate: Optional.value(event.user.birthDate),
     ));
   }

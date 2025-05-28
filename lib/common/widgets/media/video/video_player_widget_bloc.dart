@@ -5,6 +5,7 @@ import 'package:better_player_plus/src/video_player/video_player_platform_interf
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/common/bloc/base_bloc.dart';
+import 'package:heal_v/common/utils/constants.dart';
 import 'package:volume_controller/volume_controller.dart';
 
 import '../../../bloc/base_event.dart';
@@ -95,12 +96,9 @@ class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayer
   }
 
   Future<void> _handleInitialEvent(_Initial event, Emitter<VideoPlayerWidgetState> emitter) async {
-    // todo remove hardcoded url
-    final url = event.url ?? "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4";
+    final url = event.url ?? emptyString;
     emitter(state.copyWith(url: Optional.value(url)));
-    controller.setupDataSource(
-      BetterPlayerDataSource.network(url),
-    );
+    controller.setupDataSource(BetterPlayerDataSource.network(url));
     controller.play();
   }
 

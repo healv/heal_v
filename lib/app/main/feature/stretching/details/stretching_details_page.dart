@@ -79,7 +79,7 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
       alignment: Alignment.bottomCenter,
       child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.only(top: 32),
+        padding: const EdgeInsets.only(top: 24),
         height: MediaQuery.of(context).size.height * 0.55,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(
@@ -101,19 +101,18 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
                     _titleText(context, stretchingLesson),
                     const SizedBox(height: 8),
                     _descriptionText(context, stretchingLesson),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     _infoRow(context, stretchingLesson, weekTitle),
                   ],
                 ),
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    _startButton(context, stretchingLesson),
-                    const SizedBox(height: 32),
-                  ],
-                ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _startButton(context, stretchingLesson),
+                  const SizedBox(height: 32),
+                ],
               ),
             ],
           ),
@@ -135,12 +134,11 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
 
   Widget _descriptionText(BuildContext context, StretchingLesson? stretchingLesson) {
     return Text(
-      // stretchingLesson?.description ?? emptyString,
-      emptyString,
+      stretchingLesson?.description ?? emptyString,
       style: TextStyle(
-        color: context.onBackground,
-        fontSize: 24,
-        fontWeight: FontWeight.w700,
+        color: context.onBackground.withValues(alpha: 0.3),
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
       ),
     );
   }
@@ -215,7 +213,7 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
   Widget _startButton(BuildContext context, StretchingLesson? stretchingLesson) {
     return ElevatedButton(
       onPressed: () {
-        StretchingVideoRoute(stretchingLesson: jsonEncode(stretchingLesson)).push(context);
+        StretchingVideoRoute(stretchingLesson: jsonEncode(stretchingLesson?.toJson())).push(context);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: context.primary,

@@ -10,11 +10,17 @@ class StretchingWeekDto {
   final String? title;
   @JsonKey(name: "order")
   final int? order;
+  @JsonKey(name: "isAccessible")
+  final bool? isAccessible;
+  @JsonKey(name: "isCompleted")
+  final bool? isCompleted;
 
   StretchingWeekDto({
     this.id,
     this.title,
     this.order,
+    this.isAccessible,
+    this.isCompleted
   });
 
   factory StretchingWeekDto.fromJson(Map<String, dynamic> json) {

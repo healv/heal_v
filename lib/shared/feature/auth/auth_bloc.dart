@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
+import 'package:heal_v/common/extensions/firebase_extension.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
@@ -42,6 +43,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<GetMe>(_handleMeEvent);
     on<UpdateUser>(_handleUpdateUserEvent);
     on<UploadImage>(_handleUploadImageEvent);
+    on<DeleteImage>(_handleDeleteImageEvent);
     on<LogOut>(_handleLogOutEvent);
     on<ChangePassword>(_handleChangePasswordEvent);
     on<ResetPassword>(_handleResetPasswordEvent);
@@ -57,11 +59,16 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<AuthBlocState> emitter) async {
-    final permissionGranted = await Permission.notification.isGranted;
-    final permissionAlwaysDenied = await Permission.notification.isPermanentlyDenied;
-    if (!permissionGranted && !permissionAlwaysDenied) {
-      final status = await PermissionRoute().push<PermissionStatus>(shellNavigatorGlobalKey.currentContext!) ?? PermissionStatus.denied;
-      Store.set(key: StoreKey.notificationEnable, value: status.isGranted);
+    final isNotificationEnable = await Store.get<bool?>(key: StoreKey.notificationEnable, defaultValue: null);
+    if (isNotificationEnable == null) {
+      final permissionGranted = await Permission.notification.isGranted;
+      final permissionAlwaysDenied = await Permission.notification.isPermanentlyDenied;
+      if (!permissionGranted && !permissionAlwaysDenied) {
+        final status = await PermissionRoute().push<PermissionStatus>(shellNavigatorGlobalKey.currentContext!) ?? PermissionStatus.denied;
+        await status.isGranted.changeFirebaseNotificationSettings();
+      } else {
+        await true.changeFirebaseNotificationSettings();
+      }
     }
 
     try {
@@ -180,7 +187,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
 
   Future<void> _handleUpdateUserEvent(UpdateUser event, Emitter<AuthBlocState> emitter) async {
     if (event.name != state.user?.name || state.user?.lastName != event.lastName || state.user?.birthDate != event.birthDate) {
-      await for (final response in repo.updateUser(UpdateUserPacket(name: event.name, lastName: event.lastName, birthDate: event.birthDate))) {
+      await for (final response in repo.updateUser(UpdateUserPacket(name: event.name, lastName: event.lastName, birthDate: event.birthDate, language: event.language))) {
         switch (response.status) {
           case ResourceStatusEnum.success:
             emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));
@@ -220,6 +227,26 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
         case ResourceStatusEnum.error:
           emitter(state.copyWith(loading: const Optional.value(false)));
           addSideEffect(AuthBlocEffect.imageUploaded(ResourceStatusEnum.error));
+          debugPrint(response.error.toString());
+          break;
+        case ResourceStatusEnum.loading:
+          emitter(state.copyWith(loading: const Optional.value(true)));
+          break;
+      }
+    }
+  }
+
+  Future<void> _handleDeleteImageEvent(DeleteImage event, Emitter<AuthBlocState> emitter) async {
+    await for (final response in repo.deleteImage()) {
+      switch (response.status) {
+        case ResourceStatusEnum.success:
+          emitter(state.copyWith(user: const Optional.value(null)));
+          emitter(state.copyWith(user: Optional.value(response.data), loading: const Optional.value(false)));
+          addSideEffect(AuthBlocEffect.imageDeleted(ResourceStatusEnum.success));
+          break;
+        case ResourceStatusEnum.error:
+          emitter(state.copyWith(loading: const Optional.value(false)));
+          addSideEffect(AuthBlocEffect.imageDeleted(ResourceStatusEnum.error));
           debugPrint(response.error.toString());
           break;
         case ResourceStatusEnum.loading:

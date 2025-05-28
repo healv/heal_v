@@ -9,6 +9,7 @@ import 'package:heal_v/feature/heal_v/api/progress/repo/daily_progress_repo.dart
 import '../../../common/bloc/base_event.dart';
 
 part 'progress_event.dart';
+
 part 'progress_state.dart';
 
 class ProgressBloc extends BaseBloc<ProgressEvent, ProgressState> {
@@ -28,7 +29,6 @@ class ProgressBloc extends BaseBloc<ProgressEvent, ProgressState> {
             stretching: Optional.value(response.data?.stretching),
             journal: Optional.value(response.data?.journal),
             completed: Optional.value(response.data?.completed),
-            lastUpdated: Optional.value(response.data?.lastUpdated),
             loading: const Optional.value(false),
           ));
           break;

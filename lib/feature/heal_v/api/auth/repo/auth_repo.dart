@@ -9,4 +9,6 @@ abstract interface class AuthRepo {
   Stream<Resource<UserDto>> updateUser(UpdateUserPacket body);
 
   Stream<Resource<UserDto>> uploadImage(FormData data);
+
+  Stream<Resource<UserDto>> deleteImage();
 }

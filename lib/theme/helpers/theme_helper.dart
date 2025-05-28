@@ -5,7 +5,7 @@ import 'package:heal_v/theme/enum/theme_enum.dart';
 
 abstract class ThemeHelper {
   static Future<void> init() async {
-    _currentTheme = await Store.get(
+    _currentTheme = await Store.get<String>(
       key: StoreKey.themeKey,
       defaultValue: ThemeEnum.light.value,
     );

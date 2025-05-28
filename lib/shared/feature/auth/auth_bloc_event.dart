@@ -13,9 +13,11 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.me(String? email, String? displayName) => GetMe._(email: email, displayName: displayName);
 
-  factory AuthBlocEvent.updateUser(String? name, String? lastName, String? birthDate) => UpdateUser._(name: name, lastName: lastName, birthDate: birthDate);
+  factory AuthBlocEvent.updateUser(String? name, String? lastName, String? birthDate,String? language) => UpdateUser._(name: name, lastName: lastName, birthDate: birthDate,language: lastName);
 
   factory AuthBlocEvent.uploadImage(XFile xFile) => UploadImage._(xFile: xFile);
+
+  factory AuthBlocEvent.deleteImage() => const DeleteImage._();
 
   factory AuthBlocEvent.logOut() => const LogOut._();
 
@@ -59,14 +61,19 @@ class UpdateUser extends AuthBlocEvent {
   final String? name;
   final String? lastName;
   final String? birthDate;
+  final String? language;
 
-  UpdateUser._({required this.name, required this.lastName, required this.birthDate});
+  UpdateUser._({required this.name, required this.lastName, required this.birthDate, required this.language});
 }
 
 class UploadImage extends AuthBlocEvent {
   final XFile xFile;
 
   UploadImage._({required this.xFile});
+}
+
+class DeleteImage extends AuthBlocEvent {
+  const DeleteImage._();
 }
 
 class LogOut extends AuthBlocEvent {

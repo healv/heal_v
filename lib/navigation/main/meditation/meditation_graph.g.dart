@@ -41,13 +41,15 @@ RouteBase get $meditationAudioRoute => GoRouteData.$route(
 extension $MeditationAudioRouteExtension on MeditationAudioRoute {
   static MeditationAudioRoute _fromState(GoRouterState state) =>
       MeditationAudioRoute(
-        breathing: state.uri.queryParameters['breathing']!,
+        meditation: state.uri.queryParameters['meditation']!,
+        weekId: state.uri.queryParameters['week-id']!,
       );
 
   String get location => GoRouteData.$location(
         '/meditationAudio',
         queryParams: {
-          'breathing': breathing,
+          'meditation': meditation,
+          'week-id': weekId,
         },
       );
 

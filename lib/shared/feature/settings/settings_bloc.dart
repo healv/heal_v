@@ -5,6 +5,7 @@ import 'package:heal_v/common/bloc/base_bloc.dart';
 import 'package:heal_v/common/bloc/base_event.dart';
 import 'package:heal_v/common/bloc/base_state.dart';
 import 'package:heal_v/common/dart/optional.dart';
+import 'package:heal_v/common/extensions/firebase_extension.dart';
 import 'package:heal_v/common/tools/store.dart';
 import 'package:heal_v/common/utils/store_key.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -26,6 +27,7 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
     emitter(state.copyWith(
       currentLanguage: Optional.value(LanguageEnum.from(currentLanguageCode)),
       isSoundsEnable: Optional.value(isSoundEnable),
+      isNotificationsEnable: Optional.value(await Store.get<bool>(key: StoreKey.notificationEnable, defaultValue: false)),
     ));
   }
 
@@ -43,10 +45,13 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
           await openAppSettings();
           break;
       }
-      emitter(state.copyWith(isNotificationsEnable: Optional.value(await Permission.notification.status.isGranted)));
+      final isGranted = await Permission.notification.status.isGranted;
+      emitter(state.copyWith(isNotificationsEnable: Optional.value(isGranted)));
+      await isGranted.changeFirebaseNotificationSettings();
       return;
     }
     emitter(state.copyWith(isNotificationsEnable: Optional.value(event.isEnable)));
+    await event.isEnable.changeFirebaseNotificationSettings();
   }
 
   Future<void> _handleUpdateSoundsStatusEvent(UpdateSoundsStatus event, Emitter<SettingsState> emitter) async {

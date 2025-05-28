@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heal_v/common/extensions/context_extension.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/navigation/auth/auth_graph.dart';
@@ -44,6 +45,7 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
       case LoggedIn():
         switch (effect.status) {
           case ResourceStatusEnum.success:
+            context.setupLanguageAfterLogin();
             HomeRoute().go(context);
             break;
           default:

@@ -4,14 +4,14 @@ part 'stretching_lessons_dto.g.dart';
 
 @JsonSerializable()
 class StretchingLessonsDto {
-  @JsonKey(name: "lessons")
-  final List<StretchingLessonDto>? lessons;
   @JsonKey(name: "id")
   final String? id;
   @JsonKey(name: "title")
   final String? title;
   @JsonKey(name: "order")
   final int? order;
+  @JsonKey(name: "lessons")
+  final List<StretchingLessonDto>? lessons;
 
   StretchingLessonsDto({
     this.lessons,
@@ -31,35 +31,35 @@ class StretchingLessonsDto {
 
 @JsonSerializable()
 class StretchingLessonDto {
-  @JsonKey(name: "completed")
-  final bool? completed;
-  @JsonKey(name: "opened")
-  final bool? opened;
   @JsonKey(name: "id")
   final String? id;
-  @JsonKey(name: "weekId")
-  final String? weekId;
-  @JsonKey(name: "order")
-  final int? order;
   @JsonKey(name: "title")
   final String? title;
-  @JsonKey(name: "duration")
-  final int? duration;
+  @JsonKey(name: "order")
+  final int? order;
   @JsonKey(name: "poses")
   final int? poses;
+  @JsonKey(name: "description")
+  final String? description;
+  @JsonKey(name: "preview")
+  final StretchingLessonPreviewDto? preview;
   @JsonKey(name: "media")
-  final List<StretchingLessonMediaDto>? media;
+  final StretchingLessonMediaDto? media;
+  @JsonKey(name: "isCompleted")
+  final bool? isCompleted;
+  @JsonKey(name: "isAccessible")
+  final bool? isAccessible;
 
   StretchingLessonDto({
-    required this.completed,
-    required this.opened,
-    required this.id,
-    required this.weekId,
-    required this.order,
-    required this.title,
-    required this.duration,
-    required this.poses,
-    required this.media,
+    this.id,
+    this.title,
+    this.order,
+    this.poses,
+    this.description,
+    this.preview,
+    this.media,
+    this.isCompleted,
+    this.isAccessible,
   });
 
   factory StretchingLessonDto.fromJson(Map<String, dynamic> json) {
@@ -72,24 +72,45 @@ class StretchingLessonDto {
 }
 
 @JsonSerializable()
-class StretchingLessonMediaDto {
-  @JsonKey(name: "downloadURL")
-  final String? downloadURL;
-  @JsonKey(name: "lastModifiedTS")
-  final int? lastModifiedTS;
+class StretchingLessonPreviewDto {
   @JsonKey(name: "name")
   final String? name;
-  @JsonKey(name: "ref")
-  final String? ref;
-  @JsonKey(name: "type")
-  final String? type;
+  @JsonKey(name: "width")
+  final int? width;
+  @JsonKey(name: "height")
+  final int? height;
+  @JsonKey(name: "url")
+  final String? url;
+
+  StretchingLessonPreviewDto({
+    this.name,
+    this.width,
+    this.height,
+    this.url,
+  });
+
+  factory StretchingLessonPreviewDto.fromJson(Map<String, dynamic> json) {
+    return _$StretchingLessonPreviewDtoFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$StretchingLessonPreviewDtoToJson(this);
+  }
+}
+
+@JsonSerializable()
+class StretchingLessonMediaDto {
+  @JsonKey(name: "name")
+  final String? name;
+  @JsonKey(name: "ext")
+  final String? ext;
+  @JsonKey(name: "url")
+  final String? url;
 
   StretchingLessonMediaDto({
-    required this.downloadURL,
-    required this.lastModifiedTS,
-    required this.name,
-    required this.ref,
-    required this.type,
+    this.name,
+    this.ext,
+    this.url,
   });
 
   factory StretchingLessonMediaDto.fromJson(Map<String, dynamic> json) {

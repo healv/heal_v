@@ -2,7 +2,7 @@ part of 'audio_player_widget_bloc.dart';
 
 @immutable
 final class AudioPlayerWidgetState extends BaseState {
-  final MeditationBreathing? item;
+  final String? mediaUrl;
   final Duration? position;
   final Duration? duration;
   final Duration? buffer;
@@ -11,7 +11,7 @@ final class AudioPlayerWidgetState extends BaseState {
   final LoopMode? loopMode;
 
   const AudioPlayerWidgetState._({
-    this.item,
+    this.mediaUrl,
     this.position,
     this.duration,
     this.buffer,
@@ -23,10 +23,10 @@ final class AudioPlayerWidgetState extends BaseState {
   factory AudioPlayerWidgetState.initial() => const AudioPlayerWidgetState._();
 
   @override
-  List<Object?> get props => [item, position, duration, buffer, playerState, volume, loopMode];
+  List<Object?> get props => [mediaUrl, position, duration, buffer, playerState, volume, loopMode];
 
   AudioPlayerWidgetState copyWith({
-    Optional<MeditationBreathing?>? item,
+    Optional<String?>? mediaUrl,
     Optional<Duration?>? position,
     Optional<Duration?>? duration,
     Optional<Duration?>? buffer,
@@ -35,7 +35,7 @@ final class AudioPlayerWidgetState extends BaseState {
     Optional<LoopMode?>? loopMode,
   }) {
     return AudioPlayerWidgetState._(
-      item: item?.isValid == true ? item?.value : this.item,
+      mediaUrl: mediaUrl?.isValid == true ? mediaUrl?.value : this.mediaUrl,
       position: position?.isValid == true ? position?.value : this.position,
       duration: duration?.isValid == true ? duration?.value : this.duration,
       buffer: buffer?.isValid == true ? buffer?.value : this.buffer,

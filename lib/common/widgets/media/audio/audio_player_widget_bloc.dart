@@ -2,20 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:heal_v/common/bloc/base_bloc.dart';
-import 'package:heal_v/common/utils/constants.dart';
+import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:volume_controller/volume_controller.dart';
 
-import '../../../../app/main/feature/common/model/meditation_breathing_ui_model.dart';
 import '../../../bloc/base_event.dart';
 import '../../../bloc/base_state.dart';
+import '../../../bloc/side_effect/side_effect.dart';
 import '../../../dart/optional.dart';
 
+part 'audio_player_widget_effect.dart';
 part 'audio_player_widget_event.dart';
 part 'audio_player_widget_state.dart';
 
-class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayerWidgetState> {
+class AudioPlayerWidgetBloc extends SideEffectBloc<AudioPlayerWidgetEvent, AudioPlayerWidgetState, AudioPlayerWidgetEffect> {
   final _player = AudioPlayer();
 
   AudioPlayerWidgetBloc() : super(AudioPlayerWidgetState.initial()) {
@@ -35,9 +35,9 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
   }
 
   Future<void> _handleInitialEvent(_Initial event, Emitter<AudioPlayerWidgetState> emitter) async {
-    await _player.setUrl(event.item.audioUrl?.first.downloadURL ?? emptyString);
+    await _player.setUrl(event.mediaUrl);
     emitter(state.copyWith(
-      item: Optional.value(event.item),
+      mediaUrl: Optional.value(event.mediaUrl),
       duration: Optional.value(_player.duration),
     ));
     add(AudioPlayerWidgetEvent.subscribeToPlayerState());
@@ -69,15 +69,20 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
   Future<void> _handleSubscribeToPlayerStateEvent(_SubscribeToPlayerState event, Emitter<AudioPlayerWidgetState> emitter) async {
     await emitter.forEach(_player.playerStateStream, onData: (playerState) {
       if (playerState.processingState == ProcessingState.completed) {
-        _player.pause();
-        _player.seek(Duration.zero);
-        if (state.loopMode == LoopMode.one) {
-          _player.play();
-        }
+        _handleTrackCompletion();
       }
       log("AUDIO_PLAYER_STATE_CHANGED: $playerState");
+      addSideEffect(AudioPlayerWidgetEffect.audioPlayerStateChanged(playerState: playerState.processingState, loopMode: state.loopMode ?? LoopMode.off));
       return state.copyWith(playerState: Optional.value(playerState));
     });
+  }
+
+  Future<void> _handleTrackCompletion() async {
+    await _player.stop();
+    await _player.seek(Duration.zero);
+    if (state.loopMode == LoopMode.one) {
+      await _player.play();
+    }
   }
 
   Future<void> _handleProgressSeekEvent(_ProgressSeek event, Emitter<AudioPlayerWidgetState> emitter) async {
@@ -130,7 +135,6 @@ class AudioPlayerWidgetBloc extends BaseBloc<AudioPlayerWidgetEvent, AudioPlayer
   }
 
   Future<void> _handleChangeLoopModeEvent(_ChangeLoopMode event, Emitter<AudioPlayerWidgetState> emitter) async {
-    await _player.setLoopMode(event.loopMode);
     emitter(state.copyWith(loopMode: Optional.value(event.loopMode)));
   }
 

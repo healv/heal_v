@@ -5,31 +5,33 @@ sealed class MeditationPageEvent extends BaseEvent {
 
   factory MeditationPageEvent.initial() => Initial._();
 
-  factory MeditationPageEvent.meditations({String? searchQuery}) => GetMeditations._(searchQuery);
+  factory MeditationPageEvent.getMeditationWeeks({bool isLoading = true}) => GetMeditationWeeks._(isLoading);
 
-  factory MeditationPageEvent.filterByCategory({required MeditationsCategoriesDto category}) => FilterByCategory._(category);
+  factory MeditationPageEvent.getMeditationLessons({required String id, bool isLoading = true}) => GetMeditationLessons._(id, isLoading);
 
-  factory MeditationPageEvent.updateCategory({required MeditationsCategoriesDto category}) => UpdateCategory._(category);
+  factory MeditationPageEvent.changeSelectedWeek({required String id, bool isLoading = true}) => ChangeSelectedWeek._(id, isLoading);
 }
 
 final class Initial extends MeditationPageEvent {
   Initial._();
 }
 
-final class GetMeditations extends MeditationPageEvent {
-  final String? searchQuery;
+final class GetMeditationWeeks extends MeditationPageEvent {
+  final bool isLoading;
 
-  GetMeditations._(this.searchQuery);
+  GetMeditationWeeks._(this.isLoading);
 }
 
-final class FilterByCategory extends MeditationPageEvent {
-  final MeditationsCategoriesDto category;
+final class GetMeditationLessons extends MeditationPageEvent {
+  final String id;
+  final bool isLoading;
 
-  FilterByCategory._(this.category);
+  GetMeditationLessons._(this.id, this.isLoading);
 }
 
-final class UpdateCategory extends MeditationPageEvent {
-  final MeditationsCategoriesDto category;
+final class ChangeSelectedWeek extends MeditationPageEvent {
+  final String id;
+  final bool isLoading;
 
-  UpdateCategory._(this.category);
+  ChangeSelectedWeek._(this.id, this.isLoading);
 }

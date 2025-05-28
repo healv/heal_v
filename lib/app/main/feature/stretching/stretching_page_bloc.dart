@@ -38,7 +38,9 @@ class StretchingPageBloc extends BaseBloc<StretchingPageEvent, StretchingPageSta
               weeks: Optional.value(response.data),
             ),
           );
-          add(StretchingPageEvent.changeSelectedWeek(id: response.data?.first.id ?? emptyString));
+          if (response.data?.isNotEmpty == true) {
+            add(StretchingPageEvent.changeSelectedWeek(id: response.data?.first.id ?? emptyString));
+          }
           break;
         case ResourceStatusEnum.error:
           emitter(state.copyWith(weeksLoading: const Optional.value(false)));

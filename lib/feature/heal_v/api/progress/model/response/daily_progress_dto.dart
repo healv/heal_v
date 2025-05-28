@@ -4,26 +4,29 @@ part 'daily_progress_dto.g.dart';
 
 @JsonSerializable()
 class DailyProgressDto {
+  @JsonKey(name: "date")
+  final String? date;
   @JsonKey(name: "meditation")
   final bool? meditation;
   @JsonKey(name: "breathing")
   final bool? breathing;
   @JsonKey(name: "stretching")
   final bool? stretching;
+  @JsonKey(name: "quiz")
+  final bool? quiz;
   @JsonKey(name: "journal")
-  final bool? journal;
+  final String? journal;
   @JsonKey(name: "completed")
   final bool? completed;
-  @JsonKey(name: "lastUpdated")
-  final String? lastUpdated;
 
   DailyProgressDto({
+    this.date,
     this.meditation,
     this.breathing,
     this.stretching,
+    this.quiz,
     this.journal,
     this.completed,
-    this.lastUpdated,
   });
 
   factory DailyProgressDto.fromJson(Map<String, dynamic> json) {

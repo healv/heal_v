@@ -9,16 +9,16 @@ part 'stretching_lessons_ui_model.g.dart';
 @JsonSerializable()
 @immutable
 class StretchingLessons {
-  final List<StretchingLesson>? lessons;
   final String? id;
   final String? title;
   final int? order;
+  final List<StretchingLesson>? lessons;
 
   const StretchingLessons({
-    required this.lessons,
     required this.id,
     required this.title,
     required this.order,
+    required this.lessons,
   });
 
   StretchingLessons copyWith({
@@ -51,70 +51,73 @@ class StretchingLessons {
   Map<String, dynamic> toJson() {
     return _$StretchingLessonsToJson(this);
   }
-
-  bool isAllLessonsCompleted() => lessons?.every((item) => item.completed == true) == true;
 }
 
 @JsonSerializable()
 @immutable
 class StretchingLesson {
-  final bool? completed;
-  final bool? opened;
   final String? id;
-  final String? weekId;
-  final int? order;
   final String? title;
-  final int? duration;
+  final int? order;
   final int? poses;
-  final List<StretchingLessonMedia>? media;
+  final String? description;
+  final StretchingLessonPreview? preview;
+  final StretchingLessonMedia? media;
+  final bool? isCompleted;
+  final bool? isAccessible;
+  final int? duration;
 
   const StretchingLesson({
-    required this.completed,
-    required this.opened,
     required this.id,
-    required this.weekId,
-    required this.order,
     required this.title,
-    required this.duration,
     required this.poses,
+    required this.order,
+    required this.description,
+    required this.preview,
     required this.media,
+    required this.isCompleted,
+    required this.isAccessible,
+    required this.duration,
   });
 
   StretchingLesson copyWith({
-    Optional<bool>? completed,
-    Optional<bool>? opened,
     Optional<String>? id,
-    Optional<String>? weekId,
-    Optional<int>? order,
     Optional<String>? title,
-    Optional<int>? duration,
+    Optional<int>? order,
     Optional<int>? poses,
-    Optional<List<StretchingLessonMedia>>? media,
+    Optional<String?>? description,
+    Optional<StretchingLessonPreview?>? preview,
+    Optional<StretchingLessonMedia?>? media,
+    Optional<bool>? isCompleted,
+    Optional<bool>? isAccessible,
+    Optional<int>? duration,
   }) {
     return StretchingLesson(
-      completed: completed?.isValid == true ? completed?.value : this.completed,
-      opened: opened?.isValid == true ? opened?.value : this.opened,
+      isCompleted: isCompleted?.isValid == true ? isCompleted?.value : this.isCompleted,
+      isAccessible: isAccessible?.isValid == true ? isAccessible?.value : this.isAccessible,
       id: id?.isValid == true ? id?.value : this.id,
-      weekId: weekId?.isValid == true ? weekId?.value : this.weekId,
       order: order?.isValid == true ? order?.value : this.order,
       title: title?.isValid == true ? title?.value : this.title,
       duration: duration?.isValid == true ? duration?.value : this.duration,
       poses: poses?.isValid == true ? poses?.value : this.poses,
       media: media?.isValid == true ? media?.value : this.media,
+      preview: preview?.isValid == true ? preview?.value : this.preview,
+      description: description?.isValid == true ? description?.value : this.description,
     );
   }
 
   factory StretchingLesson.fromMap(Map<String, dynamic> map) {
     return StretchingLesson(
-      completed: map['completed'] as bool?,
-      opened: map['opened'] as bool?,
       id: map['id'],
-      weekId: map['weekId'],
-      order: map['order'] as int?,
       title: map['title'],
-      duration: map['duration'] as int?,
+      order: map['order'] as int?,
       poses: map['poses'] as int?,
-      media: (map['media'] as List<dynamic>?)?.map((element) => StretchingLessonMedia.fromMap(element)).toList(),
+      description: map['description'] as String?,
+      preview: StretchingLessonPreview.fromMap((map['preview'] as StretchingLessonPreviewDto?)?.toJson() ?? {}),
+      media: StretchingLessonMedia.fromMap((map['media'] as StretchingLessonMediaDto?)?.toJson() ?? {}),
+      isCompleted: map['isCompleted'] as bool?,
+      isAccessible: map['isAccessible'] as bool?,
+      duration: map['duration'] as int?,
     );
   }
 
@@ -129,44 +132,81 @@ class StretchingLesson {
 
 @JsonSerializable()
 @immutable
-class StretchingLessonMedia {
-  final String? downloadURL;
-  final int? lastModifiedTS;
+class StretchingLessonPreview {
   final String? name;
-  final String? ref;
-  final String? type;
+  final int? width;
+  final int? height;
+  final String? url;
+
+  const StretchingLessonPreview({
+    required this.name,
+    required this.width,
+    required this.height,
+    required this.url,
+  });
+
+  StretchingLessonPreview copyWith({
+    Optional<String>? name,
+    Optional<int>? width,
+    Optional<int>? height,
+    Optional<String>? url,
+  }) {
+    return StretchingLessonPreview(
+      name: name?.isValid == true ? name?.value : this.name,
+      width: width?.isValid == true ? width?.value : this.width,
+      height: height?.isValid == true ? height?.value : this.height,
+      url: url?.isValid == true ? url?.value : this.url,
+    );
+  }
+
+  factory StretchingLessonPreview.fromMap(Map<String, dynamic> map) {
+    return StretchingLessonPreview(
+      name: map['name'],
+      width: map['width'] as int?,
+      height: map['height'] as int?,
+      url: map['url'],
+    );
+  }
+
+  factory StretchingLessonPreview.fromJson(Map<String, dynamic> json) {
+    return _$StretchingLessonPreviewFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$StretchingLessonPreviewToJson(this);
+  }
+}
+
+@JsonSerializable()
+@immutable
+class StretchingLessonMedia {
+  final String? name;
+  final String? ext;
+  final String? url;
 
   const StretchingLessonMedia({
-    required this.downloadURL,
-    required this.lastModifiedTS,
     required this.name,
-    required this.ref,
-    required this.type,
+    required this.ext,
+    required this.url,
   });
 
   StretchingLessonMedia copyWith({
-    Optional<String>? downloadURL,
-    Optional<int>? lastModifiedTS,
-    Optional<String>? name,
-    Optional<String>? ref,
-    Optional<String>? type,
+    Optional<String?>? name,
+    Optional<String?>? ext,
+    Optional<String?>? url,
   }) {
     return StretchingLessonMedia(
-      downloadURL: downloadURL?.isValid == true ? downloadURL?.value : this.downloadURL,
-      lastModifiedTS: lastModifiedTS?.isValid == true ? lastModifiedTS?.value : this.lastModifiedTS,
       name: name?.isValid == true ? name?.value : this.name,
-      ref: ref?.isValid == true ? ref?.value : this.ref,
-      type: type?.isValid == true ? type?.value : this.type,
+      ext: ext?.isValid == true ? ext?.value : this.ext,
+      url: url?.isValid == true ? url?.value : this.url,
     );
   }
 
   factory StretchingLessonMedia.fromMap(Map<String, dynamic> map) {
     return StretchingLessonMedia(
-      downloadURL: map['downloadURL'],
-      lastModifiedTS: map['lastModifiedTS'],
       name: map['name'],
-      ref: map['ref'],
-      type: map['type'],
+      ext: map['ext'],
+      url: map['url'],
     );
   }
 

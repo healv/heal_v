@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:heal_v/common/utils/resource.dart';
+import 'package:heal_v/feature/heal_v/api/auth/bounds/delete_image_network_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/auth/bounds/get_me_network_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/auth/bounds/update_user_network_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/auth/bounds/upload_image_network_bounds.dart';
@@ -27,5 +28,10 @@ base class AuthRepoImpl implements AuthRepo {
   @override
   Stream<Resource<UserDto>> uploadImage(FormData data) {
     return UploadImageNetworkBounds(port: port, data: data).call();
+  }
+
+  @override
+  Stream<Resource<UserDto>> deleteImage() {
+    return DeleteImageNetworkBounds(port: port).call();
   }
 }

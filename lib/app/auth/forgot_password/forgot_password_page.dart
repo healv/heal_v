@@ -59,22 +59,24 @@ class _ForgotPasswordPageState extends BlocDependentSideEffectState<ForgotPasswo
   }
 
   Widget _body(BuildContext context, ForgotPasswordPageBloc bloc) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 32),
-          _logoImage(),
-          const SizedBox(height: 32),
-          _titleText(context),
-          const SizedBox(height: 12),
-          _descriptionText(context),
-          const SizedBox(height: 32),
-          _textFieldEmail(bloc),
-          const SizedBox(height: 32),
-          _buttonsRow(bloc),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 32),
+            _logoImage(),
+            const SizedBox(height: 32),
+            _titleText(context),
+            const SizedBox(height: 12),
+            _descriptionText(context),
+            const SizedBox(height: 32),
+            _textFieldEmail(bloc),
+            const SizedBox(height: 32),
+            _buttonsRow(bloc),
+          ],
+        ),
       ),
     );
   }
@@ -297,7 +299,7 @@ class _ForgotPasswordPageState extends BlocDependentSideEffectState<ForgotPasswo
             if (effect.errorMsg == userNotFound) {
               bloc.add(ForgotPasswordPageEvent.emailErrorMsgChanged(tr('noUserFoundForThatEmail')));
             } else {
-              _showErrorSnackBar();
+              _showErrorSnackBar(effect.errorMsg);
             }
             bloc.add(ForgotPasswordPageEvent.loadingStateChanged(false));
             break;
@@ -311,10 +313,10 @@ class _ForgotPasswordPageState extends BlocDependentSideEffectState<ForgotPasswo
     }
   }
 
-  _showErrorSnackBar() {
+  _showErrorSnackBar(String? errorMsg) {
     showTopSnackBar(
       Overlay.of(context),
-      CustomSnackBar.error(message: tr('somethingWentWrong')),
+      CustomSnackBar.error(message: errorMsg ?? tr('somethingWentWrong')),
     );
   }
 

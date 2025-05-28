@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heal_v/common/extensions/date_time_extension.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/avatar_widget.dart';
@@ -56,8 +57,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   const AvatarWidget(isEditable: false),
                   const SizedBox(height: 12),
                   _userName(context),
-                  // const SizedBox(height: 4),
-                  // _userJoinedDate(context),
+                  const SizedBox(height: 4),
+                  _userJoinedDate(context),
                   const SizedBox(height: 8),
                   _editProfile(context),
                   const SizedBox(height: 32),
@@ -102,17 +103,17 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Widget _userJoinedDate(BuildContext context) {
-  //   return BlocSelector<AuthBloc, AuthBlocState, UserDto?>(
-  //     selector: (AuthBlocState state) => state.user,
-  //     builder: (BuildContext context, UserDto? user) {
-  //       return Text(
-  //         user?.createdAt != null ? 'Joined ${DateTime.parse(user!.createdAt!).ddMMM()}' : emptyString,
-  //         style: TextStyle(fontSize: 14, color: context.onBackground.withValues(alpha: 0.3)),
-  //       );
-  //     },
-  //   );
-  // }
+  Widget _userJoinedDate(BuildContext context) {
+    return BlocSelector<AuthBloc, AuthBlocState, UserDto?>(
+      selector: (AuthBlocState state) => state.user,
+      builder: (BuildContext context, UserDto? user) {
+        return Text(
+          user?.createdAt != null ? 'Joined ${DateTime.parse(user!.createdAt!).ddMMM()}' : emptyString,
+          style: TextStyle(fontSize: 14, color: context.onBackground.withValues(alpha: 0.3)),
+        );
+      },
+    );
+  }
 
   Widget _editProfile(BuildContext context) {
     return Padding(

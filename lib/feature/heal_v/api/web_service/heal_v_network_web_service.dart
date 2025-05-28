@@ -11,6 +11,7 @@ import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dt
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../auth/model/user/validate_user_dto.dart';
 import '../auth/packet/update_user_packet.dart';
 import '../breathing/model/breathing_lessons_dto.dart';
 import '../journal/model/delete_journal_dto.dart';
@@ -36,6 +37,9 @@ abstract class HealVNetworkWebService {
 
   @DELETE('/api/user/delete-image')
   Future<HttpResponse<UserDto?>> deleteImage();
+
+  @GET('/api/user/validate')
+  Future<HttpResponse<ValidateUserDto?>> validateUser(@Query('email') String? email);
 
   @GET('/api/stretching')
   Future<HttpResponse<List<StretchingWeekDto>?>> getStretchingWeeks();

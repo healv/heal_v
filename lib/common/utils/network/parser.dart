@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/dio.dart';
 
-import '../constants.dart';
 import 'api_wrapper.dart';
 
 Future<ApiWrapper<T>> parseHttpResponse<T>(Function function, List<dynamic> arguments) async {
@@ -13,7 +14,7 @@ Future<ApiWrapper<T>> parseHttpResponse<T>(Function function, List<dynamic> argu
     if (isSuccessful) {
       return ApiWrapper.success(value: body);
     } else {
-      return ApiWrapper.error(code: statusCode, error: emptyString);
+      return ApiWrapper.error(code: statusCode, error: jsonEncode(result.response.data));
     }
   } on DioException catch (e) {
     final ApiWrapper<T> error;
@@ -22,7 +23,7 @@ Future<ApiWrapper<T>> parseHttpResponse<T>(Function function, List<dynamic> argu
     } else {
       final data = e.response?.data;
       if (data != null) {
-        error = ApiWrapper.error(code: data['statusCode'], error: data['message']);
+        error = ApiWrapper.error(code: e.response?.statusCode, error: jsonEncode(data));
       } else {
         error = ApiWrapper.unknownError(error: e);
       }

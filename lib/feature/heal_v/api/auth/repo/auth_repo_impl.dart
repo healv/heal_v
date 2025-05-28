@@ -4,7 +4,9 @@ import 'package:heal_v/feature/heal_v/api/auth/bounds/delete_image_network_bound
 import 'package:heal_v/feature/heal_v/api/auth/bounds/get_me_network_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/auth/bounds/update_user_network_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/auth/bounds/upload_image_network_bounds.dart';
+import 'package:heal_v/feature/heal_v/api/auth/bounds/validate_user_network_bounds.dart';
 import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
+import 'package:heal_v/feature/heal_v/api/auth/model/user/validate_user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/network/auth_network_port.dart';
 import 'package:heal_v/feature/heal_v/api/auth/packet/update_user_packet.dart';
 
@@ -33,5 +35,10 @@ base class AuthRepoImpl implements AuthRepo {
   @override
   Stream<Resource<UserDto>> deleteImage() {
     return DeleteImageNetworkBounds(port: port).call();
+  }
+
+  @override
+  Stream<Resource<ValidateUserDto>> validateUser(String email) {
+    return ValidateUserNetworkBounds(port: port, email: email).call();
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -289,18 +290,30 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   }
 
   Future<void> _handleResetPasswordEvent(ResetPassword event, Emitter<AuthBlocState> emitter) async {
-    addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.loading));
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: event.email);
-      addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.success));
-    } on FirebaseAuthException catch (e) {
-      if (e.code == userNotFound) {
-        addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.error, errorMsg: userNotFound));
-      } else {
-        addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.error, errorMsg: e.message));
+    await for (final response in repo.validateUser(event.email)) {
+      switch (response.status) {
+        case ResourceStatusEnum.success:
+          try {
+            await FirebaseAuth.instance.sendPasswordResetEmail(email: event.email);
+            addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.success));
+          } on FirebaseAuthException catch (e) {
+            if (e.code == userNotFound) {
+              addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.error, errorMsg: userNotFound));
+            } else {
+              addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.error, errorMsg: e.message));
+            }
+          } on Exception {
+            addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.error));
+          }
+          break;
+        case ResourceStatusEnum.error:
+          final errorMsg = ((jsonDecode(response.error ?? emptyString) as Map<String, dynamic>?)?['error'] as Map<String, dynamic>?)?['message'] as String?;
+          addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.error, errorMsg: errorMsg));
+          break;
+        case ResourceStatusEnum.loading:
+          addSideEffect(AuthBlocEffect.passwordRecovered(ResourceStatusEnum.loading));
+          break;
       }
-    } on Exception {
-      addSideEffect(AuthBlocEffect.passwordChanged(ResourceStatusEnum.error));
     }
   }
 

@@ -168,6 +168,42 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
+  Future<HttpResponse<ValidateUserDto?>> validateUser(String? email) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'email': email};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<ValidateUserDto>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/user/validate',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late ValidateUserDto? _value;
+    try {
+      _value =
+          _result.data == null ? null : ValidateUserDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<HttpResponse<List<StretchingWeekDto>?>> getStretchingWeeks() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

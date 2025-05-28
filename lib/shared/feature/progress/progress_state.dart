@@ -7,6 +7,7 @@ final class ProgressState extends BaseState {
   final bool? stretching;
   final String? journal;
   final bool? completed;
+  final TreeGrowthDto? treeGrowth;
   final bool loading;
 
   const ProgressState._({
@@ -15,13 +16,14 @@ final class ProgressState extends BaseState {
     this.stretching,
     this.journal,
     this.completed,
+    this.treeGrowth,
     this.loading = false,
   });
 
   factory ProgressState.initial() => const ProgressState._();
 
   @override
-  List<Object?> get props => [loading, meditation, breathing, stretching, journal, completed];
+  List<Object?> get props => [meditation, breathing, stretching, journal, completed, treeGrowth, loading];
 
   ProgressState copyWith({
     Optional<bool?>? meditation,
@@ -29,6 +31,7 @@ final class ProgressState extends BaseState {
     Optional<bool?>? stretching,
     Optional<String?>? journal,
     Optional<bool?>? completed,
+    Optional<TreeGrowthDto?>? treeGrowth,
     Optional<bool?>? loading,
   }) {
     return ProgressState._(
@@ -37,6 +40,7 @@ final class ProgressState extends BaseState {
       stretching: stretching?.isValid == true ? stretching?.value : this.stretching,
       journal: journal?.isValid == true ? journal?.value : this.journal,
       completed: completed?.isValid == true ? completed?.value : this.completed,
+      treeGrowth: treeGrowth?.isValid == true ? treeGrowth?.value : this.treeGrowth,
       loading: loading?.isValid == true ? loading?.value ?? false : this.loading,
     );
   }

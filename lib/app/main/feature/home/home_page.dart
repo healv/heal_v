@@ -8,6 +8,7 @@ import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/tools/sound_player.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/user_info_app_bar.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dto.dart';
 import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
 import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
@@ -119,13 +120,18 @@ class _HomePageState extends State<HomePage> {
             color: context.primary.withValues(alpha: 0.5),
           ),
         ),
-        Text(
-          tr('30%'),
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            color: context.primary,
-          ),
+        BlocSelector<ProgressBloc, ProgressState, TreeGrowthDto?>(
+          selector: (ProgressState state) => state.treeGrowth,
+          builder: (BuildContext context, TreeGrowthDto? treeGrowth) {
+            return Text(
+              '${treeGrowth?.progress ?? 0}%',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+                color: context.primary,
+              ),
+            );
+          },
         ),
       ],
     );

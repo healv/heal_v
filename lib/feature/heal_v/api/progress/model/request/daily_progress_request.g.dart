@@ -12,16 +12,14 @@ DailyProgressRequest _$DailyProgressRequestFromJson(
       breathing: json['breathing'] as bool?,
       meditation: json['meditation'] as bool?,
       stretching: json['stretching'] as bool?,
-      journal: json['journal'] as bool?,
-      date: json['date'] as String?,
+      journal: json['journal'] as String?,
     );
 
 Map<String, dynamic> _$DailyProgressRequestToJson(
         DailyProgressRequest instance) =>
     <String, dynamic>{
-      'breathing': instance.breathing,
-      'meditation': instance.meditation,
-      'stretching': instance.stretching,
-      'journal': instance.journal,
-      'date': instance.date,
+      if (instance.breathing case final value?) 'breathing': value,
+      if (instance.meditation case final value?) 'meditation': value,
+      if (instance.stretching case final value?) 'stretching': value,
+      if (instance.journal case final value?) 'journal': value,
     };

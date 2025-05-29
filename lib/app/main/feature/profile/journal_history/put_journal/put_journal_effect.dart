@@ -6,9 +6,11 @@ sealed class PutJournalEffect implements SideEffect {
 
   const PutJournalEffect(this.status, {this.errorMsg});
 
-  factory PutJournalEffect.journalPut(ResourceStatusEnum status, {String? errorMsg}) => JournalPut(status, errorMsg: errorMsg);
+  factory PutJournalEffect.validated(ResourceStatusEnum status, {String? errorMsg, String? message}) => Validated(status, errorMsg: errorMsg, message: message);
 }
 
-final class JournalPut extends PutJournalEffect {
-  JournalPut(super.status, {super.errorMsg});
+final class Validated extends PutJournalEffect {
+  final String? message;
+
+  Validated(super.status, {super.errorMsg, this.message});
 }

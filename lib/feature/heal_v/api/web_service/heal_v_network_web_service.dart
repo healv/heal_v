@@ -7,6 +7,7 @@ import 'package:heal_v/feature/heal_v/api/journal/model/put_journal_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_complete_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_week_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_list_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
@@ -19,6 +20,7 @@ import '../journal/model/delete_journal_dto.dart';
 import '../journal/model/journal_history_dto.dart';
 import '../journal/packet/put_journal_packet.dart';
 import '../meditation/model/meditation_lessons_dto.dart';
+import '../progress/model/request/daily_progress_request.dart';
 import '../stretching/model/stretching_complete_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
@@ -80,6 +82,17 @@ abstract class HealVNetworkWebService {
 
   @GET('/api/daily-progress')
   Future<HttpResponse<DailyProgressDto?>> getDailyProgress(@Query('date') String? date);
+
+  @PATCH('/api/daily-progress')
+  Future<HttpResponse<DailyProgressDto?>> updateDailyProgress(@Query('date') String? date, @Body() DailyProgressRequest dailyProgressRequest);
+
+  @GET('/api/daily-progress')
+  Future<HttpResponse<DailyProgressListDto?>> getDailyProgressList(
+    @Query('startDate') String? startDate,
+    @Query('endDate') String? endDate,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+  );
 
   @GET('/api/tree-growth')
   Future<HttpResponse<TreeGrowthDto?>> getTreeGrowth();

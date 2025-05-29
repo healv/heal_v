@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/put_journal/put_journal_bloc.dart';
-import 'package:heal_v/common/extensions/date_time_extension.dart';
 import 'package:heal_v/common/utils/resource.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/request/daily_progress_request.dart';
+import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
+import 'package:heal_v/shared/feature/progress/progress_effect.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../../../common/flutter/widgets/framework.dart';
@@ -20,6 +24,13 @@ class PutJournalBottomSheetDialog extends StatefulWidget {
 
 class _PutJournalBottomSheetDialogState extends BlocDependentSideEffectState<PutJournalBottomSheetDialog, PutJournalBloc, PutJournalEffect> {
   final messageTextEditingController = TextEditingController();
+  StreamSubscription? _progressSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _progressSubscription = context.read<ProgressBloc>().sideEffects.listen(_listenProgressEffects);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +65,7 @@ class _PutJournalBottomSheetDialogState extends BlocDependentSideEffectState<Put
         ),
         InkWell(
           onTap: () {
-            context.read<PutJournalBloc>().add(PutJournalEvent.putJournal(DateTime.now().yyyyMMdd(), messageTextEditingController.text));
+            context.read<PutJournalBloc>().add(PutJournalEvent.putJournal(messageTextEditingController.text));
           },
           child: AppIcons.greenCheckMark.svgAsset(width: 20.0, height: 20.0),
         )
@@ -108,17 +119,45 @@ class _PutJournalBottomSheetDialogState extends BlocDependentSideEffectState<Put
 
   @override
   Future<void> handleSideEffect(PutJournalEffect effect) async {
+    final progressBloc = context.read<ProgressBloc>();
     switch (effect) {
-      case JournalPut():
+      case Validated():
         switch (effect.status) {
           case ResourceStatusEnum.success:
-            context.pop(effect);
+            progressBloc.add(
+              ProgressEvent.updateDailyProgress(
+                dailyProgressRequest: DailyProgressRequest(
+                  journal: effect.message,
+                ),
+              ),
+            );
             break;
           default:
-            context.pop();
             break;
         }
         break;
     }
+  }
+
+  void _listenProgressEffects(ProgressEffect effect) async {
+    switch (effect) {
+      case ProgressUpdated():
+        switch (effect.status) {
+          case ResourceStatusEnum.success:
+            context.pop();
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _progressSubscription?.cancel();
   }
 }

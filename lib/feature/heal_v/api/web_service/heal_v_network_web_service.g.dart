@@ -684,6 +684,94 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
+  Future<HttpResponse<DailyProgressDto?>> updateDailyProgress(
+    String? date,
+    DailyProgressRequest dailyProgressRequest,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'date': date};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(dailyProgressRequest.toJson());
+    final _options = _setStreamType<HttpResponse<DailyProgressDto>>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/daily-progress',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late DailyProgressDto? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : DailyProgressDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<DailyProgressListDto?>> getDailyProgressList(
+    String? startDate,
+    String? endDate,
+    int? page,
+    int? pageSize,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'startDate': startDate,
+      r'endDate': endDate,
+      r'page': page,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<DailyProgressListDto>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/daily-progress',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late DailyProgressListDto? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : DailyProgressListDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<HttpResponse<TreeGrowthDto?>> getTreeGrowth() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

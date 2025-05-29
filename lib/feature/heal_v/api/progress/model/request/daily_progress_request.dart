@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'daily_progress_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class DailyProgressRequest {
   @JsonKey(name: "breathing")
   final bool? breathing;
@@ -11,16 +11,13 @@ class DailyProgressRequest {
   @JsonKey(name: "stretching")
   final bool? stretching;
   @JsonKey(name: "journal")
-  final bool? journal;
-  @JsonKey(name: "date")
-  final String? date;
+  final String? journal;
 
-  DailyProgressRequest ({
+  DailyProgressRequest({
     this.breathing,
     this.meditation,
     this.stretching,
     this.journal,
-    this.date,
   });
 
   factory DailyProgressRequest.fromJson(Map<String, dynamic> json) {
@@ -31,5 +28,3 @@ class DailyProgressRequest {
     return _$DailyProgressRequestToJson(this);
   }
 }
-
-

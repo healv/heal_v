@@ -16,8 +16,6 @@ import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
-import '../../../../main.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -269,7 +267,7 @@ class _HomePageState extends State<HomePage> {
               context: context,
               builder: (context) {
                 return BlocProvider(
-                  create: (_) => PutJournalBloc(getIt.get())..add(PutJournalEvent.initial()),
+                  create: (_) => PutJournalBloc()..add(PutJournalEvent.initial()),
                   child: const PutJournalBottomSheetDialog(),
                 );
               });

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -17,7 +16,6 @@ import 'package:heal_v/common/utils/network/interceptors/retry_interceptor.dart'
 import 'package:heal_v/config/easylocalization/easy_localization_config.dart';
 import 'package:heal_v/feature/heal_v/api/auth/di/auth_module.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/di/breathing_module.dart';
-import 'package:heal_v/feature/heal_v/api/journal/di/journal_module.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/di/meditations_module.dart';
 import 'package:heal_v/feature/heal_v/api/progress/di/progress_module.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/di/stretching_module.dart';
@@ -81,7 +79,6 @@ Future<void> _setupDI() async {
   await getIt.progressModule();
   await getIt.meditationsModule();
   await getIt.breathingsModule();
-  await getIt.journalModule();
   await getIt.stretchingsModule();
 }
 

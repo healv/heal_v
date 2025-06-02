@@ -3,15 +3,15 @@ part of 'journal_history_details_bloc.dart';
 sealed class JournalHistoryDetailsEvent extends BaseEvent {
   JournalHistoryDetailsEvent();
 
-  factory JournalHistoryDetailsEvent.initial(JournalHistoryDto journalHistoryItem) => Initial._(journalHistoryItem: journalHistoryItem);
+  factory JournalHistoryDetailsEvent.initial(DailyProgressDto progressItem) => Initial._(progressItem: progressItem);
 
   factory JournalHistoryDetailsEvent.deleteJournal(String date) => DeleteJournal._(date: date);
 }
 
 final class Initial extends JournalHistoryDetailsEvent {
-  final JournalHistoryDto journalHistoryItem;
+  final DailyProgressDto progressItem;
 
-  Initial._({required this.journalHistoryItem});
+  Initial._({required this.progressItem});
 }
 
 final class DeleteJournal extends JournalHistoryDetailsEvent {

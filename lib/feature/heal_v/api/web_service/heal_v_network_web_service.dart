@@ -3,7 +3,6 @@ import 'package:heal_v/feature/heal_v/api/auth/model/user/user_dto.dart';
 import 'package:heal_v/feature/heal_v/api/auth/utils/auth_constants.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathing_complete_dto.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/model/breathing_week_dto.dart';
-import 'package:heal_v/feature/heal_v/api/journal/model/put_journal_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_complete_dto.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/model/meditation_week_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
@@ -16,9 +15,6 @@ import 'package:retrofit/retrofit.dart';
 import '../auth/model/user/validate_user_dto.dart';
 import '../auth/packet/update_user_packet.dart';
 import '../breathing/model/breathing_lessons_dto.dart';
-import '../journal/model/delete_journal_dto.dart';
-import '../journal/model/journal_history_dto.dart';
-import '../journal/packet/put_journal_packet.dart';
 import '../meditation/model/meditation_lessons_dto.dart';
 import '../progress/model/request/daily_progress_request.dart';
 import '../stretching/model/stretching_complete_dto.dart';
@@ -86,7 +82,7 @@ abstract class HealVNetworkWebService {
   @PATCH('/api/daily-progress')
   Future<HttpResponse<DailyProgressDto?>> updateDailyProgress(@Query('date') String? date, @Body() DailyProgressRequest dailyProgressRequest);
 
-  @GET('/api/daily-progress')
+  @GET('/api/daily-progress/list')
   Future<HttpResponse<DailyProgressListDto?>> getDailyProgressList(
     @Query('startDate') String? startDate,
     @Query('endDate') String? endDate,
@@ -96,15 +92,4 @@ abstract class HealVNetworkWebService {
 
   @GET('/api/tree-growth')
   Future<HttpResponse<TreeGrowthDto?>> getTreeGrowth();
-
-  //-------------------------------------------------------------------------------------------------------------------------------
-
-  @GET('journal')
-  Future<HttpResponse<List<JournalHistoryDto>?>> getJournalHistory();
-
-  @PUT('journal/{date}')
-  Future<HttpResponse<PutJournalDto?>> putJournal(@Path('date') String date, @Body() PutJournalPacket putJournalPacket);
-
-  @DELETE('journal/{date}')
-  Future<HttpResponse<DeleteJournalDto?>> deleteJournal(@Path('date') String date);
 }

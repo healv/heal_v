@@ -6,7 +6,7 @@ import 'package:heal_v/app/main/feature/profile/journal_history/details/journal_
 import 'package:heal_v/common/extensions/date_time_extension.dart';
 import 'package:heal_v/common/utils/alert.dart';
 import 'package:heal_v/common/utils/resource.dart';
-import 'package:heal_v/feature/heal_v/api/journal/model/journal_history_dto.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../../../common/flutter/widgets/framework.dart';
@@ -24,14 +24,14 @@ class _JournalHistoryDetailsBottomSheetDialogState extends BlocDependentSideEffe
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<JournalHistoryDetailsBloc, JournalHistoryDetailsState>(
-      buildWhen: (oldState, newState) => oldState.journalHistoryItem != newState.journalHistoryItem,
+      buildWhen: (oldState, newState) => oldState.progressItem != newState.progressItem,
       builder: (BuildContext context, JournalHistoryDetailsState state) {
-        return state.journalHistoryItem == null ? const SizedBox.shrink() : _body(context, state.journalHistoryItem);
+        return state.progressItem == null ? const SizedBox.shrink() : _body(context, state.progressItem);
       },
     );
   }
 
-  Widget _appBar(BuildContext context, JournalHistoryDto? item) {
+  Widget _appBar(BuildContext context, DailyProgressDto? item) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -42,7 +42,7 @@ class _JournalHistoryDetailsBottomSheetDialogState extends BlocDependentSideEffe
           child: AppIcons.close.svgAsset(width: 20.0, height: 20.0),
         ),
         Text(
-          DateFormat('dd/MM/yyyy').parse(item?.date ?? emptyString).mmmmDD(),
+          DateFormat('yyyy-MM-dd').parse(item?.date ?? emptyString).mmmmDD(),
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 16.0,
@@ -63,7 +63,7 @@ class _JournalHistoryDetailsBottomSheetDialogState extends BlocDependentSideEffe
     );
   }
 
-  Widget _body(BuildContext context, JournalHistoryDto? item) {
+  Widget _body(BuildContext context, DailyProgressDto? item) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
       child: Column(
@@ -78,9 +78,9 @@ class _JournalHistoryDetailsBottomSheetDialogState extends BlocDependentSideEffe
     );
   }
 
-  Widget _messageText(BuildContext context, JournalHistoryDto? item) {
+  Widget _messageText(BuildContext context, DailyProgressDto? item) {
     return Text(
-      item?.message ?? emptyString,
+      item?.journal ?? emptyString,
       style: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 16.0,

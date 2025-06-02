@@ -6,9 +6,16 @@ sealed class JournalHistoryDetailsEffect implements SideEffect {
 
   const JournalHistoryDetailsEffect(this.status, {this.errorMsg});
 
-  factory JournalHistoryDetailsEffect.journalDeleted(ResourceStatusEnum status, {String? errorMsg}) => JournalDeleted(status, errorMsg: errorMsg);
+  factory JournalHistoryDetailsEffect.journalDeleted(
+    ResourceStatusEnum status, {
+    String? errorMsg,
+    String? date,
+  }) =>
+      JournalDeleted(status, errorMsg: errorMsg, date: date);
 }
 
 final class JournalDeleted extends JournalHistoryDetailsEffect {
-  JournalDeleted(super.status, {super.errorMsg});
+  final String? date;
+
+  JournalDeleted(super.status, {super.errorMsg, this.date});
 }

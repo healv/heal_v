@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/utils/resource.dart';
-import 'package:heal_v/feature/heal_v/api/journal/repo/journal_repo.dart';
 
 import '../../../../../../common/bloc/base_event.dart';
 import '../../../../../../common/bloc/base_state.dart';
@@ -16,9 +15,7 @@ part 'put_journal_event.dart';
 part 'put_journal_state.dart';
 
 class PutJournalBloc extends SideEffectBloc<PutJournalEvent, PutJournalState, PutJournalEffect> {
-  final JournalRepo repo;
-
-  PutJournalBloc(this.repo) : super(PutJournalState.initial()) {
+  PutJournalBloc() : super(PutJournalState.initial()) {
     on<Initial>(_handleInitialEvent);
     on<MessageChanged>(_handleMessageChangedEvent);
     on<PutJournal>(_handlePutJournalEvent);

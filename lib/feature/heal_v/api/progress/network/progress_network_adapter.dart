@@ -3,6 +3,7 @@ import 'package:heal_v/common/utils/network/parser.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/request/daily_progress_request.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_list_dto.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/response/total_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/network/progress_network_port.dart';
 import 'package:heal_v/feature/heal_v/api/web_service/heal_v_network_web_service.dart';
@@ -25,6 +26,11 @@ base class ProgressNetworkAdapter implements ProgressNetworkPort {
   @override
   Future<ApiWrapper<DailyProgressListDto?>> getDailyProgressList(String? startDate, String? endDate, int? page, int? pageSize) {
     return parseHttpResponse<DailyProgressListDto?>(healVNetworkWebService.getDailyProgressList, [startDate, endDate, page, pageSize]);
+  }
+
+  @override
+  Future<ApiWrapper<TotalProgressDto?>> totalProgress() {
+    return parseHttpResponse<TotalProgressDto?>(healVNetworkWebService.totalProgress, []);
   }
 
   @override

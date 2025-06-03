@@ -2,7 +2,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page_bloc.dart';
+import 'package:heal_v/common/extensions/iterable_extension.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/response/total_progress_dto.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:intl/intl.dart';
@@ -66,17 +68,21 @@ class ProgressPage extends StatelessWidget {
   }
 
   Widget _totalsRow(BuildContext context, ProgressPageBloc bloc) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        //todo remove hardcoded counts
-        _totalsItem(context, AppIcons.circleBreathing, tr('breathing'), '2'),
-        const SizedBox(width: 12),
-        _totalsItem(context, AppIcons.circleMeditation, tr('meditation'), '15'),
-        const SizedBox(width: 12),
-        _totalsItem(context, AppIcons.circleStretching, tr('stretching'), '20'),
-      ],
+    return BlocSelector<ProgressPageBloc, ProgressPageState, TotalProgressDto?>(
+      selector: (ProgressPageState state) => state.totalProgress,
+      builder: (BuildContext context, TotalProgressDto? totalProgress) {
+        return Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _totalsItem(context, AppIcons.circleBreathing, tr('breathing'), '${totalProgress?.breathing ?? 0}'),
+            const SizedBox(width: 12),
+            _totalsItem(context, AppIcons.circleMeditation, tr('meditation'), '${totalProgress?.meditation ?? 0}'),
+            const SizedBox(width: 12),
+            _totalsItem(context, AppIcons.circleStretching, tr('stretching'), '${totalProgress?.stretching ?? 0}'),
+          ],
+        );
+      },
     );
   }
 
@@ -200,9 +206,9 @@ class ProgressPage extends StatelessWidget {
   }
 
   Widget _calendarWidget(BuildContext context, ProgressPageBloc progressPageBloc) {
-    return BlocSelector<ProgressPageBloc, ProgressPageState, DateTime>(
-      selector: (ProgressPageState state) => state.currentMonth ?? DateTime.now(),
-      builder: (BuildContext context, DateTime currentMonth) {
+    return BlocBuilder<ProgressPageBloc, ProgressPageState>(
+      buildWhen: (oldState, newState) => oldState.progressList != newState.progressList,
+      builder: (BuildContext context, ProgressPageState state) {
         return Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
@@ -212,7 +218,7 @@ class ProgressPage extends StatelessWidget {
           ),
           child: TableCalendar(
             rowHeight: 40,
-            focusedDay: currentMonth,
+            focusedDay: state.currentMonth ?? DateTime.now(),
             firstDay: DateTime.utc(2025, 1, 1),
             lastDay: DateTime.now(),
             headerVisible: false,
@@ -222,22 +228,19 @@ class ProgressPage extends StatelessWidget {
             ),
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, focusedDay) {
-                // // Green filled
-                // if (greenDates.any((d) => isSameDayIgnoreTime(d, day))) {
-                //   return _buildCircle(day.day.toString(), Colors.green);
-                // }
-                //
-                // // Orange dashed
-                // if (orangeDashed.any((d) => isSameDayIgnoreTime(d, day))) {
-                //   return _buildDashedCircle(day.day.toString(), Colors.orange);
-                // }
-                //
-                // // Red dashed
-                // if (redDashed.any((d) => isSameDayIgnoreTime(d, day))) {
-                //   return _buildDashedCircle(day.day.toString(), Colors.red);
-                // }
+                final item = state.progressList?.data?.find((item) => DateTime.parse(item.date!).day == day.day);
+                final isAllGoalsCompleted = item?.breathing == true && item?.stretching == true && item?.meditation == true && item?.journal?.isNotEmpty == true;
+                final isSomeGoalsCompleted = item?.breathing == true || item?.stretching == true || item?.meditation == true || item?.journal?.isNotEmpty == true;
 
-                return _buildCircle(text: day.day.toString(), fillColor: context.background, textColor: context.onBackground);
+                if (item == null) {
+                  return _buildCircle(text: day.day.toString(), fillColor: context.background, textColor: context.onBackground);
+                } else if (isAllGoalsCompleted) {
+                  return _buildCircle(text: day.day.toString(), fillColor: Colors.green.shade500, textColor: context.background);
+                } else if (isSomeGoalsCompleted) {
+                  return _buildDashedCircle(text: day.day.toString(), borderColor: Colors.amber.shade50, textColor: context.onBackground);
+                } else {
+                  return _buildDashedCircle(text: day.day.toString(), borderColor: Colors.red.shade500, textColor: context.onBackground);
+                }
               },
             ),
           ),

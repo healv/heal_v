@@ -1,5 +1,6 @@
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_list_dto.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/response/total_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dto.dart';
 
 import '../../../../../common/utils/network/api_wrapper.dart';
@@ -16,6 +17,8 @@ abstract interface class ProgressNetworkPort {
     int? page,
     int? pageSize,
   );
+
+  Future<ApiWrapper<TotalProgressDto?>> totalProgress();
 
   Future<ApiWrapper<TreeGrowthDto?>> getTreeGrowth();
 }

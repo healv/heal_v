@@ -232,15 +232,16 @@ class ProgressPage extends StatelessWidget {
                 final isAllGoalsCompleted = item?.breathing == true && item?.stretching == true && item?.meditation == true && item?.journal?.isNotEmpty == true;
                 final isSomeGoalsCompleted = item?.breathing == true || item?.stretching == true || item?.meditation == true || item?.journal?.isNotEmpty == true;
 
-                if (item == null) {
-                  return _buildCircle(text: day.day.toString(), fillColor: context.background, textColor: context.onBackground);
-                } else if (isAllGoalsCompleted) {
+                if (isAllGoalsCompleted) {
                   return _buildCircle(text: day.day.toString(), fillColor: Colors.green.shade500, textColor: context.background);
                 } else if (isSomeGoalsCompleted) {
-                  return _buildDashedCircle(text: day.day.toString(), borderColor: Colors.amber.shade50, textColor: context.onBackground);
+                  return _buildDashedCircle(text: day.day.toString(), borderColor: const Color(0xFFFFAA33), textColor: context.onBackground);
                 } else {
                   return _buildDashedCircle(text: day.day.toString(), borderColor: Colors.red.shade500, textColor: context.onBackground);
                 }
+              },
+              disabledBuilder: (_, day, ___) {
+                return _buildCircle(text: day.day.toString(), fillColor: context.background, textColor: context.onBackground);
               },
             ),
           ),

@@ -24,7 +24,6 @@ class ProgressPageBloc extends Bloc<ProgressPageEvent, ProgressPageState> {
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<ProgressPageState> emitter) async {
-    emitter(state.copyWith(currentMonth: Optional.value(DateTime.now())));
     add(
       ProgressPageEvent.dailyProgressList(
         startDate: DateFormat('yyyy-MM-dd').format(
@@ -34,6 +33,7 @@ class ProgressPageBloc extends Bloc<ProgressPageEvent, ProgressPageState> {
       ),
     );
     add(ProgressPageEvent.totalProgress());
+    emitter(state.copyWith(currentMonth: Optional.value(DateTime.now())));
   }
 
   Future<void> _handleTotalProgressEvent(TotalProgress event, Emitter<ProgressPageState> emitter) async {

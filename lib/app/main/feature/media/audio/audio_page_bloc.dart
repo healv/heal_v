@@ -49,7 +49,7 @@ class AudioPageBloc extends SideEffectBloc<AudioPageEvent, AudioPageState, Audio
             switch (response.status) {
               case ResourceStatusEnum.success:
                 emitter(state.copyWith(isCompleted: const Optional.value(true)));
-                addSideEffect(AudioPageSideEffect.lessonCompleted(loopMode: event.loopMode));
+                addSideEffect(AudioPageSideEffect.lessonCompleted(loopMode: event.loopMode, lessonTypeEnum: LessonTypeEnum.meditation));
               default:
                 break;
             }
@@ -63,7 +63,7 @@ class AudioPageBloc extends SideEffectBloc<AudioPageEvent, AudioPageState, Audio
             switch (response.status) {
               case ResourceStatusEnum.success:
                 emitter(state.copyWith(isCompleted: const Optional.value(true)));
-                addSideEffect(AudioPageSideEffect.lessonCompleted(loopMode: event.loopMode));
+                addSideEffect(AudioPageSideEffect.lessonCompleted(loopMode: event.loopMode, lessonTypeEnum: LessonTypeEnum.breathing));
               default:
                 break;
             }

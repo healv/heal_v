@@ -5,8 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/common/model/lesson_result_type_enum.dart';
+import 'package:heal_v/app/main/feature/common/model/lesson_type_enum.dart';
 import 'package:heal_v/app/main/feature/media/audio/audio_page_bloc.dart';
 import 'package:heal_v/common/widgets/media/audio/audio_player_widget_bloc.dart';
+import 'package:heal_v/feature/heal_v/api/progress/model/request/daily_progress_request.dart';
+import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -147,6 +150,14 @@ class _AudioPageState extends BlocDependentSideEffectState<AudioPage, AudioPageB
     switch (effect) {
       case LessonCompletedEffect():
         if (effect.loopMode == LoopMode.off) {
+          context.read<ProgressBloc>().add(
+                ProgressEvent.updateDailyProgress(
+                  dailyProgressRequest: DailyProgressRequest(
+                    meditation: effect.lessonTypeEnum == LessonTypeEnum.meditation ? true : null,
+                    breathing: effect.lessonTypeEnum == LessonTypeEnum.breathing ? true : null,
+                  ),
+                ),
+              );
           await showAlertDialog(title: tr('success'), message: tr('lessonCompleted'));
           if (mounted) {
             context.pop(LessonResultTypeEnum.completed);

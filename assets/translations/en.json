@@ -102,5 +102,10 @@
   "youDidNotCompleteAnyGoals": "You didn't complete any goals",
   "youCompletedSomeGoals": "You completed some goals",
   "greatJobAllGoalsCompleted": "Great job! All goals completed",
-  "growing": "Growing"
+  "growing": "Growing",
+  "dailyQuiz": "Daily Quiz",
+  "next": "Next",
+  "question": "Question",
+  "of": "of",
+  "thisInformationWillNotBeSharedWithAnyone": "This information will not be shared with anyone"
 }

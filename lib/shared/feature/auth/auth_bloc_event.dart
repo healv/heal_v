@@ -13,7 +13,7 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.me(String? email, String? displayName) => GetMe._(email: email, displayName: displayName);
 
-  factory AuthBlocEvent.updateUser(String? name, String? lastName, String? birthDate,String? language) => UpdateUser._(name: name, lastName: lastName, birthDate: birthDate,language: lastName);
+  factory AuthBlocEvent.updateUser(String? name, String? lastName, String? birthDate, String? language) => UpdateUser._(name: name, lastName: lastName, birthDate: birthDate, language: language);
 
   factory AuthBlocEvent.uploadImage(XFile xFile) => UploadImage._(xFile: xFile);
 

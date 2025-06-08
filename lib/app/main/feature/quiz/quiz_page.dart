@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/main/feature/quiz/quiz_page_bloc.dart';
+import 'package:heal_v/common/utils/constants.dart';
+import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/common/widgets/progress_bar/segment_progress_bar.dart';
+import 'package:heal_v/feature/heal_v/api/quiz/model/response/quiz_dto.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../../common/flutter/widgets/framework.dart';
 import '../../../../common/tools/localization_tools.dart';
+import '../../../../common/utils/alert.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -18,6 +23,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc, QuizPageSideEffect> {
   final TextEditingController lastQuestionTextController = TextEditingController();
+  final PageController pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +34,27 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
   }
 
   Widget _body(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 32.0, bottom: 48.0, left: 16.0, right: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _questionsColumn(context),
-          _buttonsRow(context),
+    return MultiBlocListener(
+        listeners: [
+          BlocListener<QuizPageBloc, QuizPageState>(
+            listenWhen: (oldState, newState) => oldState.lastQuestionAnswer != newState.lastQuestionAnswer,
+            listener: (BuildContext context, QuizPageState state) {
+              lastQuestionTextController.text = state.lastQuestionAnswer ?? emptyString;
+            },
+          ),
         ],
-      ),
-    );
+        child: Padding(
+          padding: const EdgeInsets.only(top: 32.0, bottom: 48.0, left: 16.0, right: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _questionsColumn(context),
+              _buttonsRow(context),
+            ],
+          ),
+        ));
   }
 
   Widget _questionsColumn(BuildContext context) {
@@ -53,6 +68,8 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
         _segmentProgressBar(context),
         const SizedBox(height: 8),
         _infoText(context),
+        const SizedBox(height: 32),
+        _questionsPageView(context),
       ],
     );
   }
@@ -100,6 +117,142 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
     );
   }
 
+  Widget _questionsPageView(BuildContext context) {
+    return BlocBuilder<QuizPageBloc, QuizPageState>(
+      buildWhen: (oldState, newState) => oldState.quiz != newState.quiz,
+      builder: (BuildContext context, QuizPageState state) {
+        return Expanded(
+          child: PageView.builder(
+            itemCount: (state.quiz?.questions?.length ?? 0) + 1,
+            controller: pageController,
+            itemBuilder: (BuildContext context, int index) {
+              final question = state.quiz?.questions?[index];
+              if (index != state.quiz?.questions?.length) {
+                return Column(
+                  children: [
+                    _questionText(context, question?.title ?? emptyString),
+                    const SizedBox(height: 20),
+                    _answersList(context, question),
+                  ],
+                );
+              } else {
+                return BlocBuilder<QuizPageBloc, QuizPageState>(
+                  buildWhen: (oldState, newState) => oldState.lastQuestionAnswerErrorMsg != newState.lastQuestionAnswerErrorMsg,
+                  builder: (BuildContext context, QuizPageState state) {
+                    return TextFormField(
+                      onTapOutside: (_) => context.unFocus(),
+                      style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
+                      controller: lastQuestionTextController,
+                      onChanged: (email) {
+                        // context.read<SignInPageBloc>().add(SignInPageEvent.emailChanged(email: email));
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      cursorColor: context.onBackground,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: context.primary),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.red),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.red),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
+                        errorText: state.lastQuestionAnswerErrorMsg,
+                        labelText: tr('email'),
+                        labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: context.onBackground),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _questionText(BuildContext context, String question) {
+    return Text(
+      question,
+      style: TextStyle(
+        fontSize: 16.0,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0.2,
+        color: context.onBackground,
+      ),
+    );
+  }
+
+  Widget _answersList(BuildContext context, QuizQuestionDto? question) {
+    return BlocSelector<QuizPageBloc, QuizPageState, Map<String, String>>(
+        selector: (QuizPageState state) => state.answers ?? {},
+        builder: (BuildContext context, Map<String, String> answers) {
+          return ListView.builder(
+            itemCount: question?.answers?.length ?? 0,
+            itemBuilder: (context, index) {
+              return _selectableAnswerItem(context, index, question, answers);
+            },
+          );
+        });
+  }
+
+  Widget _selectableAnswerItem(BuildContext context, int index, QuizQuestionDto? question, Map<String, String> answers) {
+    return InkWell(
+      onTap: () {
+        context.read<QuizPageBloc>().add(
+              QuizPageEvent.answerSelected(
+                questionId: question?.id ?? emptyString,
+                answerId: question?.answers?[index].id ?? emptyString,
+              ),
+            );
+      },
+      child: Container(
+        margin: const EdgeInsets.all(12),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          border: Border.all(color: context.onBackground.withValues(alpha: 0.3)),
+          borderRadius: BorderRadius.circular(8.0),
+          color: answers[question?.id] == question?.answers?[index].id ? context.primary : context.background,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                border: answers[question?.id] == question?.answers?[index].id ? null : Border.all(color: context.quizDialogItemColor),
+                shape: BoxShape.circle,
+                color: context.background,
+              ),
+              child: answers[question?.id] == question?.answers?[index].id ? Center(child: AppIcons.checkMark.svgAsset()) : null,
+            ),
+            const SizedBox(width: 10.0),
+            Text(
+              question?.answers?[index].title ?? emptyString,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14.0,
+                letterSpacing: 0.2,
+                color: context.onBackground,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buttonsRow(BuildContext context) {
     return BlocBuilder<QuizPageBloc, QuizPageState>(
       buildWhen: (oldState, newState) => oldState.currentQuestionIndex != newState.currentQuestionIndex,
@@ -113,7 +266,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
                 onPressed: state.currentQuestionIndex == 0
                     ? null
                     : () async {
-                        Navigator.of(context).pop();
+                        pageController.previousPage(duration: kTabScrollDuration, curve: Curves.ease);
                       },
                 style: OutlinedButton.styleFrom(
                   backgroundColor: context.background,
@@ -153,7 +306,13 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
             const SizedBox(width: 12),
             Expanded(
               child: ElevatedButton(
-                onPressed: state.currentQuestionIndex == (state.quiz?.questions?.length ?? 0) - 1 && lastQuestionTextController.text.isEmpty ? null : () {},
+                onPressed: () {
+                  if (state.currentQuestionIndex != (state.quiz?.questions?.length ?? 0)) {
+                    if (state.answers?[state.quiz?.questions?[state.currentQuestionIndex].id] != null) {
+                      pageController.nextPage(duration: kTabScrollDuration, curve: Curves.ease);
+                    }
+                  } else {}
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: context.primary,
                   shape: RoundedRectangleBorder(
@@ -167,7 +326,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      state.currentQuestionIndex == (state.quiz?.questions?.length ?? 0) - 1 ? tr('complete') : tr('next'),
+                      state.currentQuestionIndex == (state.quiz?.questions?.length ?? 0) ? tr('complete') : tr('next'),
                       style: TextStyle(
                         color: context.background,
                         fontSize: 14,
@@ -195,13 +354,29 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
   }
 
   @override
-  Future<void> handleSideEffect(QuizPageSideEffect effect) {
-    switch (effect) {}
+  Future<void> handleSideEffect(QuizPageSideEffect effect) async {
+    switch (effect) {
+      case QuizCompleted():
+        switch (effect.status) {
+          case ResourceStatusEnum.success:
+            await showAlertDialog(title: tr('success'), message: tr('quizCompleted'));
+            if (mounted) {
+              context.pop();
+            }
+            break;
+          case ResourceStatusEnum.error:
+            break;
+          case ResourceStatusEnum.loading:
+            break;
+        }
+        break;
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
     lastQuestionTextController.dispose();
+    pageController.dispose();
   }
 }

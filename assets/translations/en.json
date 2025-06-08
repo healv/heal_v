@@ -107,5 +107,6 @@
   "next": "Next",
   "question": "Question",
   "of": "of",
-  "thisInformationWillNotBeSharedWithAnyone": "This information will not be shared with anyone"
+  "thisInformationWillNotBeSharedWithAnyone": "This information will not be shared with anyone",
+  "quizCompleted": "Quiz completed"
 }

@@ -1,8 +1,8 @@
 import 'package:heal_v/res/images/language_flags.dart';
 
 enum LanguageEnum {
-  english(short: 'en', long: 'eng', displayName: 'English', displayNameShort: 'Eng', flag: LanguageFlags.english),
-  russian(short: 'ru', long: 'rus', displayName: 'Русский', displayNameShort: 'Рус', flag: LanguageFlags.russian);
+  english(short: 'en', long: 'eng', displayName: 'English', displayNameShort: 'Eng', flag: LanguageFlags.english);
+  // russian(short: 'ru', long: 'rus', displayName: 'Русский', displayNameShort: 'Рус', flag: LanguageFlags.russian);
 
   final String short;
   final String long;

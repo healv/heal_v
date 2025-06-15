@@ -101,17 +101,10 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.4.6
 
 flutter_icons:
   ios: true
   image_path_ios: "assets/launcher/ios/LaunchImage.png"
-
-flutter_native_splash:
-  color: "#ffffff"
-  image: "assets/launcher/ios/LaunchImage.png"
-  ios: true
-  android: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

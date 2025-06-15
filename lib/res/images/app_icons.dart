@@ -6,7 +6,7 @@ enum AppIcons {
   breathing('assets/icons/ic_breathing.svg'),
   meditation('assets/icons/ic_meditation.svg'),
   profile('assets/icons/ic_profile.svg'),
-  launcher('assets/icons/LaunchImage.png'),
+  launcher('assets/icons/ic_launcher.png'),
   arrowLeft('assets/icons/ic_arrow_left.svg'),
   arrowRight('assets/icons/ic_arrow_right.svg'),
   tree('assets/icons/tree.png'),

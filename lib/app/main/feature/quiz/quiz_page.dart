@@ -28,6 +28,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: HealVAppBar.simple(title: tr('dailyQuiz')),
       body: _body(context),
     );
@@ -50,7 +51,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _questionsColumn(context),
+              Expanded(child: _questionsColumn(context)),
               _buttonsRow(context),
             ],
           ),
@@ -79,7 +80,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
       buildWhen: (oldState, newState) => oldState.quiz != newState.quiz || oldState.currentQuestionIndex != newState.currentQuestionIndex,
       builder: (BuildContext context, QuizPageState state) {
         return Text(
-          '${tr('question')} ${state.currentQuestionIndex + 1} ${tr('of')} ${state.quiz?.questions?.length ?? 1}',
+          '${tr('question')} ${state.currentQuestionIndex + 1} ${tr('of')} ${(state.quiz?.questions?.length ?? 0) + 1}',
           style: TextStyle(
             fontSize: 18.0,
             fontWeight: FontWeight.w700,
@@ -96,8 +97,8 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
       buildWhen: (oldState, newState) => oldState.currentQuestionIndex != newState.currentQuestionIndex || oldState.quiz != newState.quiz,
       builder: (BuildContext context, QuizPageState state) {
         return SegmentProgressBar(
-          itemCount: state.quiz?.questions?.length ?? 1,
-          activeIndex: state.currentQuestionIndex - 1,
+          itemCount: (state.quiz?.questions?.length ?? 0) + 1,
+          activeIndex: state.currentQuestionIndex,
           activeColor: context.primary,
           inActiveColor: context.quizDialogItemColor,
         );
@@ -123,53 +124,64 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
       builder: (BuildContext context, QuizPageState state) {
         return Expanded(
           child: PageView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: (state.quiz?.questions?.length ?? 0) + 1,
             controller: pageController,
             itemBuilder: (BuildContext context, int index) {
-              final question = state.quiz?.questions?[index];
               if (index != state.quiz?.questions?.length) {
+                final question = state.quiz?.questions?[index];
                 return Column(
                   children: [
                     _questionText(context, question?.title ?? emptyString),
                     const SizedBox(height: 20),
-                    _answersList(context, question),
+                    Expanded(child: _answersList(context, question)),
                   ],
                 );
               } else {
                 return BlocBuilder<QuizPageBloc, QuizPageState>(
                   buildWhen: (oldState, newState) => oldState.lastQuestionAnswerErrorMsg != newState.lastQuestionAnswerErrorMsg,
                   builder: (BuildContext context, QuizPageState state) {
-                    return TextFormField(
-                      onTapOutside: (_) => context.unFocus(),
-                      style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
-                      controller: lastQuestionTextController,
-                      onChanged: (email) {
-                        // context.read<SignInPageBloc>().add(SignInPageEvent.emailChanged(email: email));
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: context.onBackground,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
-                          borderRadius: BorderRadius.circular(12.0),
+                    return Column(
+                      children: [
+                        TextFormField(
+                          onTapOutside: (_) => context.unFocus(),
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
+                          controller: lastQuestionTextController,
+                          maxLines: 10,
+                          onChanged: (answer) {
+                            context.read<QuizPageBloc>().add(QuizPageEvent.lastQuestionAnswerChanged(answer: answer));
+                          },
+                          keyboardType: TextInputType.text,
+                          cursorColor: context.onBackground,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: context.onBackground.withValues(alpha: 0.3)),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: context.primary),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.red),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.red),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
+                            errorText: state.lastQuestionAnswerErrorMsg,
+                            hintText: tr('typeHere'),
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12.0,
+                              color: context.onBackground.withValues(alpha: 0.3),
+                              letterSpacing: 0.2,
+                            ),
+                          ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: context.primary),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.red),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.red),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        suffixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
-                        errorText: state.lastQuestionAnswerErrorMsg,
-                        labelText: tr('email'),
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, color: context.onBackground),
-                      ),
+                      ],
                     );
                   },
                 );
@@ -197,8 +209,11 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
     return BlocSelector<QuizPageBloc, QuizPageState, Map<String, String>>(
         selector: (QuizPageState state) => state.answers ?? {},
         builder: (BuildContext context, Map<String, String> answers) {
-          return ListView.builder(
+          return ListView.separated(
             itemCount: question?.answers?.length ?? 0,
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(height: 16.0);
+            },
             itemBuilder: (context, index) {
               return _selectableAnswerItem(context, index, question, answers);
             },
@@ -217,7 +232,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
             );
       },
       child: Container(
-        margin: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           border: Border.all(color: context.onBackground.withValues(alpha: 0.3)),
@@ -235,7 +250,13 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
                 shape: BoxShape.circle,
                 color: context.background,
               ),
-              child: answers[question?.id] == question?.answers?[index].id ? Center(child: AppIcons.checkMark.svgAsset()) : null,
+              child: answers[question?.id] == question?.answers?[index].id
+                  ? Center(
+                      child: AppIcons.checkMark.svgAsset(
+                        colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
+                      ),
+                    )
+                  : null,
             ),
             const SizedBox(width: 10.0),
             Text(
@@ -255,8 +276,9 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
 
   Widget _buttonsRow(BuildContext context) {
     return BlocBuilder<QuizPageBloc, QuizPageState>(
-      buildWhen: (oldState, newState) => oldState.currentQuestionIndex != newState.currentQuestionIndex,
-      builder: (context, state) {
+      buildWhen: (oldState, newState) => oldState.currentQuestionIndex != newState.currentQuestionIndex || oldState.quiz != newState.quiz,
+      builder: (BuildContext context, QuizPageState state) {
+        final bloc = context.read<QuizPageBloc>();
         return Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -267,6 +289,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
                     ? null
                     : () async {
                         pageController.previousPage(duration: kTabScrollDuration, curve: Curves.ease);
+                        bloc.add(QuizPageEvent.currentQuestionIndexChanged(index: state.currentQuestionIndex - 1));
                       },
                 style: OutlinedButton.styleFrom(
                   backgroundColor: context.background,
@@ -307,11 +330,14 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  if (state.currentQuestionIndex != (state.quiz?.questions?.length ?? 0)) {
-                    if (state.answers?[state.quiz?.questions?[state.currentQuestionIndex].id] != null) {
+                  if (state.currentQuestionIndex < (state.quiz?.questions?.length ?? 0)) {
+                    if (bloc.state.answers?[state.quiz?.questions?[state.currentQuestionIndex].id] != null) {
                       pageController.nextPage(duration: kTabScrollDuration, curve: Curves.ease);
+                      bloc.add(QuizPageEvent.currentQuestionIndexChanged(index: state.currentQuestionIndex + 1));
                     }
-                  } else {}
+                  } else {
+                    bloc.add(QuizPageEvent.validate());
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: context.primary,
@@ -326,7 +352,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      state.currentQuestionIndex == (state.quiz?.questions?.length ?? 0) ? tr('complete') : tr('next'),
+                      state.currentQuestionIndex < (state.quiz?.questions?.length ?? 0) ? tr('next') : tr('complete'),
                       style: TextStyle(
                         color: context.background,
                         fontSize: 14,

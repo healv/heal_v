@@ -5,6 +5,8 @@ abstract class QuizPageEvent extends BaseEvent {
 
   factory QuizPageEvent.initial() => const _Initial._();
 
+  factory QuizPageEvent.currentQuestionIndexChanged({required int index}) => _CurrentQuestionIndexChanged._(index);
+
   factory QuizPageEvent.answerSelected({
     required String questionId,
     required String answerId,
@@ -18,6 +20,12 @@ abstract class QuizPageEvent extends BaseEvent {
 
 final class _Initial extends QuizPageEvent {
   const _Initial._();
+}
+
+final class _CurrentQuestionIndexChanged extends QuizPageEvent {
+  final int index;
+
+  const _CurrentQuestionIndexChanged._(this.index);
 }
 
 final class _AnswerSelected extends QuizPageEvent {

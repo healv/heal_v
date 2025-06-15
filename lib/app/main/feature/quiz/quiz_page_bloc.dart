@@ -21,6 +21,7 @@ class QuizPageBloc extends SideEffectBloc<QuizPageEvent, QuizPageState, QuizPage
 
   QuizPageBloc(this.repo) : super(QuizPageState.initial()) {
     on<_Initial>(_handleInitialEvent);
+    on<_CurrentQuestionIndexChanged>(_handleCurrentQuestionIndexChangedEvent);
     on<_AnswerSelected>(_handleAnswerSelectedEvent);
     on<_LastQuestionAnswerChanged>(_handleLastQuestionAnswerChangedEvent);
     on<_Validate>(_handleValidateEvent);
@@ -43,6 +44,10 @@ class QuizPageBloc extends SideEffectBloc<QuizPageEvent, QuizPageState, QuizPage
           break;
       }
     }
+  }
+
+  Future<void> _handleCurrentQuestionIndexChangedEvent(_CurrentQuestionIndexChanged event, Emitter<QuizPageState> emitter) async {
+    emitter(state.copyWith(currentQuestionIndex: event.index));
   }
 
   Future<void> _handleAnswerSelectedEvent(_AnswerSelected event, Emitter<QuizPageState> emitter) async {

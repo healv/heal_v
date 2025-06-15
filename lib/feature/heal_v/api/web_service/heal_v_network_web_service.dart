@@ -20,6 +20,7 @@ import '../breathing/model/breathing_lessons_dto.dart';
 import '../meditation/model/meditation_lessons_dto.dart';
 import '../progress/model/request/daily_progress_request.dart';
 import '../quiz/model/request/complete_quiz_request.dart';
+import '../quiz/model/response/complete_quiz_dto.dart';
 import '../stretching/model/stretching_complete_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
@@ -102,6 +103,6 @@ abstract class HealVNetworkWebService {
   @GET('/api/quiz')
   Future<HttpResponse<QuizDto?>> getQuiz();
 
-  @GET('/api/quiz/complete')
-  Future<HttpResponse<QuizDto?>> completeQuiz(@Body() CompleteQuizRequest completeQuizRequest);
+  @POST('/api/quiz/complete')
+  Future<HttpResponse<CompleteQuizDto?>> completeQuiz(@Body() CompleteQuizRequest completeQuizRequest);
 }

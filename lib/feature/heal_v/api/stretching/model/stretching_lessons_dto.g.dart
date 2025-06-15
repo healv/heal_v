@@ -32,6 +32,7 @@ StretchingLessonDto _$StretchingLessonDtoFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String?,
       order: (json['order'] as num?)?.toInt(),
       poses: (json['poses'] as num?)?.toInt(),
+      duration: (json['duration'] as num?)?.toInt(),
       description: json['description'] as String?,
       preview: json['preview'] == null
           ? null
@@ -52,6 +53,7 @@ Map<String, dynamic> _$StretchingLessonDtoToJson(
       'title': instance.title,
       'order': instance.order,
       'poses': instance.poses,
+      'duration': instance.duration,
       'description': instance.description,
       'preview': instance.preview,
       'media': instance.media,

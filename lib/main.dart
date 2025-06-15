@@ -18,6 +18,7 @@ import 'package:heal_v/feature/heal_v/api/auth/di/auth_module.dart';
 import 'package:heal_v/feature/heal_v/api/breathing/di/breathing_module.dart';
 import 'package:heal_v/feature/heal_v/api/meditation/di/meditations_module.dart';
 import 'package:heal_v/feature/heal_v/api/progress/di/progress_module.dart';
+import 'package:heal_v/feature/heal_v/api/quiz/di/quiz_module.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/di/stretching_module.dart';
 import 'package:heal_v/theme/helpers/theme_helper.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -80,6 +81,7 @@ Future<void> _setupDI() async {
   await getIt.meditationsModule();
   await getIt.breathingsModule();
   await getIt.stretchingsModule();
+  await getIt.quizModule();
 }
 
 Future<void> _setupHydratedBloc() async {

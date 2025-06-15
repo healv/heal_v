@@ -9,6 +9,7 @@ import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress
 import 'package:heal_v/feature/heal_v/api/progress/model/response/daily_progress_list_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/total_progress_dto.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dto.dart';
+import 'package:heal_v/feature/heal_v/api/quiz/model/response/quiz_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
 import 'package:retrofit/retrofit.dart';
@@ -18,6 +19,8 @@ import '../auth/packet/update_user_packet.dart';
 import '../breathing/model/breathing_lessons_dto.dart';
 import '../meditation/model/meditation_lessons_dto.dart';
 import '../progress/model/request/daily_progress_request.dart';
+import '../quiz/model/request/complete_quiz_request.dart';
+import '../quiz/model/response/complete_quiz_dto.dart';
 import '../stretching/model/stretching_complete_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
@@ -96,4 +99,10 @@ abstract class HealVNetworkWebService {
 
   @GET('/api/tree-growth')
   Future<HttpResponse<TreeGrowthDto?>> getTreeGrowth();
+
+  @GET('/api/quiz')
+  Future<HttpResponse<QuizDto?>> getQuiz();
+
+  @POST('/api/quiz/complete')
+  Future<HttpResponse<CompleteQuizDto?>> completeQuiz(@Body() CompleteQuizRequest completeQuizRequest);
 }

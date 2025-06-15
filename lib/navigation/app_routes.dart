@@ -1,6 +1,7 @@
 abstract final class AppRoutes {
   /// Launch route
   static const String launch = '/launch';
+  static const String quiz = '/quiz';
 }
 
 abstract final class AuthRoutes {

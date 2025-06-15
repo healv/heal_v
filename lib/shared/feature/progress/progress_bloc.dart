@@ -39,6 +39,7 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
             breathing: Optional.value(response.data?.breathing),
             stretching: Optional.value(response.data?.stretching),
             journal: Optional.value(response.data?.journal),
+            quiz: Optional.value(response.data?.quiz),
             completed: Optional.value(response.data?.completed),
             loading: const Optional.value(false),
           ));

@@ -8,6 +8,7 @@ import 'package:heal_v/common/widgets/app_bar/heal_v_app_bar.dart';
 import 'package:heal_v/common/widgets/progress_bar/segment_progress_bar.dart';
 import 'package:heal_v/feature/heal_v/api/quiz/model/response/quiz_dto.dart';
 import 'package:heal_v/res/images/app_icons.dart';
+import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../../common/flutter/widgets/framework.dart';
@@ -387,6 +388,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
           case ResourceStatusEnum.success:
             await showAlertDialog(title: tr('success'), message: tr('quizCompleted'));
             if (mounted) {
+              context.read<ProgressBloc>().add(ProgressEvent.getDailyProgress());
               context.pop();
             }
             break;

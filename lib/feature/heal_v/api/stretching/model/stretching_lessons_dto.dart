@@ -39,6 +39,8 @@ class StretchingLessonDto {
   final int? order;
   @JsonKey(name: "poses")
   final int? poses;
+  @JsonKey(name: "duration")
+  final int? duration;
   @JsonKey(name: "description")
   final String? description;
   @JsonKey(name: "preview")
@@ -55,6 +57,7 @@ class StretchingLessonDto {
     this.title,
     this.order,
     this.poses,
+    this.duration,
     this.description,
     this.preview,
     this.media,

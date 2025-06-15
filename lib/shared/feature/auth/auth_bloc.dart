@@ -21,6 +21,7 @@ import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../application.dart';
 import '../../../common/bloc/base_event.dart';
@@ -30,6 +31,7 @@ import '../../../common/tools/localization_tools.dart';
 import '../../../navigation/auth/auth_graph.dart';
 
 part 'auth_bloc_event.dart';
+
 part 'auth_bloc_state.dart';
 
 final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBlocEffect> {
@@ -40,7 +42,8 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     on<Initial>(_handleInitialEvent);
     on<SignUp>(_handleSignUpEvent);
     on<SignIn>(_handleSignInEvent);
-    on<SignInWithGoogle>(_handleSignInFirebaseEvent);
+    on<SignInGoogle>(_handleSignInWithGoogleEvent);
+    on<SignInApple>(_handleSignInWithAppleEvent);
     on<GetMe>(_handleMeEvent);
     on<UpdateUser>(_handleUpdateUserEvent);
     on<UploadImage>(_handleUploadImageEvent);
@@ -111,7 +114,7 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
     }
   }
 
-  Future<void> _handleSignInFirebaseEvent(SignInWithGoogle event, Emitter<AuthBlocState> emitter) async {
+  Future<void> _handleSignInWithGoogleEvent(SignInGoogle event, Emitter<AuthBlocState> emitter) async {
     try {
       await GoogleSignIn().signOut();
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -123,6 +126,41 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
+      );
+
+      emitter(state.copyWith(loading: const Optional.value(true)));
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      log('$healVTag isNewUser: ${userCredential.additionalUserInfo?.isNewUser}');
+      if (userCredential.user != null) {
+        add(AuthBlocEvent.me(userCredential.user?.email, userCredential.user?.displayName));
+      } else {
+        emitter(state.copyWith(loading: const Optional.value(false)));
+        addSideEffect(AuthBlocEffect.notLoggedIn());
+      }
+    } on FirebaseAuthException catch (error) {
+      emitter(state.copyWith(loading: const Optional.value(false)));
+      log('$healVTag authorizationError: $error');
+      emitter(state.copyWith(loading: const Optional.value(false)));
+      addSideEffect(AuthBlocEffect.loggedIn(ResourceStatusEnum.error, errorMsg: error.message));
+    } catch (error) {
+      emitter(state.copyWith(loading: const Optional.value(false)));
+      debugPrint("Error Google: $error");
+    }
+  }
+
+  Future<void> _handleSignInWithAppleEvent(SignInApple event, Emitter<AuthBlocState> emitter) async {
+    try {
+      if (!Platform.isIOS && !Platform.isMacOS) {
+        debugPrint("Apple Sign-In support only for iOS/macOS");
+        return;
+      }
+      final AuthorizationCredentialAppleID appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+      );
+
+      final OAuthCredential credential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
       );
 
       emitter(state.copyWith(loading: const Optional.value(true)));

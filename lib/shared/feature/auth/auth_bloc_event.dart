@@ -7,7 +7,9 @@ sealed class AuthBlocEvent extends BaseEvent {
 
   factory AuthBlocEvent.signIn({required String email, required String password}) => SignIn._(email: email, password: password);
 
-  factory AuthBlocEvent.signInWithGoogle() => const SignInWithGoogle._();
+  factory AuthBlocEvent.signInWithGoogle() => const SignInGoogle._();
+
+  factory AuthBlocEvent.signInWithApple() => const SignInApple._();
 
   factory AuthBlocEvent.signUp({required String email, required String password, required String name, String? lastName}) => SignUp._(email: email, password: password, name: name, lastName: lastName);
 
@@ -37,8 +39,12 @@ class SignIn extends AuthBlocEvent {
   SignIn._({required this.email, required this.password});
 }
 
-class SignInWithGoogle extends AuthBlocEvent {
-  const SignInWithGoogle._();
+class SignInGoogle extends AuthBlocEvent {
+  const SignInGoogle._();
+}
+
+class SignInApple extends AuthBlocEvent {
+  const SignInApple._();
 }
 
 class SignUp extends AuthBlocEvent {

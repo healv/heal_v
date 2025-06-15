@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/auth/sign_in/sign_in_page_bloc.dart';
@@ -18,7 +17,6 @@ import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 import 'package:heal_v/theme/ext/extension.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -273,7 +271,7 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
             height: 60,
             child: IconButton(
               onPressed: () async {
-                final userCredential = await _signInWithApple();
+                authBloc.add(AuthBlocEvent.signInWithApple());
               },
               icon: const Icon(Icons.apple, size: 50),
               padding: const EdgeInsets.only(bottom: 4.0),
@@ -282,29 +280,6 @@ class _SignInPageState extends BlocDependentSideEffectState<SignInPage, SignInPa
           ),
       ],
     );
-  }
-
-  Future<UserCredential?> _signInWithApple() async {
-    try {
-      if (!Platform.isIOS && !Platform.isMacOS) {
-        debugPrint("Apple Sign-In support only for iOS/macOS");
-        return null;
-      }
-
-      final AuthorizationCredentialAppleID appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
-      );
-
-      final OAuthCredential credential = OAuthProvider("apple.com").credential(
-        idToken: appleCredential.identityToken,
-        accessToken: appleCredential.authorizationCode,
-      );
-
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } catch (error) {
-      debugPrint("Error Apple: $error");
-      return null;
-    }
   }
 
   void _listenAuthEffects(AuthBlocEffect effect) async {

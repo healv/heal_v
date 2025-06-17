@@ -36,6 +36,12 @@ sealed class ProgressEffect implements SideEffect {
         pageSize: pageSize,
         dailyProgressList: dailyProgressList,
       );
+
+  factory ProgressEffect.dailyProgressFinished(
+    ResourceStatusEnum status, {
+    String? errorMsg,
+  }) =>
+      DailyProgressFinished(status, errorMsg: errorMsg);
 }
 
 final class ProgressUpdated extends ProgressEffect {
@@ -60,5 +66,12 @@ final class DailyProgressListFetched extends ProgressEffect {
     this.page,
     this.pageSize,
     this.dailyProgressList,
+  });
+}
+
+final class DailyProgressFinished extends ProgressEffect {
+  DailyProgressFinished(
+    super.status, {
+    super.errorMsg,
   });
 }

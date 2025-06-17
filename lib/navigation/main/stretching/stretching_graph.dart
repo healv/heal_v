@@ -72,7 +72,11 @@ base class StretchingVideoRoute extends GoRouteData {
           create: (_) => StretchingVideoPageBloc()..add(StretchingVideoPageEvent.initial(lesson)),
         ),
         BlocProvider<VideoPlayerWidgetBloc>(
-          create: (_) => VideoPlayerWidgetBloc()..add(VideoPlayerWidgetEvent.initial('${AuthConstants.baseHost}${lesson.media?.url}')),
+          create: (_) => VideoPlayerWidgetBloc()
+            ..add(VideoPlayerWidgetEvent.initial(
+              '${AuthConstants.baseHost}${lesson.media?.url}',
+              Duration(seconds: lesson.duration ?? 0),
+            )),
         ),
       ],
       child: const StretchingVideoPage(),

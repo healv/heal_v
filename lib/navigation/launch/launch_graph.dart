@@ -3,9 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/app/launch/launch_page.dart';
 import 'package:heal_v/app/launch/launch_page_bloc.dart';
-import 'package:heal_v/app/main/feature/quiz/quiz_page.dart';
-import 'package:heal_v/app/main/feature/quiz/quiz_page_bloc.dart';
-import 'package:heal_v/main.dart';
 import 'package:heal_v/navigation/app_routes.dart';
 import 'package:heal_v/navigation/base/base_go_route_data.dart';
 
@@ -19,18 +16,6 @@ base class LaunchRoute extends BaseFadeTransitionGoRouteData {
     return BlocProvider(
       create: (context) => LaunchPageBloc(),
       child: const LaunchPage(),
-    );
-  }
-}
-
-@TypedGoRoute<QuizRoute>(path: AppRoutes.quiz, routes: <TypedRoute<RouteData>>[])
-@immutable
-base class QuizRoute extends BaseFadeTransitionGoRouteData {
-  @override
-  Widget pageChild(BuildContext context, GoRouterState state) {
-    return BlocProvider(
-      create: (context) => QuizPageBloc(getIt.get())..add(QuizPageEvent.initial()),
-      child: const QuizPage(),
     );
   }
 }

@@ -47,13 +47,9 @@ class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayer
     controller.addEventsListener((event) async {
       switch (event.betterPlayerEventType) {
         case BetterPlayerEventType.progress:
-          final progress = event.parameters?[BetterPlayerEventType.progress.name] as Duration?;
-          final duration = event.parameters?['duration'] as Duration?;
+          final progress = controller.videoPlayerController?.value.position;
           if (progress != null) {
             add(VideoPlayerWidgetEvent.positionChanged(progress));
-          }
-          if (duration != null) {
-            add(VideoPlayerWidgetEvent.durationChanged(duration));
           }
           break;
         case BetterPlayerEventType.play:
@@ -97,9 +93,10 @@ class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayer
 
   Future<void> _handleInitialEvent(_Initial event, Emitter<VideoPlayerWidgetState> emitter) async {
     final url = event.url ?? emptyString;
-    emitter(state.copyWith(url: Optional.value(url)));
-    controller.setupDataSource(BetterPlayerDataSource.network(url));
-    controller.play();
+    // final url = 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v';
+    emitter(state.copyWith(url: Optional.value(url), duration: Optional.value(event.duration)));
+    await controller.setupDataSource(BetterPlayerDataSource.network(url));
+    await controller.play();
   }
 
   Future<void> _handlePositionChangedEvent(_PositionChanged event, Emitter<VideoPlayerWidgetState> emitter) async {
@@ -119,7 +116,7 @@ class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayer
   }
 
   Future<void> _handleProgressSeekEvent(_ProgressSeek event, Emitter<VideoPlayerWidgetState> emitter) async {
-    controller.seekTo(event.position);
+    await controller.seekTo(event.position);
   }
 
   Future<void> _handleChangeControllerVolumeEvent(_ChangeControllerVolume event, Emitter<VideoPlayerWidgetState> emitter) async {

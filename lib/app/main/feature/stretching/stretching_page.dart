@@ -73,7 +73,7 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
                 onTap: () {
                   if (!isSelected) {
                     if (weeks[index].isAccessible == true) {
-                      stretchingPageBloc.add(StretchingPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString));
+                      stretchingPageBloc.add(StretchingPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString, isLoading: true));
                       _tabController.animateTo(index);
                     } else {
                       showLockedDialog(context, tr('stretching_locked'), tr('stretching_locked_description'));
@@ -131,7 +131,7 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
                             child: EmptyWidget(),
                           );
                         }
-                        return _lessonsListView(context, week, state.stretchingLessons!.lessons!);
+                        return _lessonsListView(context, week, state.stretchingLessons!.lessons!, stretchingPageBloc);
                       },
                     );
                   }).toList() ??
@@ -167,16 +167,16 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
     );
   }
 
-  Widget _lessonsListView(BuildContext context, StretchingWeek week, List<StretchingLesson> lessons) {
+  Widget _lessonsListView(BuildContext context, StretchingWeek week, List<StretchingLesson> lessons, StretchingPageBloc stretchingPageBloc) {
     return ListView.builder(
       itemCount: lessons.length,
       itemBuilder: (_, index) {
-        return _lessonItem(context, week, lessons[index]);
+        return _lessonItem(context, week, lessons[index], stretchingPageBloc);
       },
     );
   }
 
-  Widget _lessonItem(BuildContext context, StretchingWeek week, StretchingLesson lesson) {
+  Widget _lessonItem(BuildContext context, StretchingWeek week, StretchingLesson lesson, StretchingPageBloc stretchingPageBloc) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: InkWell(
@@ -186,7 +186,9 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
               weekTitle: week.title ?? emptyString,
               weekId: week.id ?? emptyString,
               lessonId: lesson.id ?? emptyString,
-            ).push(context);
+            ).push(context).then((value) {
+              stretchingPageBloc.add(StretchingPageEvent.getStretchingWeeks(isLoading: false));
+            });
           } else {
             showLockedDialog(context, tr('stretching_locked'), tr('stretching_locked_description'));
           }

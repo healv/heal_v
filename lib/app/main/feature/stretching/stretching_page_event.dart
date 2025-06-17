@@ -5,11 +5,11 @@ sealed class StretchingPageEvent extends BaseEvent {
 
   factory StretchingPageEvent.initial() => Initial._();
 
-  factory StretchingPageEvent.getStretchingWeeks() => GetStretchingWeeks._();
+  factory StretchingPageEvent.getStretchingWeeks({required bool isLoading}) => GetStretchingWeeks._(isLoading);
 
-  factory StretchingPageEvent.getStretchingLessons({required String id}) => GetStretchingLessons._(id);
+  factory StretchingPageEvent.getStretchingLessons({required String id, required bool isLoading}) => GetStretchingLessons._(id, isLoading);
 
-  factory StretchingPageEvent.changeSelectedWeek({required String id}) => ChangeSelectedWeek._(id);
+  factory StretchingPageEvent.changeSelectedWeek({required String id, required bool isLoading}) => ChangeSelectedWeek._(id,isLoading);
 }
 
 final class Initial extends StretchingPageEvent {
@@ -17,17 +17,21 @@ final class Initial extends StretchingPageEvent {
 }
 
 final class GetStretchingWeeks extends StretchingPageEvent {
-  GetStretchingWeeks._();
+  final bool isLoading;
+
+  GetStretchingWeeks._(this.isLoading);
 }
 
 final class GetStretchingLessons extends StretchingPageEvent {
   final String id;
+  final bool isLoading;
 
-  GetStretchingLessons._(this.id);
+  GetStretchingLessons._(this.id, this.isLoading);
 }
 
 final class ChangeSelectedWeek extends StretchingPageEvent {
   final String id;
+  final bool isLoading;
 
-  ChangeSelectedWeek._(this.id);
+  ChangeSelectedWeek._(this.id,this.isLoading);
 }

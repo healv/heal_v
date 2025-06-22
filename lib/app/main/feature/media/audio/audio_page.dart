@@ -31,7 +31,7 @@ class _AudioPageState extends BlocDependentSideEffectState<AudioPage, AudioPageB
   @override
   void initState() {
     super.initState();
-    _audioPlayerEffectsSubscription = context.read<AudioPlayerWidgetBloc>().sideEffects.listen(_listenVideoPlayerEffects);
+    _audioPlayerEffectsSubscription = context.read<AudioPlayerWidgetBloc>().sideEffects.listen(_listenAudioPlayerEffects);
   }
 
   @override
@@ -135,7 +135,7 @@ class _AudioPageState extends BlocDependentSideEffectState<AudioPage, AudioPageB
     );
   }
 
-  void _listenVideoPlayerEffects(AudioPlayerWidgetEffect effect) async {
+  void _listenAudioPlayerEffects(AudioPlayerWidgetEffect effect) async {
     switch (effect) {
       case AudioPlayerStateChanged():
         if (effect.playerState == ProcessingState.completed) {

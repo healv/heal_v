@@ -25,7 +25,7 @@ class StretchingPageBloc extends BaseBloc<StretchingPageEvent, StretchingPageSta
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<StretchingPageState> emitter) async {
-    add(StretchingPageEvent.getStretchingWeeks());
+    add(StretchingPageEvent.getStretchingWeeks(isLoading: true));
   }
 
   Future<void> _handleGetStretchingWeeksEvent(GetStretchingWeeks event, Emitter<StretchingPageState> emitter) async {
@@ -34,19 +34,19 @@ class StretchingPageBloc extends BaseBloc<StretchingPageEvent, StretchingPageSta
         case ResourceStatusEnum.success:
           emitter(
             state.copyWith(
-              weeksLoading: const Optional.value(false),
+              weeksLoading: event.isLoading == true ? const Optional.value(false) : null,
               weeks: Optional.value(response.data),
             ),
           );
           if (response.data?.isNotEmpty == true) {
-            add(StretchingPageEvent.changeSelectedWeek(id: response.data?.first.id ?? emptyString));
+            add(StretchingPageEvent.changeSelectedWeek(id: response.data?.first.id ?? emptyString, isLoading: event.isLoading));
           }
           break;
         case ResourceStatusEnum.error:
-          emitter(state.copyWith(weeksLoading: const Optional.value(false)));
+          emitter(state.copyWith(weeksLoading: event.isLoading == true ? const Optional.value(false) : null));
           break;
         case ResourceStatusEnum.loading:
-          emitter(state.copyWith(weeksLoading: const Optional.value(true)));
+          emitter(state.copyWith(weeksLoading: event.isLoading == true ? const Optional.value(true) : null));
           break;
       }
     }
@@ -57,15 +57,15 @@ class StretchingPageBloc extends BaseBloc<StretchingPageEvent, StretchingPageSta
       switch (response.status) {
         case ResourceStatusEnum.success:
           emitter(state.copyWith(
-            lessonsLoading: const Optional.value(false),
+            lessonsLoading: event.isLoading == true ? const Optional.value(false) : null,
             stretchingLessons: Optional.value(response.data),
           ));
           break;
         case ResourceStatusEnum.error:
-          emitter(state.copyWith(lessonsLoading: const Optional.value(false)));
+          emitter(state.copyWith(lessonsLoading: event.isLoading == true ? const Optional.value(false) : null));
           break;
         case ResourceStatusEnum.loading:
-          emitter(state.copyWith(lessonsLoading: const Optional.value(true)));
+          emitter(state.copyWith(lessonsLoading: event.isLoading == true ? const Optional.value(true) : null));
           break;
       }
     }
@@ -73,6 +73,6 @@ class StretchingPageBloc extends BaseBloc<StretchingPageEvent, StretchingPageSta
 
   Future<void> _handleChangeSelectedWeekEvent(ChangeSelectedWeek event, Emitter<StretchingPageState> emitter) async {
     emitter(state.copyWith(selectedWeekId: Optional.value(event.id)));
-    add(StretchingPageEvent.getStretchingLessons(id: event.id));
+    add(StretchingPageEvent.getStretchingLessons(id: event.id, isLoading: event.isLoading));
   }
 }

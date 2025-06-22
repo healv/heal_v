@@ -11,6 +11,7 @@ import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../../common/tools/localization_tools.dart';
+import '../../../../../feature/heal_v/api/auth/utils/auth_constants.dart';
 
 class StretchingDetailsPage extends StatefulWidget {
   const StretchingDetailsPage({super.key});
@@ -68,8 +69,7 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
   Widget _image(BuildContext context, StretchingLesson stretchingLesson) {
     return Image.network(
       height: MediaQuery.of(context).size.height * 0.50,
-      // todo Remove hardcoded photo
-      'https://media.istockphoto.com/id/1310511832/photo/asian-woman-stretching-her-back-in-a-training-gym.jpg?s=1024x1024&w=is&k=20&c=mPm3qGkYFAts-30ewEZ9HiIUB_ZUE7ZXNPJZh-ygq3s=',
+      stretchingLesson.preview?.url != null ? '${AuthConstants.baseHost}${stretchingLesson.preview?.url}' : emptyString,
       fit: BoxFit.cover,
     );
   }
@@ -196,7 +196,7 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
             AppIcons.clock.svgAsset(width: 20, height: 22),
             const SizedBox(height: 8),
             Text(
-              '${stretchingLesson?.duration ?? zero} ${tr('mins')}',
+              '${(stretchingLesson?.duration ?? 0) ~/ 60} ${tr('mins')}',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
@@ -211,9 +211,13 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
   }
 
   Widget _startButton(BuildContext context, StretchingLesson? stretchingLesson) {
+    final bloc = context.read<StretchingDetailsPageBloc>();
     return ElevatedButton(
-      onPressed: () {
-        StretchingVideoRoute(stretchingLesson: jsonEncode(stretchingLesson?.toJson())).push(context);
+      onPressed: () async {
+        await StretchingVideoRoute(
+          stretchingLesson: jsonEncode(stretchingLesson?.toJson()),
+          weekId: bloc.state.weekId ?? emptyString,
+        ).push(context);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: context.primary,

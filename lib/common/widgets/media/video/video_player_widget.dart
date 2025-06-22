@@ -61,11 +61,11 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
       buildWhen: (oldState, newState) => oldState.duration != newState.duration || oldState.position != newState.position || oldState.buffer != newState.buffer,
       builder: (context, state) {
         return ProgressBar(
-          barHeight: 8,
+          barHeight: 6,
           baseBarColor: context.quizDialogItemColor,
           progressBarColor: context.primary,
           thumbColor: context.primary,
-          thumbRadius: 6.0,
+          thumbRadius: 3.0,
           buffered: state.buffer,
           bufferedBarColor: context.background.withValues(alpha: 0.5),
           timeLabelTextStyle: TextStyle(fontSize: 12, color: context.onBackground, letterSpacing: 0.2, fontWeight: FontWeight.w400),

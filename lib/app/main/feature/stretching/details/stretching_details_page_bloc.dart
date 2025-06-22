@@ -20,7 +20,7 @@ class StretchingDetailsPageBloc extends BaseBloc<StretchingDetailsPageEvent, Str
   }
 
   Future<void> _handleInitialEvent(Initial event, Emitter<StretchingDetailsPageState> emitter) async {
-    emitter(state.copyWith(weekTitle: Optional.value(event.weekTitle)));
+    emitter(state.copyWith(weekTitle: Optional.value(event.weekTitle), weekId: Optional.value(event.weekId)));
     await for (final response in repo.getStretchingLesson(event.weekId, event.lessonId)) {
       switch (response.status) {
         case ResourceStatusEnum.success:

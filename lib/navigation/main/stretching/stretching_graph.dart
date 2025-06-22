@@ -60,8 +60,9 @@ base class StretchingDetailsRoute extends GoRouteData {
 @immutable
 base class StretchingVideoRoute extends GoRouteData {
   final String stretchingLesson;
+  final String weekId;
 
-  const StretchingVideoRoute({required this.stretchingLesson});
+  const StretchingVideoRoute({required this.stretchingLesson, required this.weekId});
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -69,10 +70,14 @@ base class StretchingVideoRoute extends GoRouteData {
     return MultiBlocProvider(
       providers: [
         BlocProvider<StretchingVideoPageBloc>(
-          create: (_) => StretchingVideoPageBloc()..add(StretchingVideoPageEvent.initial(lesson)),
+          create: (_) => StretchingVideoPageBloc(getIt.get())..add(StretchingVideoPageEvent.initial(lesson, weekId)),
         ),
         BlocProvider<VideoPlayerWidgetBloc>(
-          create: (_) => VideoPlayerWidgetBloc()..add(VideoPlayerWidgetEvent.initial('${AuthConstants.baseHost}${lesson.media?.url}')),
+          create: (_) => VideoPlayerWidgetBloc()
+            ..add(VideoPlayerWidgetEvent.initial(
+              '${AuthConstants.baseHost}${lesson.media?.url}',
+              Duration(seconds: lesson.duration ?? 0),
+            )),
         ),
       ],
       child: const StretchingVideoPage(),

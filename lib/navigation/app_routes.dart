@@ -1,7 +1,6 @@
 abstract final class AppRoutes {
   /// Launch route
   static const String launch = '/launch';
-  static const String quiz = '/quiz';
 }
 
 abstract final class AuthRoutes {
@@ -17,6 +16,10 @@ abstract final class MainRoutes {
   static const String stretching = '/mainStretching';
   static const String breathing = '/mainBreathing';
   static const String profile = '/mainProfile';
+}
+
+abstract final class QuizRoutes {
+  static const String quiz = '/quiz';
 }
 
 abstract final class ProfileRoutes {

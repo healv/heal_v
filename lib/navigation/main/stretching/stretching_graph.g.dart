@@ -75,12 +75,14 @@ extension $StretchingVideoRouteExtension on StretchingVideoRoute {
   static StretchingVideoRoute _fromState(GoRouterState state) =>
       StretchingVideoRoute(
         stretchingLesson: state.uri.queryParameters['stretching-lesson']!,
+        weekId: state.uri.queryParameters['week-id']!,
       );
 
   String get location => GoRouteData.$location(
         '/stretchingVideo',
         queryParams: {
           'stretching-lesson': stretchingLesson,
+          'week-id': weekId,
         },
       );
 

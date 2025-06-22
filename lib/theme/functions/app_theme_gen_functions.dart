@@ -63,8 +63,8 @@ abstract class AppThemeGenFunctions {
     );
   }
 
-  static DialogTheme _dialogTheme(AppColorsPalette palette) {
-    return DialogTheme(
+  static DialogThemeData? _dialogTheme(AppColorsPalette palette) {
+    return DialogThemeData(
       backgroundColor: palette.background,
       surfaceTintColor: palette.onBackground.withValues(alpha: 0.1),
       shadowColor: Colors.transparent,

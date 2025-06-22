@@ -227,7 +227,7 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
                       ),
                     ),
                     Text(
-                      '${lesson.poses ?? 0} ${tr('poses')} ${lesson.duration ?? 0} ${tr('mins')}',
+                      '${lesson.poses ?? 0} ${tr('poses')} ${(lesson.duration ?? 0) ~/ 60} ${tr('mins')}',
                       style: TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w400,

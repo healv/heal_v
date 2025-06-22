@@ -4,18 +4,20 @@ import 'package:better_player_plus/better_player_plus.dart';
 import 'package:better_player_plus/src/video_player/video_player_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:heal_v/common/bloc/base_bloc.dart';
+import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
 import 'package:heal_v/common/utils/constants.dart';
 import 'package:volume_controller/volume_controller.dart';
 
 import '../../../bloc/base_event.dart';
 import '../../../bloc/base_state.dart';
+import '../../../bloc/side_effect/side_effect.dart';
 import '../../../dart/optional.dart';
 
+part 'video_player_widget_effect.dart';
 part 'video_player_widget_event.dart';
 part 'video_player_widget_state.dart';
 
-class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayerWidgetState> {
+class VideoPlayerWidgetBloc extends SideEffectBloc<VideoPlayerWidgetEvent, VideoPlayerWidgetState, VideoPlayerWidgetEffect> {
   final controller = BetterPlayerController(
     const BetterPlayerConfiguration(
       aspectRatio: 1,
@@ -69,6 +71,7 @@ class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayer
           add(VideoPlayerWidgetEvent.isPlayingChanged(false));
           await controller.seekTo(Duration.zero);
           await controller.pause();
+          addSideEffect(VideoPlayerWidgetEffect.videoPlayerFinished());
           break;
         case BetterPlayerEventType.setVolume:
           add(VideoPlayerWidgetEvent.changeVolumeState(event.parameters?["volume"] as double));
@@ -95,7 +98,7 @@ class VideoPlayerWidgetBloc extends BaseBloc<VideoPlayerWidgetEvent, VideoPlayer
     final url = event.url ?? emptyString;
     // final url = 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v';
     emitter(state.copyWith(url: Optional.value(url), duration: Optional.value(event.duration)));
-    await controller.setupDataSource(BetterPlayerDataSource.network(url));
+    await controller.setupDataSource(BetterPlayerDataSource.network(url, liveStream: false));
     await controller.play();
   }
 

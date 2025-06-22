@@ -211,9 +211,13 @@ class _StretchingDetailsPageState extends State<StretchingDetailsPage> {
   }
 
   Widget _startButton(BuildContext context, StretchingLesson? stretchingLesson) {
+    final bloc = context.read<StretchingDetailsPageBloc>();
     return ElevatedButton(
-      onPressed: () {
-        StretchingVideoRoute(stretchingLesson: jsonEncode(stretchingLesson?.toJson())).push(context);
+      onPressed: () async {
+        await StretchingVideoRoute(
+          stretchingLesson: jsonEncode(stretchingLesson?.toJson()),
+          weekId: bloc.state.weekId ?? emptyString,
+        ).push(context);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: context.primary,

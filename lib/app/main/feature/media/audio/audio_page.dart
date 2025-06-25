@@ -150,16 +150,16 @@ class _AudioPageState extends BlocDependentSideEffectState<AudioPage, AudioPageB
     switch (effect) {
       case LessonCompletedEffect():
         if (effect.loopMode == LoopMode.off) {
-          context.read<ProgressBloc>().add(
-                ProgressEvent.updateDailyProgress(
-                  dailyProgressRequest: DailyProgressRequest(
-                    meditation: effect.lessonTypeEnum == LessonTypeEnum.meditation ? true : null,
-                    breathing: effect.lessonTypeEnum == LessonTypeEnum.breathing ? true : null,
-                  ),
-                ),
-              );
           await showAlertDialog(title: tr('success'), message: tr('lessonCompleted'));
           if (mounted) {
+            context.read<ProgressBloc>().add(
+                  ProgressEvent.updateDailyProgress(
+                    dailyProgressRequest: DailyProgressRequest(
+                      meditation: effect.lessonTypeEnum == LessonTypeEnum.meditation ? true : null,
+                      breathing: effect.lessonTypeEnum == LessonTypeEnum.breathing ? true : null,
+                    ),
+                  ),
+                );
             context.pop(LessonResultTypeEnum.completed);
           }
         }

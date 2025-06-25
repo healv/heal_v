@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +17,8 @@ import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+
+import '../../../../navigation/main/quiz/quiz_graph.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -181,6 +185,7 @@ class _HomePageState extends State<HomePage> {
           ProgressModel(name: tr('breathing'), icon: AppIcons.breathing, isCompleted: state.breathing),
           ProgressModel(name: tr('stretching'), icon: AppIcons.stretching, isCompleted: state.stretching),
           ProgressModel(name: tr('journal'), icon: AppIcons.journal, isCompleted: state.journal?.isNotEmpty == true),
+          ProgressModel(name: tr('quiz'), isCompleted: state.quiz?.completed == true),
         ];
 
         return Column(
@@ -247,7 +252,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _onCardItemTap(BuildContext context, int index, bool isCompleted) async {
+  Future<void>? _onCardItemTap(BuildContext context, int index, bool isCompleted) async {
     if (isCompleted) return;
     await SoundPlayer.checkAndPlayClickSound();
     switch (index) {
@@ -273,6 +278,14 @@ class _HomePageState extends State<HomePage> {
               });
         }
         break;
+      case 4:
+        if (context.mounted) {
+          final progressBloc = context.read<ProgressBloc>();
+          if (progressBloc.state.completed == true) {
+            QuizRoute().push(context);
+            break;
+          }
+        }
     }
   }
 }

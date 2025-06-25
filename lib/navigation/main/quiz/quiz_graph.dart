@@ -20,3 +20,5 @@ base class QuizRoute extends GoRouteData {
     );
   }
 }
+
+List<RouteBase> get $quizRoutes => $appRoutes;

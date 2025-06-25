@@ -10,6 +10,7 @@ import 'package:heal_v/feature/heal_v/api/progress/repo/progress_repo.dart';
 import 'package:heal_v/shared/feature/progress/progress_effect.dart';
 
 import '../../../common/bloc/base_event.dart';
+import '../../../feature/heal_v/api/progress/model/response/daily_progress_dto.dart';
 
 part 'progress_event.dart';
 part 'progress_state.dart';
@@ -34,8 +35,8 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
     await for (final response in repo.getDailyProgress(date: event.date)) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          final isCompletedBefore = state.meditation == true && state.breathing == true && state.stretching == true && state.journal?.isNotEmpty == true;
-          final isAllCompleted = response.data?.meditation == true && response.data?.breathing == true && response.data?.stretching == true && response.data?.journal?.isNotEmpty == true;
+          final isCompletedBefore = state.completed == true && state.journal?.isNotEmpty == true;
+          final isAllCompleted = response.data?.completed == true && response.data?.journal?.isNotEmpty == true;
           emitter(state.copyWith(
             meditation: Optional.value(response.data?.meditation),
             breathing: Optional.value(response.data?.breathing),
@@ -45,8 +46,7 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
             completed: Optional.value(response.data?.completed),
             loading: const Optional.value(false),
           ));
-          //todo not finished
-          if (isAllCompleted == true && isAllCompleted != isCompletedBefore) {
+          if (isAllCompleted == true && isAllCompleted != isCompletedBefore && state.quiz?.passed != true) {
             addSideEffect(ProgressEffect.dailyProgressFinished(ResourceStatusEnum.success));
           }
           break;
@@ -94,6 +94,9 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
             ));
           }
           addSideEffect(ProgressEffect.progressUpdated(ResourceStatusEnum.success, date: event.date, dailyProgressDto: response.data));
+          if (event.date == null) {
+            add(ProgressEvent.getDailyProgress());
+          }
           break;
         case ResourceStatusEnum.error:
           addSideEffect(ProgressEffect.progressUpdated(ResourceStatusEnum.error, errorMsg: response.error));

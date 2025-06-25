@@ -6,7 +6,7 @@ final class ProgressState extends BaseState {
   final bool? breathing;
   final bool? stretching;
   final String? journal;
-  final bool? quiz;
+  final DailyProgressQuizDto? quiz;
   final bool? completed;
   final TreeGrowthDto? treeGrowth;
   final bool loading;
@@ -32,7 +32,7 @@ final class ProgressState extends BaseState {
     Optional<bool?>? breathing,
     Optional<bool?>? stretching,
     Optional<String?>? journal,
-    Optional<bool?>? quiz,
+    Optional<DailyProgressQuizDto?>? quiz,
     Optional<bool?>? completed,
     Optional<TreeGrowthDto?>? treeGrowth,
     Optional<bool?>? loading,

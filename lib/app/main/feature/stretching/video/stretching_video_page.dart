@@ -13,6 +13,8 @@ import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../../common/tools/localization_tools.dart';
 import '../../../../../common/utils/alert.dart';
+import '../../../../../feature/heal_v/api/progress/model/request/daily_progress_request.dart';
+import '../../../../../shared/feature/progress/progress_bloc.dart';
 
 class StretchingVideoPage extends StatefulWidget {
   const StretchingVideoPage({super.key});
@@ -69,7 +71,8 @@ class _StretchingVideoPageState extends BlocDependentSideEffectState<StretchingV
   Future<void> handleSideEffect(StretchingVideoPageEffect effect) async {
     switch (effect) {
       case LessonCompleted():
-        showAlertDialog(title: tr('success'), message: tr('lessonCompleted')).then((_) {
+        context.read<ProgressBloc>().add(ProgressEvent.updateDailyProgress(dailyProgressRequest: DailyProgressRequest(stretching: true)));
+        await showAlertDialog(title: tr('success'), message: tr('lessonCompleted')).then((_) {
           if (mounted) {
             context.pop();
           }

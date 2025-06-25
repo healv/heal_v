@@ -13,7 +13,7 @@ class DailyProgressDto {
   @JsonKey(name: "stretching")
   final bool? stretching;
   @JsonKey(name: "quiz")
-  final bool? quiz;
+  final DailyProgressQuizDto? quiz;
   @JsonKey(name: "journal")
   final String? journal;
   @JsonKey(name: "completed")
@@ -35,5 +35,26 @@ class DailyProgressDto {
 
   Map<String, dynamic> toJson() {
     return _$DailyProgressDtoToJson(this);
+  }
+}
+
+@JsonSerializable()
+class DailyProgressQuizDto {
+  @JsonKey(name: "completed")
+  final bool? completed;
+  @JsonKey(name: "passed")
+  final bool? passed;
+
+  DailyProgressQuizDto({
+    this.completed,
+    this.passed,
+  });
+
+  factory DailyProgressQuizDto.fromJson(Map<String, dynamic> json) {
+    return _$DailyProgressQuizDtoFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$DailyProgressQuizDtoToJson(this);
   }
 }

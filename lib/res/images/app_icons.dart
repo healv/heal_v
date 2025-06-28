@@ -6,6 +6,7 @@ enum AppIcons {
   breathing('assets/icons/ic_breathing.svg'),
   meditation('assets/icons/ic_meditation.svg'),
   profile('assets/icons/ic_profile.svg'),
+  dailyQuiz('assets/icons/ic_daily_quiz.svg'),
   launcher('assets/icons/ic_launcher.png'),
   arrowLeft('assets/icons/ic_arrow_left.svg'),
   arrowRight('assets/icons/ic_arrow_right.svg'),
@@ -47,6 +48,8 @@ enum AppIcons {
   circleBreathing('assets/icons/ic_circle_breathing.svg'),
   circleMeditation('assets/icons/ic_circle_meditation.svg'),
   circleStretching('assets/icons/ic_circle_stretching.svg'),
+  quizLocked('assets/icons/ic_quiz_locked.svg'),
+  quizPassed('assets/icons/ic_quiz_passed.svg'),
   clock('assets/icons/ic_clock.svg');
 
   final String path;

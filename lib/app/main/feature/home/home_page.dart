@@ -4,11 +4,11 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_v/app/main/feature/home/model/daily_goal_enum.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/put_journal/put_journal_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/put_journal/put_journal_bottom_sheet_dialog.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/common/tools/sound_player.dart';
-import 'package:heal_v/common/utils/constants.dart';
 import 'package:heal_v/common/widgets/app_bar/user_info_app_bar.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dto.dart';
 import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
@@ -18,7 +18,9 @@ import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
+import '../../../../common/utils/alert.dart';
 import '../../../../navigation/main/quiz/quiz_graph.dart';
+import 'model/daily_goal_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -180,12 +182,12 @@ class _HomePageState extends State<HomePage> {
       buildWhen: (oldState, newState) =>
           oldState.meditation != newState.meditation || oldState.breathing != newState.breathing || oldState.stretching != newState.stretching || oldState.journal != newState.journal,
       builder: (BuildContext context, ProgressState state) {
-        List<ProgressModel> items = [
-          ProgressModel(name: tr('meditation'), icon: AppIcons.meditation, isCompleted: state.meditation),
-          ProgressModel(name: tr('breathing'), icon: AppIcons.breathing, isCompleted: state.breathing),
-          ProgressModel(name: tr('stretching'), icon: AppIcons.stretching, isCompleted: state.stretching),
-          ProgressModel(name: tr('journal'), icon: AppIcons.journal, isCompleted: state.journal?.isNotEmpty == true),
-          ProgressModel(name: tr('quiz'), isCompleted: state.quiz?.completed == true),
+        List<DailyGoalModel> items = [
+          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.meditation, title: tr('meditation'), icon: AppIcons.meditation, isCompleted: state.meditation ?? false),
+          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.breathing, title: tr('breathing'), icon: AppIcons.breathing, isCompleted: state.breathing ?? false),
+          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.stretching, title: tr('stretching'), icon: AppIcons.stretching, isCompleted: state.stretching ?? false),
+          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.journal, title: tr('journal'), icon: AppIcons.journal, isCompleted: state.journal?.isNotEmpty == true),
+          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.quiz, title: tr('dailyQuiz'), icon: AppIcons.dailyQuiz, isCompleted: state.quiz?.completed == true),
         ];
 
         return Column(
@@ -200,72 +202,66 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _cardItem(BuildContext context, ProgressModel item, int index) {
-    return InkWell(
-      onTap: () async => await _onCardItemTap(context, index, item.isCompleted == true),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          height: 73,
-          decoration: BoxDecoration(
-            border: Border.all(color: item.isCompleted == true ? context.primary.withValues(alpha: 0.3) : context.primary.withValues(alpha: 0.2)),
-            color: context.background.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Row(
+  Widget _cardItem(BuildContext context, DailyGoalModel item, int index) {
+    return BlocSelector<ProgressBloc, ProgressState, bool?>(
+      selector: (ProgressState state) => state.completed,
+      builder: (BuildContext context, bool? dailyGoalsCompleted) {
+        return InkWell(
+          onTap: () async => await _onCardItemTap(context, item, dailyGoalsCompleted == true),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              height: 73,
+              decoration: BoxDecoration(
+                border: _border(context, item, dailyGoalsCompleted == true),
+                color: context.background.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(color: context.primary, shape: BoxShape.circle),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: item.icon?.svgAsset(colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
-                    ),
+                  Row(
+                    children: [
+                      _icon(context, item, dailyGoalsCompleted == true),
+                      const SizedBox(width: 16),
+                      _title(context, item, dailyGoalsCompleted == true),
+                    ],
                   ),
-                  const SizedBox(width: 16),
-                  Text(
-                    item.name ?? emptyString,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: context.onBackground),
+                  Container(
+                    width: 26,
+                    height: 26,
+                    decoration: BoxDecoration(
+                      border: _checkMarkBorder(context, item, dailyGoalsCompleted == true),
+                      shape: BoxShape.circle,
+                      color: item.isCompleted == true ? context.primary : context.background,
+                    ),
+                    child: item.isCompleted == true ? Center(child: AppIcons.checkMark.svgAsset()) : null,
                   ),
                 ],
               ),
-              Container(
-                width: 26,
-                height: 26,
-                decoration: BoxDecoration(
-                  border: item.isCompleted == true ? null : Border.all(color: context.quizDialogItemColor),
-                  shape: BoxShape.circle,
-                  color: item.isCompleted == true ? context.primary : context.background,
-                ),
-                child: item.isCompleted == true ? Center(child: AppIcons.checkMark.svgAsset()) : null,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Future<void>? _onCardItemTap(BuildContext context, int index, bool isCompleted) async {
-    if (isCompleted) return;
+  Future<void>? _onCardItemTap(BuildContext context, DailyGoalModel item, bool dailyGoalsCompleted) async {
+    if (item.isCompleted == true) return;
     await SoundPlayer.checkAndPlayClickSound();
-    switch (index) {
-      case 0:
+    switch (item.dailyGoalEnum) {
+      case DailyGoalEnum.meditation:
         if (context.mounted) GoRouter.of(context).go(MeditationRoute().location);
         break;
-      case 1:
+      case DailyGoalEnum.breathing:
         if (context.mounted) GoRouter.of(context).go(BreathingRoute().location);
         break;
-      case 2:
+      case DailyGoalEnum.stretching:
         if (context.mounted) GoRouter.of(context).go(StretchingRoute().location);
         break;
-      case 3:
+      case DailyGoalEnum.journal:
         if (context.mounted) {
           showModalBottomSheet<PutJournalEffect>(
               backgroundColor: context.background,
@@ -278,22 +274,72 @@ class _HomePageState extends State<HomePage> {
               });
         }
         break;
-      case 4:
+      case DailyGoalEnum.quiz:
         if (context.mounted) {
-          final progressBloc = context.read<ProgressBloc>();
-          if (progressBloc.state.completed == true) {
+          if (dailyGoalsCompleted == true) {
             QuizRoute().push(context);
             break;
+          } else {
+            await showLockedDialog(context, tr('dailyQuiz'), tr('dailyQuizLockedDialogDescription'));
           }
         }
     }
   }
-}
 
-class ProgressModel {
-  final String? name;
-  final AppIcons? icon;
-  final bool? isCompleted;
+  Border _border(BuildContext context, DailyGoalModel item, bool dailyGoalsCompleted) {
+    switch (item.dailyGoalEnum) {
+      case DailyGoalEnum.meditation || DailyGoalEnum.breathing || DailyGoalEnum.stretching || DailyGoalEnum.journal:
+        return Border.all(color: item.isCompleted == true ? context.primary.withValues(alpha: 0.3) : context.primary.withValues(alpha: 0.2));
+      case DailyGoalEnum.quiz:
+        return Border.all(
+            color: !dailyGoalsCompleted
+                ? context.onBackground.withValues(alpha: 0.2)
+                : item.isCompleted == true
+                    ? context.primary.withValues(alpha: 0.3)
+                    : context.primary.withValues(alpha: 0.2));
+    }
+  }
 
-  const ProgressModel({this.name, this.icon, this.isCompleted});
+  Border? _checkMarkBorder(BuildContext context, DailyGoalModel item, bool dailyGoalsCompleted) {
+    switch (item.dailyGoalEnum) {
+      case DailyGoalEnum.meditation || DailyGoalEnum.breathing || DailyGoalEnum.stretching || DailyGoalEnum.journal:
+        return item.isCompleted == true ? null : Border.all(color: context.quizDialogItemColor);
+
+      case DailyGoalEnum.quiz:
+        return !dailyGoalsCompleted
+            ? Border.all(color: context.onBackground.withValues(alpha: 0.2))
+            : item.isCompleted == true
+                ? null
+                : Border.all(color: context.quizDialogItemColor);
+    }
+  }
+
+  Widget _icon(BuildContext context, DailyGoalModel item, bool dailyGoalsCompleted) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        color: switch (item.dailyGoalEnum) {
+          DailyGoalEnum.quiz => dailyGoalsCompleted ? context.primary : context.onBackground.withValues(alpha: 0.3),
+          _ => context.primary,
+        },
+        shape: BoxShape.circle,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: item.icon.svgAsset(colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
+      ),
+    );
+  }
+
+  Widget _title(BuildContext context, DailyGoalModel item, bool dailyGoalsCompleted) {
+    return Text(
+      item.title,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: dailyGoalsCompleted == true ? context.onBackground : context.onBackground.withValues(alpha: 0.3),
+      ),
+    );
+  }
 }

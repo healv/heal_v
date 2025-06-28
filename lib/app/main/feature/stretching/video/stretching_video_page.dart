@@ -71,9 +71,9 @@ class _StretchingVideoPageState extends BlocDependentSideEffectState<StretchingV
   Future<void> handleSideEffect(StretchingVideoPageEffect effect) async {
     switch (effect) {
       case LessonCompleted():
-        context.read<ProgressBloc>().add(ProgressEvent.updateDailyProgress(dailyProgressRequest: DailyProgressRequest(stretching: true)));
         await showAlertDialog(title: tr('success'), message: tr('lessonCompleted')).then((_) {
           if (mounted) {
+            context.read<ProgressBloc>().add(ProgressEvent.updateDailyProgress(dailyProgressRequest: DailyProgressRequest(stretching: true)));
             context.pop();
           }
         });

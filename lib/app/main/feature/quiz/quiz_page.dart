@@ -386,7 +386,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
       case QuizCompleted():
         switch (effect.status) {
           case ResourceStatusEnum.success:
-            await showAlertDialog(title: tr('success'), message: tr('quizCompleted'));
+            await showAlertDialog(title: tr('quizPassedDialogTitle'), message: tr('quizPassedDialogDescription'), icon: AppIcons.quizPassed.svgAsset());
             if (mounted) {
               context.read<ProgressBloc>().add(ProgressEvent.getDailyProgress());
               context.pop();

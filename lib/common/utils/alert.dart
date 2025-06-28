@@ -4,7 +4,7 @@ import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
-Future<void> showAlertDialog({required String title, required String message}) async {
+Future<void> showAlertDialog({required String title, required String message, Widget? icon}) async {
   return showDialog(
     context: shellNavigatorGlobalKey.currentContext!,
     barrierDismissible: false, // user must tap button!
@@ -12,9 +12,16 @@ Future<void> showAlertDialog({required String title, required String message}) a
       return AlertDialog(
         surfaceTintColor: Colors.transparent,
         title: Text(title, style: const TextStyle(fontSize: 18)),
+        icon: icon,
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[Text(message, style: const TextStyle(fontSize: 16))],
+            children: <Widget>[
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
           ),
         ),
         actions: <Widget>[
@@ -229,8 +236,8 @@ Future<void> showDeleteJournalDialog(VoidCallback okClick) async {
   );
 }
 
-void showLockedDialog(BuildContext context, String title, String description) {
-  showDialog(
+Future<void> showLockedDialog(BuildContext context, String title, String description) {
+  return showDialog(
     context: context,
     builder: (context) {
       return Dialog(

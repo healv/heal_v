@@ -83,6 +83,8 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
     await for (final response in repo.updateDailyProgress(date: event.date, dailyProgressRequest: event.dailyProgressRequest)) {
       switch (response.status) {
         case ResourceStatusEnum.success:
+          final isCompletedBefore = state.completed == true && state.journal?.isNotEmpty == true;
+          final isAllCompleted = response.data?.completed == true && response.data?.journal?.isNotEmpty == true;
           if (event.date == null) {
             emitter(state.copyWith(
               meditation: Optional.value(response.data?.meditation),
@@ -96,6 +98,9 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
           addSideEffect(ProgressEffect.progressUpdated(ResourceStatusEnum.success, date: event.date, dailyProgressDto: response.data));
           if (event.date == null) {
             add(ProgressEvent.getDailyProgress());
+            if (isAllCompleted == true && isAllCompleted != isCompletedBefore && state.quiz?.passed != true) {
+              addSideEffect(ProgressEffect.dailyProgressFinished(ResourceStatusEnum.success));
+            }
           }
           break;
         case ResourceStatusEnum.error:

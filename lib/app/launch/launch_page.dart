@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heal_v/app/launch/launch_page_bloc.dart';
 import 'package:heal_v/common/extensions/context_extension.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
 import 'package:heal_v/common/utils/resource.dart';
@@ -9,6 +12,8 @@ import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 
+import '../../navigation/main/onboarding/onboarding_graph.dart';
+
 class LaunchPage extends StatefulWidget {
   const LaunchPage({super.key});
 
@@ -16,11 +21,14 @@ class LaunchPage extends StatefulWidget {
   State<StatefulWidget> createState() => _LaunchPageState();
 }
 
-final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, AuthBloc, AuthBlocEffect> {
+final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, LaunchPageBloc, LaunchPageSideEffect> {
+  StreamSubscription? _authEffectsSubscription;
+
   @override
   void initState() {
     BlocProvider.of<AuthBloc>(context).add(AuthBlocEvent.initial());
     super.initState();
+    _authEffectsSubscription = context.read<AuthBloc>().sideEffects.listen(_listenAuthEffects);
   }
 
   @override
@@ -37,7 +45,15 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
   }
 
   @override
-  Future<void> handleSideEffect(AuthBlocEffect effect) async {
+  Future<void> handleSideEffect(LaunchPageSideEffect effect) async {
+    switch (effect) {
+      case NavigateToOnboarding():
+        OnboardingRoute().go(context);
+        break;
+    }
+  }
+
+  void _listenAuthEffects(AuthBlocEffect effect) async {
     switch (effect) {
       case LoggedOut():
         SignInRoute().go(context);
@@ -67,5 +83,11 @@ final class _LaunchPageState extends BlocDependentSideEffectState<LaunchPage, Au
       default:
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _authEffectsSubscription?.cancel();
   }
 }

@@ -113,5 +113,17 @@
   "quiz": "Quiz",
   "dailyQuizLockedDialogDescription": "Daily Quiz unlocks once you finish the remaining tasks",
   "quizPassedDialogTitle": "Thank you for taking the quiz",
-  "quizPassedDialogDescription": "Based on your answers, we will be able to better select exercises and recommendations."
+  "quizPassedDialogDescription": "Based on your answers, we will be able to better select exercises and recommendations.",
+  "reconnectWithYourself": "Reconnect with yourself",
+  "startYourDayWithMeditation": "Start your day with meditation, breathing, and stretching to gently restore body–mind connection.",
+  "followYourHealingJourney": "Follow your healing journey",
+  "completeYourDailyGoals": "Complete your daily goals and see your personal healing tree blossom as you progress.",
+  "exploreGuidedPractices": "Explore guided practices",
+  "fromEmotionalReleaseToSelfCompassion": "From emotional release to self-compassion – unlock new sessions every week.",
+  "reflectThroughDailyQuiz": "Reflect through daily quiz",
+  "answerSoft": "Answer soft, emotionally-aware questions that help you better understand and support yourself.",
+  "trackProgress": "Track progress, journal freely",
+  "logYourReflections": "Log your reflections, celebrate your effort, and unlock more as you go.",
+  "getStarted": "Get Started",
+  "skip": "Skip"
 }

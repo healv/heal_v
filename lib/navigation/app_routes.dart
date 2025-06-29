@@ -45,3 +45,7 @@ abstract final class StretchingRoutes {
   static const String stretchingDetails = '/stretchingDetails';
   static const String stretchingVideo = '/stretchingVideo';
 }
+
+abstract final class OnboardingRoutes {
+  static const String onboarding = '/onboarding';
+}

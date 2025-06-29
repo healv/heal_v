@@ -15,6 +15,7 @@ import 'package:heal_v/navigation/main/breathing/breathing_graph.dart';
 import 'package:heal_v/navigation/main/home/home_graph.dart';
 import 'package:heal_v/navigation/main/main_graph.dart';
 import 'package:heal_v/navigation/main/meditation/meditation_graph.dart';
+import 'package:heal_v/navigation/main/onboarding/onboarding_graph.dart';
 import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/navigation/main/quiz/quiz_graph.dart';
 import 'package:heal_v/navigation/main/stretching/stretching_graph.dart';
@@ -40,6 +41,7 @@ class HealVApplication extends StatefulWidget {
     ...$stretchingRouteRoutes,
     ...$profileRouteRoutes,
     ...$quizRoutes,
+    ...$onboardingRoutes,
   ], initialLocation: AppRoutes.launch, navigatorKey: shellNavigatorGlobalKey);
 
   List<BlocProvider<BaseBloc>> get providers => [

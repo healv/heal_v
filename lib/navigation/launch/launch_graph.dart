@@ -14,7 +14,7 @@ base class LaunchRoute extends BaseFadeTransitionGoRouteData {
   @override
   Widget pageChild(BuildContext context, GoRouterState state) {
     return BlocProvider(
-      create: (context) => LaunchPageBloc(),
+      create: (context) => LaunchPageBloc()..add(LaunchPageBlocEvent.initial()),
       child: const LaunchPage(),
     );
   }

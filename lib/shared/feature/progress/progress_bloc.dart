@@ -46,7 +46,7 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
             completed: Optional.value(response.data?.completed),
             loading: const Optional.value(false),
           ));
-          if (isAllCompleted == true && isAllCompleted != isCompletedBefore && state.quiz?.passed != true) {
+          if (isAllCompleted == true && isAllCompleted != isCompletedBefore && state.quiz?.completed != true) {
             addSideEffect(ProgressEffect.dailyProgressFinished(ResourceStatusEnum.success));
           }
           break;

@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
@@ -37,8 +38,8 @@ class _PermissionPageState extends State<PermissionPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  final status = await Permission.notification.request();
-                  if (context.mounted) context.pop<PermissionStatus>(status);
+                  final status = await FirebaseMessaging.instance.requestPermission();
+                  if (context.mounted) context.pop<AuthorizationStatus>(status.authorizationStatus);
                 },
                 child: Text(tr('allow')),
               ),

@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,7 +21,6 @@ import 'package:heal_v/feature/heal_v/api/auth/repo/auth_repo.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc_effect.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../application.dart';
@@ -31,7 +31,6 @@ import '../../../common/tools/localization_tools.dart';
 import '../../../navigation/auth/auth_graph.dart';
 
 part 'auth_bloc_event.dart';
-
 part 'auth_bloc_state.dart';
 
 final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBlocEffect> {
@@ -65,11 +64,10 @@ final class AuthBloc extends SideEffectBloc<AuthBlocEvent, AuthBlocState, AuthBl
   Future<void> _handleInitialEvent(Initial event, Emitter<AuthBlocState> emitter) async {
     final isNotificationEnable = await Store.get<bool?>(key: StoreKey.notificationEnable, defaultValue: null);
     if (isNotificationEnable == null) {
-      final permissionGranted = await Permission.notification.isGranted;
-      final permissionAlwaysDenied = await Permission.notification.isPermanentlyDenied;
-      if (!permissionGranted && !permissionAlwaysDenied) {
-        final status = await PermissionRoute().push<PermissionStatus>(shellNavigatorGlobalKey.currentContext!) ?? PermissionStatus.denied;
-        await status.isGranted.changeFirebaseNotificationSettings();
+      final permissionGranted = (await FirebaseMessaging.instance.getNotificationSettings()).authorizationStatus == AuthorizationStatus.authorized;
+      if (!permissionGranted) {
+        final status = await PermissionRoute().push<AuthorizationStatus>(shellNavigatorGlobalKey.currentContext!) ?? AuthorizationStatus.denied;
+        (status == AuthorizationStatus.authorized).changeFirebaseNotificationSettings();
       } else {
         await true.changeFirebaseNotificationSettings();
       }

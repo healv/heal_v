@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heal_v/app/main/model/language_enum.dart';
@@ -33,19 +34,18 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
 
   Future<void> _handleUpdateNotificationsStatusEvent(UpdateNotificationsStatus event, Emitter<SettingsState> emitter) async {
     if (event.isEnable) {
-      final status = await Permission.notification.status;
-      switch (status) {
-        case PermissionStatus.denied:
-          await Permission.notification.request();
+      final status = await FirebaseMessaging.instance.getNotificationSettings();
+      switch (status.authorizationStatus) {
+        case AuthorizationStatus.authorized:
           break;
-        case PermissionStatus.granted:
-          // todo do request to back
+        case AuthorizationStatus.denied:
+          await FirebaseMessaging.instance.requestPermission();
           break;
         default:
           await openAppSettings();
           break;
       }
-      final isGranted = await Permission.notification.status.isGranted;
+      final isGranted = (await FirebaseMessaging.instance.getNotificationSettings()).authorizationStatus == AuthorizationStatus.authorized;
       emitter(state.copyWith(isNotificationsEnable: Optional.value(isGranted)));
       await isGranted.changeFirebaseNotificationSettings();
       return;

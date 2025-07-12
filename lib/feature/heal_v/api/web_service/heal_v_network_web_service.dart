@@ -12,6 +12,9 @@ import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dt
 import 'package:heal_v/feature/heal_v/api/quiz/model/response/quiz_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/cancel_subscription_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/create_subscription_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/resume_subscription_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../auth/model/user/validate_user_dto.dart';
@@ -22,6 +25,8 @@ import '../progress/model/request/daily_progress_request.dart';
 import '../quiz/model/request/complete_quiz_request.dart';
 import '../quiz/model/response/complete_quiz_dto.dart';
 import '../stretching/model/stretching_complete_dto.dart';
+import '../subscription/model/subscription_history_dto.dart';
+import '../subscription/model/subscription_status_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
 
@@ -105,4 +110,22 @@ abstract class HealVNetworkWebService {
 
   @POST('/api/quiz/complete')
   Future<HttpResponse<CompleteQuizDto?>> completeQuiz(@Body() CompleteQuizRequest completeQuizRequest);
+
+  @GET('/api/subscription/status')
+  Future<HttpResponse<SubscriptionStatusDto?>> getSubscriptionStatus();
+
+  @POST('/api/subscription/create')
+  Future<HttpResponse<CreateSubscriptionDto?>> createSubscription();
+
+  @GET('/api/subscription/payment-history')
+  Future<HttpResponse<SubscriptionHistoryDto?>> getSubscriptionHistory(
+    @Query('limit') int? limit,
+    @Query('includeZero') bool? includeZero,
+  );
+
+  @POST('/api/subscription/cancel')
+  Future<HttpResponse<CancelSubscriptionDto?>> cancelSubscription();
+
+  @POST('/api/subscription/resume')
+  Future<HttpResponse<ResumeSubscriptionDto?>> resumeSubscription();
 }

@@ -65,6 +65,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+            _manageSubscriptions(context),
+            const SizedBox(height: 12.0),
+            _divider(),
             _progress(context),
             const SizedBox(height: 12.0),
             _divider(),
@@ -156,6 +159,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(width: 12),
                 Text(
                   tr('changePassword'),
+                  style: TextStyle(fontSize: 16, color: context.onBackground, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            AppIcons.arrowRight.svgAsset(colorFilter: ColorFilter.mode(context.onBackground.withValues(alpha: 0.2), BlendMode.srcIn))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _manageSubscriptions(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+      child: InkWell(
+        onTap: () => ProfileManageSubscriptionsRoute().push(context),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppIcons.manageSubscriptions.svgAsset(width: 18, height: 18),
+                const SizedBox(width: 12),
+                Text(
+                  tr('manageSubscriptions'),
                   style: TextStyle(fontSize: 16, color: context.onBackground, fontWeight: FontWeight.w500),
                 )
               ],

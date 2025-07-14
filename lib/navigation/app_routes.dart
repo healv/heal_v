@@ -30,6 +30,7 @@ abstract final class ProfileRoutes {
   static const String changePassword = '/changePassword';
   static const String language = '/language';
   static const String progress = '/profileProgress';
+  static const String manageSubscriptions = '/manageSubscriptions';
   static const String journalHistory = '/profileJournalHistory';
 }
 

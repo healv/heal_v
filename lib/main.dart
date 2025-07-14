@@ -8,6 +8,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_it/get_it.dart';
 import 'package:heal_v/application.dart';
 import 'package:heal_v/common/utils/network/interceptors/auth_interceptor.dart';
@@ -21,11 +22,13 @@ import 'package:heal_v/feature/heal_v/api/meditation/di/meditations_module.dart'
 import 'package:heal_v/feature/heal_v/api/progress/di/progress_module.dart';
 import 'package:heal_v/feature/heal_v/api/quiz/di/quiz_module.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/di/stretching_module.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/di/subscription_module.dart';
 import 'package:heal_v/theme/helpers/theme_helper.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'common/utils/constants.dart';
 import 'firebase_options.dart';
 
 final GetIt getIt = GetIt.I;
@@ -44,7 +47,10 @@ void main() async {
     await ThemeHelper.init();
     await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+    Stripe.publishableKey = publishableKey;
+    Stripe.merchantIdentifier = 'merchant.com.example.heal_v';
+    Stripe.urlScheme = 'flutterstripe';
+    await Stripe.instance.applySettings();
     runApp(
       EasyLocalization(
         startLocale: const Locale('en'),
@@ -84,6 +90,7 @@ Future<void> _setupDI() async {
   await getIt.breathingsModule();
   await getIt.stretchingsModule();
   await getIt.quizModule();
+  await getIt.subscriptionModule();
 }
 
 Future<void> _setupHydratedBloc() async {

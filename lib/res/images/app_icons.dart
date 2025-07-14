@@ -34,6 +34,7 @@ enum AppIcons {
   checkMark('assets/icons/ic_checkmark.svg'),
   greenCheckMark('assets/icons/ic_green_check_mark.svg'),
   progress('assets/icons/ic_progress.svg'),
+  manageSubscriptions('assets/icons/ic_manage_subscriptions.svg'),
   journalHistory('assets/icons/ic_journal_history.svg'),
   notifications('assets/icons/ic_notifications.svg'),
   logout('assets/icons/ic_logout.svg'),

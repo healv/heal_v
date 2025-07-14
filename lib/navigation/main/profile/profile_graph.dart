@@ -6,6 +6,8 @@ import 'package:heal_v/app/main/feature/profile/change_password/change_password_
 import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page.dart';
 import 'package:heal_v/app/main/feature/profile/journal_history/journal_history_page_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/language/language_page.dart';
+import 'package:heal_v/app/main/feature/profile/manage_subscriptions/manage_subscriptions_page.dart';
+import 'package:heal_v/app/main/feature/profile/manage_subscriptions/manage_subscriptions_page_bloc.dart';
 import 'package:heal_v/app/main/feature/profile/profile_page.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page.dart';
 import 'package:heal_v/app/main/feature/profile/progress/progress_page_bloc.dart';
@@ -60,6 +62,18 @@ base class ProfileLanguageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const LanguagePage();
+  }
+}
+
+@TypedGoRoute<ProfileManageSubscriptionsRoute>(path: ProfileRoutes.manageSubscriptions, routes: <TypedRoute<RouteData>>[])
+@immutable
+base class ProfileManageSubscriptionsRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BlocProvider(
+      create: (_) => ManageSubscriptionsPageBloc(getIt.get())..add(ManageSubscriptionsPageEvent.initial()),
+      child: const ManageSubscriptionsPage(),
+    );
   }
 }
 

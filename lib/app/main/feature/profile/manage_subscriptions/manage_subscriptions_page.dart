@@ -38,7 +38,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
     return Center(
       child: TextButton(
         onPressed: () async {
-          context.read<ManageSubscriptionsPageBloc>().add(ManageSubscriptionsPageEvent.createSubscription());
+          // context.read<ManageSubscriptionsPageBloc>().add(ManageSubscriptionsPageEvent.createSubscription());
         },
         child: Text('Test Stripe'),
       ),
@@ -56,26 +56,26 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
           name: authBloc.state.user?.name,
           // phone: authBloc.state.user?.,
         );
-        await stripe.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-            merchantDisplayName: '<Application package name>',
-            returnURL: 'flutterstripe://redirect',
-            customerId: effect.createSubscriptionDto?.debug?.customerId,
-            paymentIntentClientSecret: effect.createSubscriptionDto?.clientSecret,
-            // customerEphemeralKeySecret: paymentIntent.ephemeralKey,
-            billingDetailsCollectionConfiguration: billingDetailsCollectionConfiguration,
-            billingDetails: billingDetails,
-            // googlePay: PaymentSheetGooglePay(
-            //   merchantCountryCode: paymentIntent.merchantCountryCode,
-            //   // testEnv: 'true for live mode, false for test mode',
-            // ),
-            // applePay: PaymentSheetApplePay(
-            //   merchantCountryCode: paymentIntent.merchantCountryCode,
-            // ),
-            // style: ThemeMode.light,
-            appearance: appearance,
-          ),
-        );
+        // await stripe.initPaymentSheet(
+        //   paymentSheetParameters: SetupPaymentSheetParameters(
+        //     merchantDisplayName: '<Application package name>',
+        //     returnURL: 'flutterstripe://redirect',
+        //     customerId: effect.createSubscriptionDto?.debug?.customerId,
+        //     paymentIntentClientSecret: effect.createSubscriptionDto?.clientSecret,
+        //     // customerEphemeralKeySecret: paymentIntent.ephemeralKey,
+        //     billingDetailsCollectionConfiguration: billingDetailsCollectionConfiguration,
+        //     billingDetails: billingDetails,
+        //     // googlePay: PaymentSheetGooglePay(
+        //     //   merchantCountryCode: paymentIntent.merchantCountryCode,
+        //     //   // testEnv: 'true for live mode, false for test mode',
+        //     // ),
+        //     // applePay: PaymentSheetApplePay(
+        //     //   merchantCountryCode: paymentIntent.merchantCountryCode,
+        //     // ),
+        //     // style: ThemeMode.light,
+        //     appearance: appearance,
+        //   ),
+        // );
         await Stripe.instance.presentPaymentSheet();
         break;
     }
@@ -86,17 +86,17 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
     final colorScheme = theme.colorScheme;
     return PaymentSheetAppearance(
       colors: PaymentSheetAppearanceColors(
-        primary: colorScheme.primary,
-        primaryText: colorScheme.primary,
+        primary: context.primary,
+        primaryText: context.primary,
         secondaryText: colorScheme.secondary,
-        background: colorScheme.background,
-        icon: colorScheme.primary,
+        background: context.background,
+        icon: context.primary,
         error: colorScheme.error,
         placeholderText: colorScheme.secondary,
         componentText: colorScheme.secondary,
         componentBorder: theme.dividerColor,
         componentDivider: theme.dividerColor,
-        componentBackground: colorScheme.background,
+        componentBackground: context.background,
       ),
       primaryButton: PaymentSheetPrimaryButtonAppearance(
         colors: PaymentSheetPrimaryButtonTheme(

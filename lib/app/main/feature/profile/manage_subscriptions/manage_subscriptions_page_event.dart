@@ -5,9 +5,17 @@ abstract class ManageSubscriptionsPageEvent extends BaseEvent {
 
   factory ManageSubscriptionsPageEvent.initial() => Initial();
 
-  factory ManageSubscriptionsPageEvent.createSubscription() => CreateSubscription();
+  factory ManageSubscriptionsPageEvent.getSubscriptionPlans() => GetSubscriptionPlans();
+
+  factory ManageSubscriptionsPageEvent.createSubscription(String priceId) => CreateSubscription(priceId: priceId);
 }
 
 final class Initial extends ManageSubscriptionsPageEvent {}
 
-final class CreateSubscription extends ManageSubscriptionsPageEvent {}
+final class GetSubscriptionPlans extends ManageSubscriptionsPageEvent {}
+
+final class CreateSubscription extends ManageSubscriptionsPageEvent {
+  final String priceId;
+
+  CreateSubscription({required this.priceId});
+}

@@ -13,6 +13,8 @@ StretchingWeek _$StretchingWeekFromJson(Map<String, dynamic> json) =>
       order: (json['order'] as num?)?.toInt(),
       isAccessible: json['isAccessible'] as bool?,
       isCompleted: json['isCompleted'] as bool?,
+      hasSubscriptionAccess: json['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: json['requiresSubscription'] as bool?,
     );
 
 Map<String, dynamic> _$StretchingWeekToJson(StretchingWeek instance) =>
@@ -22,4 +24,6 @@ Map<String, dynamic> _$StretchingWeekToJson(StretchingWeek instance) =>
       'order': instance.order,
       'isAccessible': instance.isAccessible,
       'isCompleted': instance.isCompleted,
+      'hasSubscriptionAccess': instance.hasSubscriptionAccess,
+      'requiresSubscription': instance.requiresSubscription,
     };

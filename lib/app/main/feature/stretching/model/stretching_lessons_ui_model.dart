@@ -63,9 +63,12 @@ class StretchingLesson {
   final String? description;
   final StretchingLessonPreview? preview;
   final StretchingLessonMedia? media;
+  final String? weekId;
   final bool? isCompleted;
   final bool? isAccessible;
   final int? duration;
+  final bool? hasSubscriptionAccess;
+  final bool? requiresSubscription;
 
   const StretchingLesson({
     required this.id,
@@ -75,9 +78,12 @@ class StretchingLesson {
     required this.description,
     required this.preview,
     required this.media,
+    required this.weekId,
     required this.isCompleted,
     required this.isAccessible,
     required this.duration,
+    required this.hasSubscriptionAccess,
+    required this.requiresSubscription,
   });
 
   StretchingLesson copyWith({
@@ -88,9 +94,12 @@ class StretchingLesson {
     Optional<String?>? description,
     Optional<StretchingLessonPreview?>? preview,
     Optional<StretchingLessonMedia?>? media,
+    Optional<String>? weekId,
     Optional<bool>? isCompleted,
     Optional<bool>? isAccessible,
     Optional<int>? duration,
+    Optional<bool>? hasSubscriptionAccess,
+    Optional<bool>? requiresSubscription,
   }) {
     return StretchingLesson(
       isCompleted: isCompleted?.isValid == true ? isCompleted?.value : this.isCompleted,
@@ -103,6 +112,9 @@ class StretchingLesson {
       media: media?.isValid == true ? media?.value : this.media,
       preview: preview?.isValid == true ? preview?.value : this.preview,
       description: description?.isValid == true ? description?.value : this.description,
+      weekId: weekId?.isValid == true ? weekId?.value : this.weekId,
+      hasSubscriptionAccess: hasSubscriptionAccess?.isValid == true ? hasSubscriptionAccess?.value : this.hasSubscriptionAccess,
+      requiresSubscription: requiresSubscription?.isValid == true ? requiresSubscription?.value : this.requiresSubscription,
     );
   }
 
@@ -115,8 +127,11 @@ class StretchingLesson {
       description: map['description'] as String?,
       preview: StretchingLessonPreview.fromMap((map['preview'] as StretchingLessonPreviewDto?)?.toJson() ?? {}),
       media: StretchingLessonMedia.fromMap((map['media'] as StretchingLessonMediaDto?)?.toJson() ?? {}),
+      weekId: map['weekId'] as String?,
       isCompleted: map['isCompleted'] as bool?,
       isAccessible: map['isAccessible'] as bool?,
+      hasSubscriptionAccess: map['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: map['requiresSubscription'] as bool?,
       duration: map['duration'] as int?,
     );
   }

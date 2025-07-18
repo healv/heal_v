@@ -42,14 +42,12 @@ extension $MeditationAudioRouteExtension on MeditationAudioRoute {
   static MeditationAudioRoute _fromState(GoRouterState state) =>
       MeditationAudioRoute(
         meditation: state.uri.queryParameters['meditation']!,
-        weekId: state.uri.queryParameters['week-id']!,
       );
 
   String get location => GoRouteData.$location(
         '/meditationAudio',
         queryParams: {
           'meditation': meditation,
-          'week-id': weekId,
         },
       );
 

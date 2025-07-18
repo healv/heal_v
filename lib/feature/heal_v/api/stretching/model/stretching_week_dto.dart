@@ -14,13 +14,19 @@ class StretchingWeekDto {
   final bool? isAccessible;
   @JsonKey(name: "isCompleted")
   final bool? isCompleted;
+  @JsonKey(name: "hasSubscriptionAccess")
+  final bool? hasSubscriptionAccess;
+  @JsonKey(name: "requiresSubscription")
+  final bool? requiresSubscription;
 
   StretchingWeekDto({
     this.id,
     this.title,
     this.order,
     this.isAccessible,
-    this.isCompleted
+    this.isCompleted,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   factory StretchingWeekDto.fromJson(Map<String, dynamic> json) {

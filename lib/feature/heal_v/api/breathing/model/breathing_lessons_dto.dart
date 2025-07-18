@@ -47,10 +47,16 @@ class BreathingLessonDto {
   final BreathingLessonPreviewDto? preview;
   @JsonKey(name: "media")
   final BreathingLessonMediaDto? media;
+  @JsonKey(name: "weekId")
+  final bool? weekId;
   @JsonKey(name: "isCompleted")
   final bool? isCompleted;
   @JsonKey(name: "isAccessible")
   final bool? isAccessible;
+  @JsonKey(name: "hasSubscriptionAccess")
+  final bool? hasSubscriptionAccess;
+  @JsonKey(name: "requiresSubscription")
+  final bool? requiresSubscription;
 
   BreathingLessonDto({
     this.id,
@@ -61,8 +67,11 @@ class BreathingLessonDto {
     this.description,
     this.preview,
     this.media,
+    this.weekId,
     this.isCompleted,
     this.isAccessible,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   factory BreathingLessonDto.fromJson(Map<String, dynamic> json) {

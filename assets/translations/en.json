@@ -126,5 +126,7 @@
   "logYourReflections": "Log your reflections, celebrate your effort, and unlock more as you go.",
   "getStarted": "Get Started",
   "skip": "Skip",
-  "manageSubscriptions": "Manage Subscriptions"
+  "manageSubscriptions": "Manage Subscriptions",
+  "getHealVPlus": "Get Heal V+",
+  "subscriptionLockedDialogDescription": "Finish your current session or unlock unlimited access with Heal V+"
 }

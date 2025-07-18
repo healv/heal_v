@@ -35,9 +35,8 @@ base class MeditationRoute extends GoRouteData {
 @immutable
 base class MeditationAudioRoute extends GoRouteData {
   final String meditation;
-  final String weekId;
 
-  const MeditationAudioRoute({required this.meditation, required this.weekId});
+  const MeditationAudioRoute({required this.meditation});
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -51,7 +50,7 @@ base class MeditationAudioRoute extends GoRouteData {
               AudioPageEvent.initial(
                 lessonTypeEnum: LessonTypeEnum.meditation,
                 id: meditationLesson.id ?? emptyString,
-                weekId: weekId,
+                weekId: meditationLesson.weekId ?? emptyString,
                 title: meditationLesson.title ?? emptyString,
                 description: meditationLesson.description ?? emptyString,
                 previewUrl: '${AuthConstants.baseHost}${meditationLesson.preview?.url ?? emptyString}',

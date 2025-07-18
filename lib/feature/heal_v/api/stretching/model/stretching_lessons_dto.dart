@@ -47,10 +47,16 @@ class StretchingLessonDto {
   final StretchingLessonPreviewDto? preview;
   @JsonKey(name: "media")
   final StretchingLessonMediaDto? media;
+  @JsonKey(name: "weekId")
+  final String? weekId;
   @JsonKey(name: "isCompleted")
   final bool? isCompleted;
   @JsonKey(name: "isAccessible")
   final bool? isAccessible;
+  @JsonKey(name: "hasSubscriptionAccess")
+  final bool? hasSubscriptionAccess;
+  @JsonKey(name: "requiresSubscription")
+  final bool? requiresSubscription;
 
   StretchingLessonDto({
     this.id,
@@ -61,8 +67,11 @@ class StretchingLessonDto {
     this.description,
     this.preview,
     this.media,
+    this.weekId,
     this.isCompleted,
     this.isAccessible,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   factory StretchingLessonDto.fromJson(Map<String, dynamic> json) {

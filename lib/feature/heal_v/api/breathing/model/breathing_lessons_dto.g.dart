@@ -41,8 +41,11 @@ BreathingLessonDto _$BreathingLessonDtoFromJson(Map<String, dynamic> json) =>
           ? null
           : BreathingLessonMediaDto.fromJson(
               json['media'] as Map<String, dynamic>),
+      weekId: json['weekId'] as bool?,
       isCompleted: json['isCompleted'] as bool?,
       isAccessible: json['isAccessible'] as bool?,
+      hasSubscriptionAccess: json['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: json['requiresSubscription'] as bool?,
     );
 
 Map<String, dynamic> _$BreathingLessonDtoToJson(BreathingLessonDto instance) =>
@@ -55,8 +58,11 @@ Map<String, dynamic> _$BreathingLessonDtoToJson(BreathingLessonDto instance) =>
       'description': instance.description,
       'preview': instance.preview,
       'media': instance.media,
+      'weekId': instance.weekId,
       'isCompleted': instance.isCompleted,
       'isAccessible': instance.isAccessible,
+      'hasSubscriptionAccess': instance.hasSubscriptionAccess,
+      'requiresSubscription': instance.requiresSubscription,
     };
 
 BreathingLessonPreviewDto _$BreathingLessonPreviewDtoFromJson(

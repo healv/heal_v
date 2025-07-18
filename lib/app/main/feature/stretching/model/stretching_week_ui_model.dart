@@ -13,6 +13,8 @@ class StretchingWeek {
   final int? order;
   final bool? isAccessible;
   final bool? isCompleted;
+  final bool? hasSubscriptionAccess;
+  final bool? requiresSubscription;
 
   const StretchingWeek({
     this.id,
@@ -20,6 +22,8 @@ class StretchingWeek {
     this.order,
     this.isAccessible,
     this.isCompleted,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   StretchingWeek copyWith({
@@ -28,6 +32,8 @@ class StretchingWeek {
     Optional<int?>? order,
     Optional<bool?>? isAccessible,
     Optional<bool?>? isCompleted,
+    Optional<bool>? hasSubscriptionAccess,
+    Optional<bool>? requiresSubscription,
   }) {
     return StretchingWeek(
       id: id?.isValid == true ? id?.value : this.id,
@@ -35,6 +41,8 @@ class StretchingWeek {
       order: order?.isValid == true ? order?.value : this.order,
       isAccessible: isAccessible?.isValid == true ? isAccessible?.value : this.isAccessible,
       isCompleted: isCompleted?.isValid == true ? isCompleted?.value : this.isCompleted,
+      hasSubscriptionAccess: hasSubscriptionAccess?.isValid == true ? hasSubscriptionAccess?.value : this.hasSubscriptionAccess,
+      requiresSubscription: requiresSubscription?.isValid == true ? requiresSubscription?.value : this.requiresSubscription,
     );
   }
 
@@ -45,6 +53,8 @@ class StretchingWeek {
       order: map['order'],
       isAccessible: map['isAccessible'] as bool?,
       isCompleted: map['isCompleted'] as bool?,
+      hasSubscriptionAccess: map['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: map['requiresSubscription'] as bool?,
     );
   }
 

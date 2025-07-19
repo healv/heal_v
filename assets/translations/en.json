@@ -128,5 +128,7 @@
   "skip": "Skip",
   "manageSubscriptions": "Manage Subscriptions",
   "getHealVPlus": "Get Heal V+",
-  "subscriptionLockedDialogDescription": "Finish your current session or unlock unlimited access with Heal V+"
+  "subscriptionLockedDialogDescription": "Finish your current session or unlock unlimited access with Heal V+",
+  "freePlan": "Free plan",
+  "chargedMonthly": "Charged monthly, one user per plan"
 }

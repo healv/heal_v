@@ -21,6 +21,7 @@ CreateSubscriptionDto _$CreateSubscriptionDtoFromJson(
       trialEnd: json['trialEnd'] as String?,
       clientSecret: json['clientSecret'] as String?,
       requiresPayment: json['requiresPayment'] as bool?,
+      customerId: json['customerId'] as String?,
     );
 
 Map<String, dynamic> _$CreateSubscriptionDtoToJson(
@@ -38,4 +39,5 @@ Map<String, dynamic> _$CreateSubscriptionDtoToJson(
       'trialEnd': instance.trialEnd,
       'clientSecret': instance.clientSecret,
       'requiresPayment': instance.requiresPayment,
+      'customerId': instance.customerId,
     };

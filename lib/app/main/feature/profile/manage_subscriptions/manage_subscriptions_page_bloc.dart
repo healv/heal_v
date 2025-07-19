@@ -33,7 +33,16 @@ class ManageSubscriptionsPageBloc extends SideEffectBloc<ManageSubscriptionsPage
     await for (final response in repo.getSubscriptionPlans()) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          emitter(state.copyWith(isSubscriptionsPlansLoading: const Optional.value(false), plans: Optional.value(response.data?.plans)));
+          final plans = [...?response.data?.plans];
+          plans.add(SubscriptionPlanItemDto(
+            id: null,
+            name: null,
+            description: null,
+            metadata: null,
+            images: null,
+            prices: null,
+          ));
+          emitter(state.copyWith(isSubscriptionsPlansLoading: const Optional.value(false), plans: Optional.value(plans)));
           break;
         case ResourceStatusEnum.error:
           emitter(state.copyWith(isSubscriptionsPlansLoading: const Optional.value(false)));

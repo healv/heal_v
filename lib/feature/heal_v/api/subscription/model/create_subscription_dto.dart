@@ -28,6 +28,8 @@ class CreateSubscriptionDto {
   final String? clientSecret;
   @JsonKey(name: "requiresPayment")
   final bool? requiresPayment;
+  @JsonKey(name: "customerId")
+  final String? customerId;
 
   CreateSubscriptionDto({
     required this.success,
@@ -42,6 +44,7 @@ class CreateSubscriptionDto {
     required this.trialEnd,
     required this.clientSecret,
     required this.requiresPayment,
+    required this.customerId,
   });
 
   factory CreateSubscriptionDto.fromJson(Map<String, dynamic> json) {

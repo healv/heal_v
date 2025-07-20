@@ -130,5 +130,9 @@
   "getHealVPlus": "Get Heal V+",
   "subscriptionLockedDialogDescription": "Finish your current session or unlock unlimited access with Heal V+",
   "freePlan": "Free plan",
-  "chargedMonthly": "Charged monthly, one user per plan"
+  "chargedMonthly": "Charged monthly, one user per plan",
+  "stepByStepLearning": "Step-by-step learning",
+  "quizzesAndReflectionExercises": "Quizzes and reflection exercises",
+  "dailyReminders": "Daily reminders",
+  "selectPlan": "Select plan"
 }

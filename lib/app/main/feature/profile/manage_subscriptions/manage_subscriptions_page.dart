@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:heal_v/app/main/feature/profile/manage_subscriptions/manage_subscriptions_page_bloc.dart';
+import 'package:heal_v/app/main/model/currency_enum.dart';
 import 'package:heal_v/common/flutter/widgets/framework.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_plan_dto.dart';
+import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
@@ -44,14 +46,18 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
       builder: (context, plans) {
         return Padding(
           padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
-          child: ListView.separated(
-            itemCount: plans.length,
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 24.0),
-            itemBuilder: (_, index) {
-              return _planItem(context, index, plans[index]);
-            },
-          ),
+          child: _planItemsListView(context, plans),
         );
+      },
+    );
+  }
+
+  Widget _planItemsListView(BuildContext context, List<SubscriptionPlanItemDto> plans) {
+    return ListView.separated(
+      itemCount: plans.length,
+      separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 24.0),
+      itemBuilder: (_, index) {
+        return _planItem(context, index, plans[index]);
       },
     );
   }
@@ -70,6 +76,10 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
           _planItemTitleContainer(context, index, plan),
           const SizedBox(height: 12.0),
           _planItemDescriptionContainer(context, index, plan),
+          const SizedBox(height: 12.0),
+          _planItemAdvantages(context, index, plan),
+          const SizedBox(height: 12.0),
+          _selectPlanButton(context, index, plan),
         ],
       ),
     );
@@ -93,15 +103,15 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
   }
 
   Widget _planItemTitleImage(BuildContext context, int index, SubscriptionPlanItemDto plan) {
-    return index == 0
-        ? Container()
+    return index == 0 || plan.images == null || plan.images?.isEmpty == true
+        ? const SizedBox.shrink()
         : Container(
             height: 16.0,
             width: 16.0,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                  plan.images?.isNotEmpty == true ? '${AuthConstants.baseHost}${plan.images!.first}' : emptyString,
+                  '${AuthConstants.baseHost}${plan.images!.first}',
                 ),
               ),
             ),
@@ -149,9 +159,8 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
   }
 
   Widget _planItemPrice(BuildContext context, int index, SubscriptionPlanItemDto plan) {
-    //todo need to add currency
     return Text(
-      index == 0 ? '0' : '${plan.prices?.first.amount ?? 0}',
+      index == 0 ? '${CurrencyEnum.usd.symbol} 0' : '${CurrencyEnum.from(plan.prices?.first.currency)?.symbol ?? CurrencyEnum.usd.symbol} ${plan.prices?.first.amount ?? 0}',
       style: TextStyle(
         fontWeight: FontWeight.w700,
         fontSize: 32,
@@ -196,6 +205,88 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
         color: context.onBackground,
       ),
     );
+  }
+
+  Widget _planItemAdvantages(BuildContext context, int index, SubscriptionPlanItemDto plan) {
+    final List<String> advantages = index == 0
+        ? [
+            tr('stepByStepLearning'),
+            tr('quizzesAndReflectionExercises'),
+            tr('dailyReminders'),
+          ]
+        : [];
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: advantages.mapIndexed((advantageIndex, advantage) {
+        if (advantageIndex == advantages.length - 1) {
+          return _planItemAdvantage(context, index, advantages[advantageIndex]);
+        } else {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _planItemAdvantage(context, index, advantages[advantageIndex]),
+              const SizedBox(
+                height: 12.0,
+              )
+            ],
+          );
+        }
+      }).toList(),
+    );
+  }
+
+  Widget _planItemAdvantage(BuildContext context, int index, String advantage) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppIcons.checkMark.svgAsset(
+          width: 16.0,
+          height: 16.0,
+          colorFilter: ColorFilter.mode(index == 0 ? context.onBackground.withValues(alpha: 0.3) : context.primary, BlendMode.srcIn),
+        ),
+        const SizedBox(width: 8.0),
+        Text(
+          advantage,
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 14.0,
+            letterSpacing: 0.2,
+            color: index == 0 ? context.onBackground.withValues(alpha: 0.3) : context.onBackground,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _selectPlanButton(BuildContext context, int index, SubscriptionPlanItemDto plan) {
+    return index == 0
+        ? const SizedBox.shrink()
+        : SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
+              child: Text(tr('selectPlan'),
+                  style: TextStyle(
+                    color: context.background,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 0.2,
+                  )),
+            ),
+          );
   }
 
   @override

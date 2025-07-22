@@ -12,12 +12,18 @@ class MeditationLessonsDto {
   final int? order;
   @JsonKey(name: "lessons")
   final List<MeditationLessonDto>? lessons;
+  @JsonKey(name: "hasSubscriptionAccess")
+  final bool? hasSubscriptionAccess;
+  @JsonKey(name: "requiresSubscription")
+  final bool? requiresSubscription;
 
   MeditationLessonsDto({
     this.lessons,
     this.id,
     this.title,
     this.order,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   factory MeditationLessonsDto.fromJson(Map<String, dynamic> json) {

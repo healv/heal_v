@@ -12,12 +12,18 @@ class StretchingLessonsDto {
   final int? order;
   @JsonKey(name: "lessons")
   final List<StretchingLessonDto>? lessons;
+  @JsonKey(name: "hasSubscriptionAccess")
+  final bool? hasSubscriptionAccess;
+  @JsonKey(name: "requiresSubscription")
+  final bool? requiresSubscription;
 
   StretchingLessonsDto({
     this.lessons,
     this.id,
     this.title,
     this.order,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   factory StretchingLessonsDto.fromJson(Map<String, dynamic> json) {

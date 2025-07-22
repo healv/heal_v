@@ -14,6 +14,8 @@ BreathingLessonsDto _$BreathingLessonsDtoFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       title: json['title'] as String?,
       order: (json['order'] as num?)?.toInt(),
+      hasSubscriptionAccess: json['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: json['requiresSubscription'] as bool?,
     );
 
 Map<String, dynamic> _$BreathingLessonsDtoToJson(
@@ -23,6 +25,8 @@ Map<String, dynamic> _$BreathingLessonsDtoToJson(
       'title': instance.title,
       'order': instance.order,
       'lessons': instance.lessons,
+      'hasSubscriptionAccess': instance.hasSubscriptionAccess,
+      'requiresSubscription': instance.requiresSubscription,
     };
 
 BreathingLessonDto _$BreathingLessonDtoFromJson(Map<String, dynamic> json) =>
@@ -41,7 +45,7 @@ BreathingLessonDto _$BreathingLessonDtoFromJson(Map<String, dynamic> json) =>
           ? null
           : BreathingLessonMediaDto.fromJson(
               json['media'] as Map<String, dynamic>),
-      weekId: json['weekId'] as bool?,
+      weekId: json['weekId'] as String?,
       isCompleted: json['isCompleted'] as bool?,
       isAccessible: json['isAccessible'] as bool?,
       hasSubscriptionAccess: json['hasSubscriptionAccess'] as bool?,

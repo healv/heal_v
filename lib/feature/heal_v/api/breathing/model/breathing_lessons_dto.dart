@@ -12,12 +12,18 @@ class BreathingLessonsDto {
   final int? order;
   @JsonKey(name: "lessons")
   final List<BreathingLessonDto>? lessons;
+  @JsonKey(name: "hasSubscriptionAccess")
+  final bool? hasSubscriptionAccess;
+  @JsonKey(name: "requiresSubscription")
+  final bool? requiresSubscription;
 
   BreathingLessonsDto({
     this.lessons,
     this.id,
     this.title,
     this.order,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   factory BreathingLessonsDto.fromJson(Map<String, dynamic> json) {
@@ -48,7 +54,7 @@ class BreathingLessonDto {
   @JsonKey(name: "media")
   final BreathingLessonMediaDto? media;
   @JsonKey(name: "weekId")
-  final bool? weekId;
+  final String? weekId;
   @JsonKey(name: "isCompleted")
   final bool? isCompleted;
   @JsonKey(name: "isAccessible")

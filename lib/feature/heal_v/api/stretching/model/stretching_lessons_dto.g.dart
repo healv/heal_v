@@ -15,6 +15,8 @@ StretchingLessonsDto _$StretchingLessonsDtoFromJson(
       id: json['id'] as String?,
       title: json['title'] as String?,
       order: (json['order'] as num?)?.toInt(),
+      hasSubscriptionAccess: json['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: json['requiresSubscription'] as bool?,
     );
 
 Map<String, dynamic> _$StretchingLessonsDtoToJson(
@@ -24,6 +26,8 @@ Map<String, dynamic> _$StretchingLessonsDtoToJson(
       'title': instance.title,
       'order': instance.order,
       'lessons': instance.lessons,
+      'hasSubscriptionAccess': instance.hasSubscriptionAccess,
+      'requiresSubscription': instance.requiresSubscription,
     };
 
 StretchingLessonDto _$StretchingLessonDtoFromJson(Map<String, dynamic> json) =>

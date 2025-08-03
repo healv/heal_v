@@ -28,6 +28,7 @@ import '../stretching/model/stretching_complete_dto.dart';
 import '../subscription/model/request/create_subscription_request_dto.dart';
 import '../subscription/model/subscription_history_dto.dart';
 import '../subscription/model/subscription_plan_dto.dart';
+import '../subscription/model/subscription_plans_dto.dart';
 import '../subscription/model/subscription_status_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
@@ -117,7 +118,10 @@ abstract class HealVNetworkWebService {
   Future<HttpResponse<SubscriptionStatusDto?>> getSubscriptionStatus();
 
   @GET('/api/subscription/plans')
-  Future<HttpResponse<SubscriptionPlanDto?>> getSubscriptionPlans();
+  Future<HttpResponse<SubscriptionPlansDto?>> getSubscriptionPlans();
+
+  @GET('/api/subscription/plans/{subscriptionId}')
+  Future<HttpResponse<SubscriptionPlanDto?>> getSubscriptionPlan(@Path("subscriptionId") String subscriptionId);
 
   @POST('/api/subscription/create')
   Future<HttpResponse<CreateSubscriptionDto?>> createSubscription(@Body() CreateSubscriptionRequestDto createSubscriptionRequestDto);

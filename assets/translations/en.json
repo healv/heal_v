@@ -134,5 +134,12 @@
   "stepByStepLearning": "Step-by-step learning",
   "quizzesAndReflectionExercises": "Quizzes and reflection exercises",
   "dailyReminders": "Daily reminders",
-  "selectPlan": "Select plan"
+  "selectPlan": "Select plan",
+  "areYouSureYouWantToCancelYourSubscription": "Are you sure you want \nto cancel your subscription?",
+  "youWillLoseAccessToPremiumFeatures": "You will lose access to premium features",
+  "goBack": "Go back",
+  "yesCancel": "Yes, cancel",
+  "cancelSubscription": "Cancel subscription",
+  "resumeSubscription": "Resume subscription",
+  "yourSubscriptionWasActivatedSuccessfully": "Your subscription was activated successfully."
 }

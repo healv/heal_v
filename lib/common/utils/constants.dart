@@ -18,3 +18,4 @@ const String userNotFound = 'user-not-found';
 const String invalidCredential = 'invalid-credential';
 
 const String publishableKey = 'pk_test_51RVd7hQuIJtYa7FZ2SkcXK74iOaDMZY5gYPvGaxcCB8sYlZDPEg9AIYJQZ8NUSOUoGIi6GjbW6u5dmpOqv8VDbwP00huXcOB5q';
+const String publishableKeyDen = 'pk_test_51RVPJRD1LQcUBYcE5wJp5rOUM2yv3QcEbE8dnKQdxO1qewVCrIRCFcROjgGzJc454WUJr1SymKd4rW9vxa3cbFNu00EMCBR9az';

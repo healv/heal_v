@@ -5,17 +5,37 @@ abstract class ManageSubscriptionsPageEvent extends BaseEvent {
 
   factory ManageSubscriptionsPageEvent.initial() => Initial();
 
+  factory ManageSubscriptionsPageEvent.getSubscriptionStatus() => GetSubscriptionStatus();
+
   factory ManageSubscriptionsPageEvent.getSubscriptionPlans() => GetSubscriptionPlans();
 
+  factory ManageSubscriptionsPageEvent.getSubscriptionPlan(String subscriptionId) => GetSubscriptionPlan(subscriptionId: subscriptionId);
+
   factory ManageSubscriptionsPageEvent.createSubscription(String priceId) => CreateSubscription(priceId: priceId);
+
+  factory ManageSubscriptionsPageEvent.cancelSubscription() => CancelSubscription();
+
+  factory ManageSubscriptionsPageEvent.resumeSubscription() => ResumeSubscription();
 }
 
 final class Initial extends ManageSubscriptionsPageEvent {}
 
+final class GetSubscriptionStatus extends ManageSubscriptionsPageEvent {}
+
 final class GetSubscriptionPlans extends ManageSubscriptionsPageEvent {}
+
+final class GetSubscriptionPlan extends ManageSubscriptionsPageEvent {
+  final String subscriptionId;
+
+  GetSubscriptionPlan({required this.subscriptionId});
+}
 
 final class CreateSubscription extends ManageSubscriptionsPageEvent {
   final String priceId;
 
   CreateSubscription({required this.priceId});
 }
+
+final class CancelSubscription extends ManageSubscriptionsPageEvent {}
+
+final class ResumeSubscription extends ManageSubscriptionsPageEvent {}

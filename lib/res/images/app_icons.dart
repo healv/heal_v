@@ -51,7 +51,8 @@ enum AppIcons {
   circleStretching('assets/icons/ic_circle_stretching.svg'),
   quizLocked('assets/icons/ic_quiz_locked.svg'),
   quizPassed('assets/icons/ic_quiz_passed.svg'),
-  clock('assets/icons/ic_clock.svg');
+  clock('assets/icons/ic_clock.svg'),
+  cancelSubscription('assets/icons/ic_cancel_subscription.svg');
 
   final String path;
 

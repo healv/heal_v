@@ -5,6 +5,7 @@ import 'package:heal_v/feature/heal_v/api/subscription/model/create_subscription
 import 'package:heal_v/feature/heal_v/api/subscription/model/resume_subscription_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_history_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_plan_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_plans_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_status_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/network/subscription_network_port.dart';
 import 'package:heal_v/feature/heal_v/api/web_service/heal_v_network_web_service.dart';
@@ -22,8 +23,13 @@ base class SubscriptionNetworkAdapter implements SubscriptionNetworkPort {
   }
 
   @override
-  Future<ApiWrapper<SubscriptionPlanDto?>> getSubscriptionPlans() {
-    return parseHttpResponse<SubscriptionPlanDto>(healVNetworkWebService.getSubscriptionPlans, []);
+  Future<ApiWrapper<SubscriptionPlansDto?>> getSubscriptionPlans() {
+    return parseHttpResponse<SubscriptionPlansDto>(healVNetworkWebService.getSubscriptionPlans, []);
+  }
+
+  @override
+  Future<ApiWrapper<SubscriptionPlanDto?>> getSubscriptionPlan(String subscriptionId) {
+    return parseHttpResponse<SubscriptionPlanDto>(healVNetworkWebService.getSubscriptionPlan, [subscriptionId]);
   }
 
   @override

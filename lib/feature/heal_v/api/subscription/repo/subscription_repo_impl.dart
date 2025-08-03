@@ -10,10 +10,12 @@ import 'package:heal_v/feature/heal_v/api/subscription/model/create_subscription
 import 'package:heal_v/feature/heal_v/api/subscription/model/resume_subscription_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_history_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_plan_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_plans_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_status_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/network/subscription_network_port.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/repo/subscription_repo.dart';
 
+import '../bounds/get_subscription_plan_network_bounds.dart';
 import '../model/request/create_subscription_request_dto.dart';
 
 base class SubscriptionRepoImpl implements SubscriptionRepo {
@@ -27,8 +29,13 @@ base class SubscriptionRepoImpl implements SubscriptionRepo {
   }
 
   @override
-  Stream<Resource<SubscriptionPlanDto?>> getSubscriptionPlans() {
+  Stream<Resource<SubscriptionPlansDto?>> getSubscriptionPlans() {
     return GetSubscriptionPlansNetworkBounds(port: port).call();
+  }
+
+  @override
+  Stream<Resource<SubscriptionPlanDto?>> getSubscriptionPlan(String subscriptionId) {
+    return GetSubscriptionPlanNetworkBounds(port: port, subscriptionId: subscriptionId).call();
   }
 
   @override

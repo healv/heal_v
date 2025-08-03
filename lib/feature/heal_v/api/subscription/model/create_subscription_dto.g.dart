@@ -22,6 +22,8 @@ CreateSubscriptionDto _$CreateSubscriptionDtoFromJson(
       clientSecret: json['clientSecret'] as String?,
       requiresPayment: json['requiresPayment'] as bool?,
       customerId: json['customerId'] as String?,
+      customerEphemeralKeySecret: json['customerEphemeralKeySecret'] as String?,
+      merchantCountryCode: json['merchantCountryCode'] as String?,
     );
 
 Map<String, dynamic> _$CreateSubscriptionDtoToJson(
@@ -40,4 +42,6 @@ Map<String, dynamic> _$CreateSubscriptionDtoToJson(
       'clientSecret': instance.clientSecret,
       'requiresPayment': instance.requiresPayment,
       'customerId': instance.customerId,
+      'customerEphemeralKeySecret': instance.customerEphemeralKeySecret,
+      'merchantCountryCode': instance.merchantCountryCode,
     };

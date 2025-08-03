@@ -30,6 +30,10 @@ class CreateSubscriptionDto {
   final bool? requiresPayment;
   @JsonKey(name: "customerId")
   final String? customerId;
+  @JsonKey(name: "customerEphemeralKeySecret")
+  final String? customerEphemeralKeySecret;
+  @JsonKey(name: "merchantCountryCode")
+  final String? merchantCountryCode;
 
   CreateSubscriptionDto({
     required this.success,
@@ -45,6 +49,8 @@ class CreateSubscriptionDto {
     required this.clientSecret,
     required this.requiresPayment,
     required this.customerId,
+    required this.customerEphemeralKeySecret,
+    required this.merchantCountryCode,
   });
 
   factory CreateSubscriptionDto.fromJson(Map<String, dynamic> json) {

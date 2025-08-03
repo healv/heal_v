@@ -47,7 +47,7 @@ void main() async {
     await ThemeHelper.init();
     await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    Stripe.publishableKey = publishableKey;
+    Stripe.publishableKey = publishableKeyDen;
     Stripe.merchantIdentifier = 'merchant.com.example.heal_v';
     Stripe.urlScheme = 'flutterstripe';
     await Stripe.instance.applySettings();

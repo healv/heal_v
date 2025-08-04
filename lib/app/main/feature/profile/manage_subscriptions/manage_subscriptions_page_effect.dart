@@ -8,7 +8,7 @@ sealed class ManageSubscriptionsPageEffect implements SideEffect {
 
   factory ManageSubscriptionsPageEffect.subscriptionCreated({
     required ResourceStatusEnum status,
-    CreateSubscriptionDto? createSubscriptionDto,
+    SetSubscriptionDto? createSubscriptionDto,
     String? errorMsg,
   }) =>
       SubscriptionCreated(status, createSubscriptionDto: createSubscriptionDto, errorMsg: errorMsg);
@@ -27,7 +27,7 @@ sealed class ManageSubscriptionsPageEffect implements SideEffect {
 }
 
 final class SubscriptionCreated extends ManageSubscriptionsPageEffect {
-  final CreateSubscriptionDto? createSubscriptionDto;
+  final SetSubscriptionDto? createSubscriptionDto;
 
   SubscriptionCreated(super.status, {this.createSubscriptionDto, super.errorMsg});
 }

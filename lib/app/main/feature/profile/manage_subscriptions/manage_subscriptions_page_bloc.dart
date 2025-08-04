@@ -4,13 +4,13 @@ import 'package:heal_v/common/bloc/base_event.dart';
 import 'package:heal_v/common/bloc/side_effect/side_effect_bloc.dart';
 import 'package:heal_v/common/dart/optional.dart';
 import 'package:heal_v/common/utils/constants.dart';
-import 'package:heal_v/feature/heal_v/api/subscription/model/create_subscription_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/set_subscription_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/repo/subscription_repo.dart';
 
 import '../../../../../common/bloc/base_state.dart';
 import '../../../../../common/bloc/side_effect/side_effect.dart';
 import '../../../../../common/utils/resource.dart';
-import '../../../../../feature/heal_v/api/subscription/model/request/create_subscription_request_dto.dart';
+import '../../../../../feature/heal_v/api/subscription/model/request/set_subscription_request_dto.dart';
 import '../../../../../feature/heal_v/api/subscription/model/subscription_plans_dto.dart';
 import '../../../../../feature/heal_v/api/subscription/model/subscription_status_dto.dart';
 import '../../../../../feature/heal_v/api/subscription/model/subscription_status_enum.dart';
@@ -27,7 +27,7 @@ class ManageSubscriptionsPageBloc extends SideEffectBloc<ManageSubscriptionsPage
     on<GetSubscriptionStatus>(_handleGetSubscriptionStatusEvent);
     on<GetSubscriptionPlans>(_handleGetSubscriptionPlansEvent);
     on<GetSubscriptionPlan>(_handleGetSubscriptionPlanEvent);
-    on<CreateSubscription>(_handleCreateSubscriptionEvent);
+    on<SetSubscription>(_handleSetSubscriptionEvent);
     on<CancelSubscription>(_handleCancelSubscriptionEvent);
     on<ResumeSubscription>(_handleResumeSubscriptionEvent);
   }
@@ -44,8 +44,15 @@ class ManageSubscriptionsPageBloc extends SideEffectBloc<ManageSubscriptionsPage
             case null || SubscriptionStatusEnum.incomplete || SubscriptionStatusEnum.pastDue:
               add(ManageSubscriptionsPageEvent.getSubscriptionPlans());
               break;
-            case SubscriptionStatusEnum.active || SubscriptionStatusEnum.canceled:
+            case SubscriptionStatusEnum.active:
               add(ManageSubscriptionsPageEvent.getSubscriptionPlan(response.data?.subscriptionId ?? emptyString));
+              break;
+            case SubscriptionStatusEnum.canceled:
+              if (response.data?.cancelAtPeriodEnd == true) {
+                add(ManageSubscriptionsPageEvent.getSubscriptionPlan(response.data?.subscriptionId ?? emptyString));
+              } else {
+                add(ManageSubscriptionsPageEvent.getSubscriptionPlans());
+              }
               break;
           }
           emitter(state.copyWith(
@@ -110,11 +117,11 @@ class ManageSubscriptionsPageBloc extends SideEffectBloc<ManageSubscriptionsPage
     }
   }
 
-  Future<void> _handleCreateSubscriptionEvent(CreateSubscription event, Emitter<ManageSubscriptionsPageState> emitter) async {
-    await for (final response in repo.createSubscription(CreateSubscriptionRequestDto(priceId: event.priceId))) {
+  Future<void> _handleSetSubscriptionEvent(SetSubscription event, Emitter<ManageSubscriptionsPageState> emitter) async {
+    await for (final response in repo.setSubscription(SetSubscriptionRequestDto(priceId: event.priceId))) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          emitter(state.copyWith(createSubscriptionDto: Optional.value(response.data),isCreateSubscriptionLoading: const Optional.value(false)));
+          emitter(state.copyWith(createSubscriptionDto: Optional.value(response.data), isCreateSubscriptionLoading: const Optional.value(false)));
           addSideEffect(ManageSubscriptionsPageEffect.subscriptionCreated(status: ResourceStatusEnum.success, createSubscriptionDto: response.data));
         case ResourceStatusEnum.error:
           addSideEffect(ManageSubscriptionsPageEffect.subscriptionCreated(status: ResourceStatusEnum.error));

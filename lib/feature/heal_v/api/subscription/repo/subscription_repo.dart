@@ -1,12 +1,12 @@
 import 'package:heal_v/common/utils/resource.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/cancel_subscription_dto.dart';
-import 'package:heal_v/feature/heal_v/api/subscription/model/create_subscription_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/set_subscription_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/resume_subscription_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_history_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_plans_dto.dart';
 import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_status_dto.dart';
 
-import '../model/request/create_subscription_request_dto.dart';
+import '../model/request/set_subscription_request_dto.dart';
 import '../model/subscription_plan_dto.dart';
 
 abstract interface class SubscriptionRepo {
@@ -16,7 +16,7 @@ abstract interface class SubscriptionRepo {
 
   Stream<Resource<SubscriptionPlanDto?>> getSubscriptionPlan(String subscriptionId);
 
-  Stream<Resource<CreateSubscriptionDto?>> createSubscription(CreateSubscriptionRequestDto createSubscriptionRequestDto);
+  Stream<Resource<SetSubscriptionDto?>> setSubscription(SetSubscriptionRequestDto createSubscriptionRequestDto);
 
   Stream<Resource<SubscriptionHistoryDto?>> getSubscriptionHistory(int? limit, bool? includeZero);
 

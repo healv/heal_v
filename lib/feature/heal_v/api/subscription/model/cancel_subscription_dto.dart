@@ -1,3 +1,4 @@
+import 'package:heal_v/feature/heal_v/api/subscription/model/subscription_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'cancel_subscription_dto.g.dart';
@@ -8,19 +9,13 @@ class CancelSubscriptionDto {
   final bool? success;
   @JsonKey(name: "message")
   final String? message;
-  @JsonKey(name: "cancelAtPeriodEnd")
-  final bool? cancelAtPeriodEnd;
-  @JsonKey(name: "currentPeriodEnd")
-  final int? currentPeriodEnd;
-  @JsonKey(name: "status")
-  final String? status;
+  @JsonKey(name: "subscription")
+  final SubscriptionDto? subscription;
 
   CancelSubscriptionDto({
     required this.success,
     required this.message,
-    required this.cancelAtPeriodEnd,
-    required this.currentPeriodEnd,
-    required this.status,
+    required this.subscription,
   });
 
   factory CancelSubscriptionDto.fromJson(Map<String, dynamic> json) {

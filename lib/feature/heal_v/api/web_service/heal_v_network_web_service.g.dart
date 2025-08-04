@@ -1024,36 +1024,35 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
   }
 
   @override
-  Future<HttpResponse<CreateSubscriptionDto?>> createSubscription(
-      CreateSubscriptionRequestDto createSubscriptionRequestDto) async {
+  Future<HttpResponse<SetSubscriptionDto?>> setSubscription(
+      SetSubscriptionRequestDto createSubscriptionRequestDto) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(createSubscriptionRequestDto.toJson());
-    final _options =
-        _setStreamType<HttpResponse<CreateSubscriptionDto>>(Options(
+    final _options = _setStreamType<HttpResponse<SetSubscriptionDto>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/api/subscription/create',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
+        .compose(
+          _dio.options,
+          '/api/subscription/set',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
-    late CreateSubscriptionDto? _value;
+    late SetSubscriptionDto? _value;
     try {
       _value = _result.data == null
           ? null
-          : CreateSubscriptionDto.fromJson(_result.data!);
+          : SetSubscriptionDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

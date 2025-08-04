@@ -11,7 +11,7 @@ abstract class ManageSubscriptionsPageEvent extends BaseEvent {
 
   factory ManageSubscriptionsPageEvent.getSubscriptionPlan(String subscriptionId) => GetSubscriptionPlan(subscriptionId: subscriptionId);
 
-  factory ManageSubscriptionsPageEvent.createSubscription(String priceId) => CreateSubscription(priceId: priceId);
+  factory ManageSubscriptionsPageEvent.createSubscription(String priceId) => SetSubscription(priceId: priceId);
 
   factory ManageSubscriptionsPageEvent.cancelSubscription() => CancelSubscription();
 
@@ -30,10 +30,10 @@ final class GetSubscriptionPlan extends ManageSubscriptionsPageEvent {
   GetSubscriptionPlan({required this.subscriptionId});
 }
 
-final class CreateSubscription extends ManageSubscriptionsPageEvent {
+final class SetSubscription extends ManageSubscriptionsPageEvent {
   final String priceId;
 
-  CreateSubscription({required this.priceId});
+  SetSubscription({required this.priceId});
 }
 
 final class CancelSubscription extends ManageSubscriptionsPageEvent {}

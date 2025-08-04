@@ -141,5 +141,7 @@
   "yesCancel": "Yes, cancel",
   "cancelSubscription": "Cancel subscription",
   "resumeSubscription": "Resume subscription",
-  "yourSubscriptionWasActivatedSuccessfully": "Your subscription was activated successfully."
+  "yourSubscriptionWasActivatedSuccessfully": "Your subscription was activated successfully.",
+  "validUntil": "Valid until",
+  "nextBillingDate": "Next billing date"
 }

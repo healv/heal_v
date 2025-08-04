@@ -11,9 +11,10 @@ CancelSubscriptionDto _$CancelSubscriptionDtoFromJson(
     CancelSubscriptionDto(
       success: json['success'] as bool?,
       message: json['message'] as String?,
-      cancelAtPeriodEnd: json['cancelAtPeriodEnd'] as bool?,
-      currentPeriodEnd: (json['currentPeriodEnd'] as num?)?.toInt(),
-      status: json['status'] as String?,
+      subscription: json['subscription'] == null
+          ? null
+          : SubscriptionDto.fromJson(
+              json['subscription'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CancelSubscriptionDtoToJson(
@@ -21,7 +22,5 @@ Map<String, dynamic> _$CancelSubscriptionDtoToJson(
     <String, dynamic>{
       'success': instance.success,
       'message': instance.message,
-      'cancelAtPeriodEnd': instance.cancelAtPeriodEnd,
-      'currentPeriodEnd': instance.currentPeriodEnd,
-      'status': instance.status,
+      'subscription': instance.subscription,
     };

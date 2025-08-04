@@ -3,7 +3,7 @@ part of 'manage_subscriptions_page_bloc.dart';
 @immutable
 final class ManageSubscriptionsPageState extends BaseState {
   final SubscriptionStatusDto? subscriptionStatusDto;
-  final CreateSubscriptionDto? createSubscriptionDto;
+  final SetSubscriptionDto? createSubscriptionDto;
   final bool? isSubscriptionStatusLoading;
   final bool? isSubscriptionsPlansLoading;
   final bool? isCreateSubscriptionLoading;
@@ -27,7 +27,7 @@ final class ManageSubscriptionsPageState extends BaseState {
 
   ManageSubscriptionsPageState copyWith({
     Optional<SubscriptionStatusDto?>? subscriptionStatusDto,
-    Optional<CreateSubscriptionDto?>? createSubscriptionDto,
+    Optional<SetSubscriptionDto?>? createSubscriptionDto,
     Optional<bool?>? isSubscriptionStatusLoading,
     Optional<bool?>? isSubscriptionsPlansLoading,
     Optional<bool?>? isCreateSubscriptionLoading,

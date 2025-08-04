@@ -20,7 +20,7 @@ import '../../../../../common/tools/localization_tools.dart';
 import '../../../../../common/utils/constants.dart';
 import '../../../../../common/widgets/loading_elevated_button.dart';
 import '../../../../../feature/heal_v/api/auth/utils/auth_constants.dart';
-import '../../../../../feature/heal_v/api/subscription/model/create_subscription_dto.dart';
+import '../../../../../feature/heal_v/api/subscription/model/set_subscription_dto.dart';
 import '../../../../../feature/heal_v/api/subscription/model/subscription_status_dto.dart';
 import '../../../../../feature/heal_v/api/subscription/model/subscription_status_enum.dart';
 
@@ -56,39 +56,50 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
       builder: (context, subscriptionStatusDto) {
         final status = SubscriptionStatusEnum.from(subscriptionStatusDto?.status);
         switch (status) {
-          case SubscriptionStatusEnum.active || SubscriptionStatusEnum.canceled:
-            {
-              return BlocSelector<ManageSubscriptionsPageBloc, ManageSubscriptionsPageState, SubscriptionPlanItemDto?>(
-                selector: (ManageSubscriptionsPageState state) => state.plan,
-                builder: (context, plan) {
-                  return plan == null
-                      ? const SizedBox.shrink()
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
-                          child: Column(
-                            children: [
-                              _planItem(context, false, plan, needToShowSelectPlanButton: false),
-                              const SizedBox(height: 24),
-                              if (status == SubscriptionStatusEnum.active) _cancelSubscriptionButton(context, plan) else _resumeSubscriptionButton(context, plan),
-                            ],
-                          ),
-                        );
-                },
-              );
-            }
+          case SubscriptionStatusEnum.active:
+            return _activeSubscription(subscriptionStatusDto);
           case null || SubscriptionStatusEnum.incomplete || SubscriptionStatusEnum.pastDue:
-            {
-              return BlocSelector<ManageSubscriptionsPageBloc, ManageSubscriptionsPageState, List<SubscriptionPlanItemDto>>(
-                selector: (ManageSubscriptionsPageState state) => state.plans ?? [],
-                builder: (context, plans) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
-                    child: _planItemsListView(context, plans),
-                  );
-                },
-              );
+            return _subscriptionPlans();
+          case SubscriptionStatusEnum.canceled:
+            if (subscriptionStatusDto?.cancelAtPeriodEnd == true) {
+              return _activeSubscription(subscriptionStatusDto);
+            } else {
+              return _subscriptionPlans();
             }
         }
+      },
+    );
+  }
+
+  Widget _activeSubscription(SubscriptionStatusDto? subscriptionStatusDto) {
+    final status = SubscriptionStatusEnum.from(subscriptionStatusDto?.status);
+    return BlocSelector<ManageSubscriptionsPageBloc, ManageSubscriptionsPageState, SubscriptionPlanItemDto?>(
+      selector: (ManageSubscriptionsPageState state) => state.plan,
+      builder: (context, plan) {
+        return plan == null
+            ? const SizedBox.shrink()
+            : Padding(
+                padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
+                child: Column(
+                  children: [
+                    _planItem(context, false, plan, isActivePlan: true),
+                    const SizedBox(height: 24),
+                    if (status == SubscriptionStatusEnum.active) _cancelSubscriptionButton(context, plan) else _resumeSubscriptionButton(context, plan),
+                  ],
+                ),
+              );
+      },
+    );
+  }
+
+  Widget _subscriptionPlans() {
+    return BlocSelector<ManageSubscriptionsPageBloc, ManageSubscriptionsPageState, List<SubscriptionPlanItemDto>>(
+      selector: (ManageSubscriptionsPageState state) => state.plans ?? [],
+      builder: (context, plans) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
+          child: _planItemsListView(context, plans),
+        );
       },
     );
   }
@@ -104,7 +115,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
     );
   }
 
-  Widget _planItem(BuildContext context, bool isFreePlan, SubscriptionPlanItemDto plan, {bool needToShowSelectPlanButton = true}) {
+  Widget _planItem(BuildContext context, bool isFreePlan, SubscriptionPlanItemDto plan, {bool isActivePlan = false}) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -117,10 +128,10 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
         children: [
           _planItemTitleContainer(context, isFreePlan, plan),
           const SizedBox(height: 12.0),
-          _planItemDescriptionContainer(context, isFreePlan, plan),
+          _planItemDescriptionContainer(context, isFreePlan, plan, isActivePlan),
           const SizedBox(height: 12.0),
           _planItemAdvantages(context, isFreePlan, plan),
-          if (needToShowSelectPlanButton) ...[
+          if (!isActivePlan) ...[
             const SizedBox(height: 12.0),
             _selectPlanButton(context, isFreePlan, plan),
           ]
@@ -174,7 +185,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
     );
   }
 
-  Widget _planItemDescriptionContainer(BuildContext context, bool isFreePlan, SubscriptionPlanItemDto plan) {
+  Widget _planItemDescriptionContainer(BuildContext context, bool isFreePlan, SubscriptionPlanItemDto plan, bool isActivePlan) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
       decoration: BoxDecoration(
@@ -191,12 +202,42 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
         ),
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _planItemPrice(context, isFreePlan, plan),
-          const SizedBox(width: 16.0),
-          _planItemDescription(context, isFreePlan, plan),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              _planItemPrice(context, isFreePlan, plan),
+              if (!isActivePlan) ...[
+                const SizedBox(width: 16.0),
+                _planItemDescription(context, isFreePlan, plan),
+              ]
+            ],
+          ),
+          if (isActivePlan) ...[
+            Text(
+              '${tr('validUntil')}:',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14.0,
+                letterSpacing: 0.2,
+                color: context.primary,
+              ),
+            ),
+            Text(
+              '${tr('nextBillingDate')}:',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14.0,
+                letterSpacing: 0.2,
+                color: context.primary,
+              ),
+            ),
+          ]
         ],
       ),
     );
@@ -309,20 +350,25 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
   }
 
   Widget _selectPlanButton(BuildContext context, bool isFreePlan, SubscriptionPlanItemDto plan) {
+    bool isSetSubscriptionLoading = false;
     return isFreePlan
         ? const SizedBox.shrink()
         : BlocSelector<ManageSubscriptionsPageBloc, ManageSubscriptionsPageState, bool>(
             selector: (ManageSubscriptionsPageState state) => state.isCreateSubscriptionLoading ?? false,
             builder: (BuildContext context, bool isCreateSubscriptionLoading) {
+              if (isCreateSubscriptionLoading == false) {
+                isSetSubscriptionLoading = false;
+              }
               return SizedBox(
                 width: double.infinity,
                 child: LoadingElevatedButton(
                   progressIndicatorColor: Colors.white,
-                  isLoading: isCreateSubscriptionLoading,
+                  isLoading: isSetSubscriptionLoading,
                   onPressed: () {
                     final priceId = plan.prices?[0].id;
                     if (priceId != null && priceId.isNotEmpty == true) {
                       context.read<ManageSubscriptionsPageBloc>().add(ManageSubscriptionsPageEvent.createSubscription(priceId));
+                      isSetSubscriptionLoading = true;
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -409,7 +455,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
     }
   }
 
-  Future<void> showPaymentSheet(CreateSubscriptionDto? createSubscriptionDto) async {
+  Future<void> showPaymentSheet(SetSubscriptionDto? createSubscriptionDto) async {
     final stripe = Stripe.instance;
     final authBloc = context.read<AuthBloc>();
     final billingDetails = BillingDetails(

@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'create_subscription_dto.g.dart';
+part 'set_subscription_dto.g.dart';
 
 @JsonSerializable()
-class CreateSubscriptionDto {
+class SetSubscriptionDto {
   @JsonKey(name: "success")
   final bool? success;
   @JsonKey(name: "subscriptionId")
@@ -35,7 +35,7 @@ class CreateSubscriptionDto {
   @JsonKey(name: "merchantCountryCode")
   final String? merchantCountryCode;
 
-  CreateSubscriptionDto({
+  SetSubscriptionDto({
     required this.success,
     required this.subscriptionId,
     required this.status,
@@ -53,11 +53,11 @@ class CreateSubscriptionDto {
     required this.merchantCountryCode,
   });
 
-  factory CreateSubscriptionDto.fromJson(Map<String, dynamic> json) {
-    return _$CreateSubscriptionDtoFromJson(json);
+  factory SetSubscriptionDto.fromJson(Map<String, dynamic> json) {
+    return _$SetSubscriptionDtoFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$CreateSubscriptionDtoToJson(this);
+    return _$SetSubscriptionDtoToJson(this);
   }
 }

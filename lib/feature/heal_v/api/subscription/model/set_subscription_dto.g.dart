@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'create_subscription_dto.dart';
+part of 'set_subscription_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CreateSubscriptionDto _$CreateSubscriptionDtoFromJson(
-        Map<String, dynamic> json) =>
-    CreateSubscriptionDto(
+SetSubscriptionDto _$SetSubscriptionDtoFromJson(Map<String, dynamic> json) =>
+    SetSubscriptionDto(
       success: json['success'] as bool?,
       subscriptionId: json['subscriptionId'] as String?,
       status: json['status'] as String?,
@@ -26,8 +25,7 @@ CreateSubscriptionDto _$CreateSubscriptionDtoFromJson(
       merchantCountryCode: json['merchantCountryCode'] as String?,
     );
 
-Map<String, dynamic> _$CreateSubscriptionDtoToJson(
-        CreateSubscriptionDto instance) =>
+Map<String, dynamic> _$SetSubscriptionDtoToJson(SetSubscriptionDto instance) =>
     <String, dynamic>{
       'success': instance.success,
       'subscriptionId': instance.subscriptionId,

@@ -10,22 +10,28 @@ SubscriptionStatusDto _$SubscriptionStatusDtoFromJson(
         Map<String, dynamic> json) =>
     SubscriptionStatusDto(
       status: json['status'] as String?,
-      isFull: json['isFull'] as bool?,
-      currentPeriodEnd: (json['currentPeriodEnd'] as num?)?.toInt(),
-      currentPeriodStart: (json['currentPeriodStart'] as num?)?.toInt(),
-      cancelAtPeriodEnd: json['cancelAtPeriodEnd'] as bool?,
-      canceledAt: (json['canceledAt'] as num?)?.toInt(),
+      stripeCustomerId: json['stripeCustomerId'] as String?,
       subscriptionId: json['subscriptionId'] as String?,
+      productId: json['productId'] as String?,
+      priceId: json['priceId'] as String?,
+      planName: json['planName'] as String?,
+      billingInterval: json['billingInterval'] as String?,
+      subscriptionStartDate: json['subscriptionStartDate'] as String?,
+      currentPeriodEnd: json['currentPeriodEnd'] as String?,
+      cancelAtPeriodEnd: json['cancelAtPeriodEnd'] as bool?,
     );
 
 Map<String, dynamic> _$SubscriptionStatusDtoToJson(
         SubscriptionStatusDto instance) =>
     <String, dynamic>{
       'status': instance.status,
-      'isFull': instance.isFull,
-      'currentPeriodEnd': instance.currentPeriodEnd,
-      'currentPeriodStart': instance.currentPeriodStart,
-      'cancelAtPeriodEnd': instance.cancelAtPeriodEnd,
-      'canceledAt': instance.canceledAt,
+      'stripeCustomerId': instance.stripeCustomerId,
       'subscriptionId': instance.subscriptionId,
+      'productId': instance.productId,
+      'priceId': instance.priceId,
+      'planName': instance.planName,
+      'billingInterval': instance.billingInterval,
+      'subscriptionStartDate': instance.subscriptionStartDate,
+      'currentPeriodEnd': instance.currentPeriodEnd,
+      'cancelAtPeriodEnd': instance.cancelAtPeriodEnd,
     };

@@ -7,7 +7,7 @@ part 'subscription_plan_dto.g.dart';
 class SubscriptionPlanDto {
   @JsonKey(name: "success")
   final bool? success;
-  @JsonKey(name: "plans")
+  @JsonKey(name: "plan")
   final SubscriptionPlanItemDto? plan;
 
   SubscriptionPlanDto({

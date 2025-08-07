@@ -11,7 +11,7 @@ SubscriptionDto _$SubscriptionDtoFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       status: json['status'] as String?,
       cancelAtPeriodEnd: json['cancelAtPeriodEnd'] as bool?,
-      currentPeriodEnd: json['currentPeriodEnd'] as bool?,
+      currentPeriodEnd: json['currentPeriodEnd'] as String?,
     );
 
 Map<String, dynamic> _$SubscriptionDtoToJson(SubscriptionDto instance) =>

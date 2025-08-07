@@ -29,15 +29,16 @@ SubscriptionPlanItemDto _$SubscriptionPlanItemDtoFromJson(
       id: json['id'] as String?,
       name: json['name'] as String?,
       description: json['description'] as String?,
-      metadata: json['metadata'] == null
-          ? null
-          : SubscriptionPlanItemMetaDataDto.fromJson(
-              json['metadata'] as Map<String, dynamic>),
+      metadata: json['metadata'] as Map<String, dynamic>?,
       images:
           (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
       prices: (json['prices'] as List<dynamic>?)
           ?.map((e) =>
               SubscriptionPlanItemPriceDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      marketingFeatures: (json['marketingFeatures'] as List<dynamic>?)
+          ?.map((e) => SubscriptionPlanItemMarketingFeatureDto.fromJson(
+              e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -50,20 +51,7 @@ Map<String, dynamic> _$SubscriptionPlanItemDtoToJson(
       'metadata': instance.metadata,
       'images': instance.images,
       'prices': instance.prices,
-    };
-
-SubscriptionPlanItemMetaDataDto _$SubscriptionPlanItemMetaDataDtoFromJson(
-        Map<String, dynamic> json) =>
-    SubscriptionPlanItemMetaDataDto(
-      category: json['category'] as String?,
-      features: json['features'] as String?,
-    );
-
-Map<String, dynamic> _$SubscriptionPlanItemMetaDataDtoToJson(
-        SubscriptionPlanItemMetaDataDto instance) =>
-    <String, dynamic>{
-      'category': instance.category,
-      'features': instance.features,
+      'marketingFeatures': instance.marketingFeatures,
     };
 
 SubscriptionPlanItemPriceDto _$SubscriptionPlanItemPriceDtoFromJson(
@@ -90,4 +78,17 @@ Map<String, dynamic> _$SubscriptionPlanItemPriceDtoToJson(
       'trialPeriodDays': instance.trialPeriodDays,
       'nickname': instance.nickname,
       'metadata': instance.metadata,
+    };
+
+SubscriptionPlanItemMarketingFeatureDto
+    _$SubscriptionPlanItemMarketingFeatureDtoFromJson(
+            Map<String, dynamic> json) =>
+        SubscriptionPlanItemMarketingFeatureDto(
+          name: json['name'] as String?,
+        );
+
+Map<String, dynamic> _$SubscriptionPlanItemMarketingFeatureDtoToJson(
+        SubscriptionPlanItemMarketingFeatureDto instance) =>
+    <String, dynamic>{
+      'name': instance.name,
     };

@@ -11,7 +11,7 @@ class SubscriptionDto {
   @JsonKey(name: "cancelAtPeriodEnd")
   final bool? cancelAtPeriodEnd;
   @JsonKey(name: "currentPeriodEnd")
-  final bool? currentPeriodEnd;
+  final String? currentPeriodEnd;
 
   SubscriptionDto({
     required this.id,

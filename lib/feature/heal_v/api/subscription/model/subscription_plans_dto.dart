@@ -32,11 +32,13 @@ class SubscriptionPlanItemDto {
   @JsonKey(name: "description")
   final String? description;
   @JsonKey(name: "metadata")
-  final SubscriptionPlanItemMetaDataDto? metadata;
+  final Map<String, dynamic>? metadata;
   @JsonKey(name: "images")
   final List<String>? images;
   @JsonKey(name: "prices")
   final List<SubscriptionPlanItemPriceDto>? prices;
+  @JsonKey(name: "marketingFeatures")
+  final List<SubscriptionPlanItemMarketingFeatureDto>? marketingFeatures;
 
   const SubscriptionPlanItemDto({
     required this.id,
@@ -45,18 +47,8 @@ class SubscriptionPlanItemDto {
     required this.metadata,
     required this.images,
     required this.prices,
+    required this.marketingFeatures,
   });
-
-  factory SubscriptionPlanItemDto.freePlan() {
-    return const SubscriptionPlanItemDto(
-      id: null,
-      name: null,
-      description: null,
-      metadata: null,
-      images: null,
-      prices: null,
-    );
-  }
 
   factory SubscriptionPlanItemDto.fromJson(Map<String, dynamic> json) {
     return _$SubscriptionPlanItemDtoFromJson(json);
@@ -64,27 +56,6 @@ class SubscriptionPlanItemDto {
 
   Map<String, dynamic> toJson() {
     return _$SubscriptionPlanItemDtoToJson(this);
-  }
-}
-
-@JsonSerializable()
-class SubscriptionPlanItemMetaDataDto {
-  @JsonKey(name: "category")
-  final String? category;
-  @JsonKey(name: "features")
-  final String? features;
-
-  const SubscriptionPlanItemMetaDataDto({
-    required this.category,
-    required this.features,
-  });
-
-  factory SubscriptionPlanItemMetaDataDto.fromJson(Map<String, dynamic> json) {
-    return _$SubscriptionPlanItemMetaDataDtoFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$SubscriptionPlanItemMetaDataDtoToJson(this);
   }
 }
 
@@ -124,5 +95,23 @@ class SubscriptionPlanItemPriceDto {
 
   Map<String, dynamic> toJson() {
     return _$SubscriptionPlanItemPriceDtoToJson(this);
+  }
+}
+
+@JsonSerializable()
+class SubscriptionPlanItemMarketingFeatureDto {
+  @JsonKey(name: "name")
+  final String? name;
+
+  const SubscriptionPlanItemMarketingFeatureDto({
+    required this.name,
+  });
+
+  factory SubscriptionPlanItemMarketingFeatureDto.fromJson(Map<String, dynamic> json) {
+    return _$SubscriptionPlanItemMarketingFeatureDtoFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$SubscriptionPlanItemMarketingFeatureDtoToJson(this);
   }
 }

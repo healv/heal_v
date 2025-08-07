@@ -84,7 +84,10 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
                   children: [
                     _planItem(context, false, plan, isActivePlan: true),
                     const SizedBox(height: 24),
-                    if (status == SubscriptionStatusEnum.active) _cancelSubscriptionButton(context, plan) else _resumeSubscriptionButton(context, plan),
+                    if (status == SubscriptionStatusEnum.active && subscriptionStatusDto?.cancelAtPeriodEnd == false)
+                      _cancelSubscriptionButton(context, plan)
+                    else
+                      _resumeSubscriptionButton(context, plan),
                   ],
                 ),
               );
@@ -109,7 +112,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
       itemCount: plans.length,
       separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 24.0),
       itemBuilder: (_, index) {
-        final isFreePlan = index == 0;
+        final isFreePlan = (plans[index].prices?.first ?? 0) == 0;
         return _planItem(context, isFreePlan, plans[index]);
       },
     );
@@ -175,7 +178,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
 
   Widget _planItemTitle(BuildContext context, bool isFreePlan, SubscriptionPlanItemDto plan) {
     return Text(
-      isFreePlan ? tr('freePlan') : plan.name ?? emptyString,
+      plan.name ?? emptyString,
       style: TextStyle(
         fontSize: 12.0,
         fontWeight: FontWeight.w400,
@@ -266,7 +269,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
   }
 
   Widget _planItemDescription(BuildContext context, bool isFreePlan, SubscriptionPlanItemDto plan) {
-    final text = isFreePlan ? tr('chargedMonthly') : plan.description ?? emptyString;
+    final text = plan.description ?? emptyString;
     final words = text.split(' ');
 
     List<String> line1 = [];
@@ -293,13 +296,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
   }
 
   Widget _planItemAdvantages(BuildContext context, bool isFreePlan, SubscriptionPlanItemDto plan) {
-    final List<String> advantages = isFreePlan
-        ? [
-            tr('stepByStepLearning'),
-            tr('quizzesAndReflectionExercises'),
-            tr('dailyReminders'),
-          ]
-        : [];
+    final List<String> advantages = plan.marketingFeatures?.map((item) => item.name).nonNulls.toList() ?? [];
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,7 +359,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
               return SizedBox(
                 width: double.infinity,
                 child: LoadingElevatedButton(
-                  progressIndicatorColor: Colors.white,
+                  progressIndicatorColor: context.background,
                   isLoading: isSetSubscriptionLoading,
                   onPressed: () {
                     final priceId = plan.prices?[0].id;
@@ -392,47 +389,66 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
   }
 
   Widget _cancelSubscriptionButton(BuildContext context, SubscriptionPlanItemDto plan) {
-    return TextButton(
-        style: TextButton.styleFrom(
-          backgroundColor: context.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(8),
-          ),
-        ),
-        onPressed: () {
-          showCancelSubscriptionDialog(() {
-            context.read<ManageSubscriptionsPageBloc>().add(ManageSubscriptionsPageEvent.cancelSubscription());
-          });
-        },
-        child: Text(
-          tr('cancelSubscription'),
-          style: TextStyle(
-            color: context.background,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        ));
+    return BlocSelector<ManageSubscriptionsPageBloc, ManageSubscriptionsPageState, bool>(
+        selector: (ManageSubscriptionsPageState state) => state.isCancelSubscriptionLoading ?? false,
+        builder: (BuildContext context, bool isCancelSubscriptionLoading) {
+          return SizedBox(
+            width: double.infinity,
+            child: LoadingElevatedButton(
+                progressIndicatorColor: context.background,
+                isLoading: isCancelSubscriptionLoading,
+                style: TextButton.styleFrom(
+                  backgroundColor: context.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  showCancelSubscriptionDialog(() {
+                    context.read<ManageSubscriptionsPageBloc>().add(ManageSubscriptionsPageEvent.cancelSubscription());
+                  });
+                },
+                child: Text(
+                  tr('cancelSubscription'),
+                  style: TextStyle(
+                    color: context.background,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )),
+          );
+        });
   }
 
   Widget _resumeSubscriptionButton(BuildContext context, SubscriptionPlanItemDto plan) {
-    return TextButton(
-        style: TextButton.styleFrom(
-          backgroundColor: context.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(8),
-          ),
-        ),
-        onPressed: () {
-          context.read<ManageSubscriptionsPageBloc>().add(ManageSubscriptionsPageEvent.resumeSubscription());
-        },
-        child: Text(
-          tr('resumeSubscription'),
-          style: TextStyle(
-            color: context.background,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        ));
+    return BlocSelector<ManageSubscriptionsPageBloc, ManageSubscriptionsPageState, bool>(
+      selector: (ManageSubscriptionsPageState state) => state.isResumeSubscriptionLoading ?? false,
+      builder: (BuildContext context, bool isResumeSubscriptionLoading) {
+        return SizedBox(
+          width: double.infinity,
+          child: LoadingElevatedButton(
+              progressIndicatorColor: context.background,
+              isLoading: isResumeSubscriptionLoading,
+              style: TextButton.styleFrom(
+                backgroundColor: context.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusGeometry.circular(8),
+                ),
+              ),
+              onPressed: () {
+                context.read<ManageSubscriptionsPageBloc>().add(ManageSubscriptionsPageEvent.resumeSubscription());
+              },
+              child: Text(
+                tr('resumeSubscription'),
+                style: TextStyle(
+                  color: context.background,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              )),
+        );
+      },
+    );
   }
 
   @override
@@ -481,7 +497,7 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
         ),
         style: ThemeMode.system,
         allowsDelayedPaymentMethods: true,
-        // appearance: appearance,
+        appearance: appearance,
       ),
     );
     try {
@@ -560,24 +576,24 @@ class _ManageSubscriptionsPageState extends BlocDependentSideEffectState<ManageS
     return PaymentSheetAppearance(
       colors: PaymentSheetAppearanceColors(
         primary: context.primary,
-        primaryText: context.primary,
-        secondaryText: colorScheme.secondary,
+        primaryText: context.onBackground,
+        secondaryText: context.onBackground.withValues(alpha: 0.2),
         background: context.background,
         icon: context.primary,
         error: colorScheme.error,
-        placeholderText: colorScheme.secondary,
-        componentText: colorScheme.secondary,
-        componentBorder: theme.dividerColor,
+        placeholderText: context.onBackground.withValues(alpha: 0.3),
+        componentText: context.onBackground,
+        componentBorder: context.primary,
         componentDivider: theme.dividerColor,
         componentBackground: context.background,
       ),
       primaryButton: PaymentSheetPrimaryButtonAppearance(
         colors: PaymentSheetPrimaryButtonTheme(
           light: PaymentSheetPrimaryButtonThemeColors(
-            text: colorScheme.secondary,
+            text: context.onBackground,
           ),
           dark: PaymentSheetPrimaryButtonThemeColors(
-            text: colorScheme.secondary,
+            text: context.onBackground.withValues(alpha: 0.3),
           ),
         ),
         shapes: const PaymentSheetPrimaryButtonShape(borderWidth: 0),

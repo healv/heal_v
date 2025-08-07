@@ -464,7 +464,10 @@ Future<void> showCancelSubscriptionDialog(VoidCallback okClick) async {
                           borderRadius: BorderRadiusGeometry.circular(8),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        okClick.call();
+                        Navigator.of(context).pop();
+                      },
                       child: Text(
                         tr('yesCancel'),
                         style: TextStyle(

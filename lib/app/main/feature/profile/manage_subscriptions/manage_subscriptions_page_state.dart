@@ -7,6 +7,8 @@ final class ManageSubscriptionsPageState extends BaseState {
   final bool? isSubscriptionStatusLoading;
   final bool? isSubscriptionsPlansLoading;
   final bool? isCreateSubscriptionLoading;
+  final bool? isCancelSubscriptionLoading;
+  final bool? isResumeSubscriptionLoading;
   final List<SubscriptionPlanItemDto>? plans;
   final SubscriptionPlanItemDto? plan;
 
@@ -16,6 +18,8 @@ final class ManageSubscriptionsPageState extends BaseState {
     this.isSubscriptionStatusLoading,
     this.isSubscriptionsPlansLoading,
     this.isCreateSubscriptionLoading,
+    this.isCancelSubscriptionLoading,
+    this.isResumeSubscriptionLoading,
     this.plans,
     this.plan,
   });
@@ -23,7 +27,17 @@ final class ManageSubscriptionsPageState extends BaseState {
   factory ManageSubscriptionsPageState.initial() => const ManageSubscriptionsPageState._();
 
   @override
-  List<Object?> get props => [subscriptionStatusDto, createSubscriptionDto, isSubscriptionStatusLoading, isSubscriptionsPlansLoading, isCreateSubscriptionLoading, plans, plan];
+  List<Object?> get props => [
+        subscriptionStatusDto,
+        createSubscriptionDto,
+        isSubscriptionStatusLoading,
+        isSubscriptionsPlansLoading,
+        isCreateSubscriptionLoading,
+        isCancelSubscriptionLoading,
+        isResumeSubscriptionLoading,
+        plans,
+        plan
+      ];
 
   ManageSubscriptionsPageState copyWith({
     Optional<SubscriptionStatusDto?>? subscriptionStatusDto,
@@ -31,6 +45,8 @@ final class ManageSubscriptionsPageState extends BaseState {
     Optional<bool?>? isSubscriptionStatusLoading,
     Optional<bool?>? isSubscriptionsPlansLoading,
     Optional<bool?>? isCreateSubscriptionLoading,
+    Optional<bool?>? isCancelSubscriptionLoading,
+    Optional<bool?>? isResumeSubscriptionLoading,
     Optional<List<SubscriptionPlanItemDto>?>? plans,
     Optional<SubscriptionPlanItemDto?>? plan,
   }) {
@@ -40,6 +56,8 @@ final class ManageSubscriptionsPageState extends BaseState {
       isSubscriptionStatusLoading: isSubscriptionStatusLoading?.isValid == true ? isSubscriptionStatusLoading?.value : this.isSubscriptionStatusLoading,
       isSubscriptionsPlansLoading: isSubscriptionsPlansLoading?.isValid == true ? isSubscriptionsPlansLoading?.value : this.isSubscriptionsPlansLoading,
       isCreateSubscriptionLoading: isCreateSubscriptionLoading?.isValid == true ? isCreateSubscriptionLoading?.value : this.isCreateSubscriptionLoading,
+      isCancelSubscriptionLoading: isCancelSubscriptionLoading?.isValid == true ? isCancelSubscriptionLoading?.value : this.isCancelSubscriptionLoading,
+      isResumeSubscriptionLoading: isResumeSubscriptionLoading?.isValid == true ? isResumeSubscriptionLoading?.value : this.isResumeSubscriptionLoading,
       plans: plans?.isValid == true ? plans?.value : this.plans,
       plan: plan?.isValid == true ? plan?.value : this.plan,
     );

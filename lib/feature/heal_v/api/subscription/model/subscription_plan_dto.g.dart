@@ -9,15 +9,15 @@ part of 'subscription_plan_dto.dart';
 SubscriptionPlanDto _$SubscriptionPlanDtoFromJson(Map<String, dynamic> json) =>
     SubscriptionPlanDto(
       success: json['success'] as bool?,
-      plan: json['plans'] == null
+      plan: json['plan'] == null
           ? null
           : SubscriptionPlanItemDto.fromJson(
-              json['plans'] as Map<String, dynamic>),
+              json['plan'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SubscriptionPlanDtoToJson(
         SubscriptionPlanDto instance) =>
     <String, dynamic>{
       'success': instance.success,
-      'plans': instance.plan,
+      'plan': instance.plan,
     };

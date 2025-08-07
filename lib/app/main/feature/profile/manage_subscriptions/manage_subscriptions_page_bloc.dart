@@ -45,11 +45,11 @@ class ManageSubscriptionsPageBloc extends SideEffectBloc<ManageSubscriptionsPage
               add(ManageSubscriptionsPageEvent.getSubscriptionPlans());
               break;
             case SubscriptionStatusEnum.active:
-              add(ManageSubscriptionsPageEvent.getSubscriptionPlan(response.data?.subscriptionId ?? emptyString));
+              add(ManageSubscriptionsPageEvent.getSubscriptionPlan(response.data?.productId ?? emptyString));
               break;
             case SubscriptionStatusEnum.canceled:
               if (response.data?.cancelAtPeriodEnd == true) {
-                add(ManageSubscriptionsPageEvent.getSubscriptionPlan(response.data?.subscriptionId ?? emptyString));
+                add(ManageSubscriptionsPageEvent.getSubscriptionPlan(response.data?.productId ?? emptyString));
               } else {
                 add(ManageSubscriptionsPageEvent.getSubscriptionPlans());
               }
@@ -74,10 +74,9 @@ class ManageSubscriptionsPageBloc extends SideEffectBloc<ManageSubscriptionsPage
     await for (final response in repo.getSubscriptionPlans()) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          final plans = [SubscriptionPlanItemDto.freePlan(), ...?response.data?.plans];
           emitter(state.copyWith(
             isSubscriptionsPlansLoading: const Optional.value(false),
-            plans: Optional.value(plans),
+            plans: Optional.value(response.data?.plans),
           ));
           break;
         case ResourceStatusEnum.error:
@@ -140,11 +139,14 @@ class ManageSubscriptionsPageBloc extends SideEffectBloc<ManageSubscriptionsPage
       switch (response.status) {
         case ResourceStatusEnum.success:
           add(ManageSubscriptionsPageEvent.getSubscriptionStatus());
+          emitter(state.copyWith(isCancelSubscriptionLoading: const Optional.value(false)));
           addSideEffect(ManageSubscriptionsPageEffect.subscriptionCancelled(status: ResourceStatusEnum.success));
         case ResourceStatusEnum.error:
+          emitter(state.copyWith(isCancelSubscriptionLoading: const Optional.value(false)));
           addSideEffect(ManageSubscriptionsPageEffect.subscriptionCancelled(status: ResourceStatusEnum.error));
           break;
         case ResourceStatusEnum.loading:
+          emitter(state.copyWith(isCancelSubscriptionLoading: const Optional.value(true)));
           addSideEffect(ManageSubscriptionsPageEffect.subscriptionCancelled(status: ResourceStatusEnum.loading));
           break;
       }
@@ -156,11 +158,14 @@ class ManageSubscriptionsPageBloc extends SideEffectBloc<ManageSubscriptionsPage
       switch (response.status) {
         case ResourceStatusEnum.success:
           add(ManageSubscriptionsPageEvent.getSubscriptionStatus());
+          emitter(state.copyWith(isResumeSubscriptionLoading: const Optional.value(false)));
           addSideEffect(ManageSubscriptionsPageEffect.subscriptionResumed(status: ResourceStatusEnum.success));
         case ResourceStatusEnum.error:
+          emitter(state.copyWith(isResumeSubscriptionLoading: const Optional.value(false)));
           addSideEffect(ManageSubscriptionsPageEffect.subscriptionResumed(status: ResourceStatusEnum.error));
           break;
         case ResourceStatusEnum.loading:
+          emitter(state.copyWith(isResumeSubscriptionLoading: const Optional.value(true)));
           addSideEffect(ManageSubscriptionsPageEffect.subscriptionResumed(status: ResourceStatusEnum.loading));
           break;
       }

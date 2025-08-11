@@ -19,6 +19,7 @@ import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../common/utils/alert.dart';
+import '../../../../feature/heal_v/api/auth/utils/auth_constants.dart';
 import '../../../../navigation/main/quiz/quiz_graph.dart';
 import 'model/daily_goal_model.dart';
 
@@ -65,53 +66,59 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _progressCard(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        width: double.infinity,
-        height: 220,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color(0xFFFFEDE5),
-              context.quizDialogItemColor.withValues(alpha: 0.8),
-            ],
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(24)),
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _progressTitleColumn(context),
-                        _inProgressColumn(context),
-                      ],
+    return BlocSelector<ProgressBloc, ProgressState, TreeGrowthDto?>(
+        selector: (ProgressState state) => state.treeGrowth,
+        builder: (BuildContext context, TreeGrowthDto? treeGrowth) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              width: double.infinity,
+              height: 220,
+              // decoration: BoxDecoration(
+              //   gradient: LinearGradient(
+              //     colors: [
+              //       const Color(0xFFFFEDE5),
+              //       context.quizDialogItemColor.withValues(alpha: 0.8),
+              //     ],
+              //   ),
+              //   borderRadius: const BorderRadius.all(Radius.circular(24)),
+              // ),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      height: 16.0,
+                      width: 16.0,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            '${AuthConstants.baseHost}${treeGrowth?.progressImg}',
+                          ),
+                        ),
+                      ),
                     ),
-                    const Spacer(),
-                    AppIcons.tree.imageAsset(
-                      width: 203,
-                      height: 206,
+                  ),
+                  Positioned.fill(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _progressTitleColumn(context, treeGrowth),
+                          _inProgressColumn(context),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
-  Widget _progressTitleColumn(BuildContext context) {
+  Widget _progressTitleColumn(BuildContext context, TreeGrowthDto? treeGrowth) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,18 +131,13 @@ class _HomePageState extends State<HomePage> {
             color: context.primary.withValues(alpha: 0.5),
           ),
         ),
-        BlocSelector<ProgressBloc, ProgressState, TreeGrowthDto?>(
-          selector: (ProgressState state) => state.treeGrowth,
-          builder: (BuildContext context, TreeGrowthDto? treeGrowth) {
-            return Text(
-              '${treeGrowth?.progress ?? 0}%',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w700,
-                color: context.primary,
-              ),
-            );
-          },
+        Text(
+          '${treeGrowth?.progress ?? 0}%',
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            color: context.primary,
+          ),
         ),
       ],
     );

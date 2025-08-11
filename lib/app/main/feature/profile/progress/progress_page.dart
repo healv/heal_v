@@ -6,6 +6,7 @@ import 'package:heal_v/common/extensions/iterable_extension.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/feature/heal_v/api/progress/model/response/total_progress_dto.dart';
 import 'package:heal_v/res/images/app_icons.dart';
+import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -206,6 +207,7 @@ class ProgressPage extends StatelessWidget {
   }
 
   Widget _calendarWidget(BuildContext context, ProgressPageBloc progressPageBloc) {
+    final user = context.read<AuthBloc>().state.user;
     return BlocBuilder<ProgressPageBloc, ProgressPageState>(
       buildWhen: (oldState, newState) => oldState.progressList != newState.progressList,
       builder: (BuildContext context, ProgressPageState state) {
@@ -222,6 +224,7 @@ class ProgressPage extends StatelessWidget {
             firstDay: DateTime.utc(2025, 1, 1),
             lastDay: DateTime.now(),
             headerVisible: false,
+            availableGestures: AvailableGestures.none,
             calendarStyle: const CalendarStyle(
               isTodayHighlighted: false,
               outsideDaysVisible: false,
@@ -232,7 +235,9 @@ class ProgressPage extends StatelessWidget {
                 final isAllGoalsCompleted = item?.breathing == true && item?.stretching == true && item?.meditation == true && item?.journal?.isNotEmpty == true;
                 final isSomeGoalsCompleted = item?.breathing == true || item?.stretching == true || item?.meditation == true || item?.journal?.isNotEmpty == true;
 
-                if (isAllGoalsCompleted) {
+                if (day.isBefore(DateTime.parse(user!.createdAt!))) {
+                  return _buildCircle(text: day.day.toString(), fillColor: context.background, textColor: context.onBackground);
+                } else if (isAllGoalsCompleted) {
                   return _buildCircle(text: day.day.toString(), fillColor: Colors.green.shade500, textColor: context.background);
                 } else if (isSomeGoalsCompleted) {
                   return _buildDashedCircle(text: day.day.toString(), borderColor: const Color(0xFFFFAA33), textColor: context.onBackground);

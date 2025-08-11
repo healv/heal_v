@@ -10,6 +10,7 @@ TreeGrowthDto _$TreeGrowthDtoFromJson(Map<String, dynamic> json) =>
     TreeGrowthDto(
       progress: (json['progress'] as num?)?.toInt(),
       idealDayCount: (json['idealDayCount'] as num?)?.toInt(),
+      progressImg: json['progressImg'] as String?,
       phase: (json['phase'] as num?)?.toInt(),
       dates:
           (json['dates'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -28,6 +29,7 @@ Map<String, dynamic> _$TreeGrowthDtoToJson(TreeGrowthDto instance) =>
     <String, dynamic>{
       'progress': instance.progress,
       'idealDayCount': instance.idealDayCount,
+      'progressImg': instance.progressImg,
       'phase': instance.phase,
       'dates': instance.dates,
       'datesCount': instance.datesCount,

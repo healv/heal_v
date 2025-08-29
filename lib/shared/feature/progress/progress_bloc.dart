@@ -35,7 +35,8 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
     await for (final response in repo.getDailyProgress(date: event.date)) {
       switch (response.status) {
         case ResourceStatusEnum.success:
-          final isCompletedBefore = state.completed == true && state.journal?.isNotEmpty == true;
+          final isCompletedBefore =
+              state.breathing == true && state.meditation == true && state.stretching == true && state.journal?.isNotEmpty == true;
           final isAllCompleted = response.data?.meditation == true &&
               response.data?.breathing == true &&
               response.data?.stretching == true &&

@@ -52,6 +52,7 @@ enum AppIcons {
   quizLocked('assets/icons/ic_quiz_locked.svg'),
   quizPassed('assets/icons/ic_quiz_passed.svg'),
   clock('assets/icons/ic_clock.svg'),
+  icCompleteLessonDialog('assets/icons/ic_complete_lesson_dialog.svg'),
   cancelSubscription('assets/icons/ic_cancel_subscription.svg');
 
   final String path;

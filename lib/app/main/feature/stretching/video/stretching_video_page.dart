@@ -11,7 +11,6 @@ import 'package:heal_v/common/widgets/media/video/video_player_widget.dart';
 import 'package:heal_v/common/widgets/media/video/video_player_widget_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
-import '../../../../../common/tools/localization_tools.dart';
 import '../../../../../common/utils/alert.dart';
 import '../../../../../feature/heal_v/api/progress/model/request/daily_progress_request.dart';
 import '../../../../../shared/feature/progress/progress_bloc.dart';
@@ -71,12 +70,11 @@ class _StretchingVideoPageState extends BlocDependentSideEffectState<StretchingV
   Future<void> handleSideEffect(StretchingVideoPageEffect effect) async {
     switch (effect) {
       case LessonCompleted():
-        await showAlertDialog(title: tr('success'), message: tr('lessonCompleted')).then((_) {
-          if (mounted) {
-            context.read<ProgressBloc>().add(ProgressEvent.updateDailyProgress(dailyProgressRequest: DailyProgressRequest(stretching: true)));
-            context.pop();
-          }
-        });
+        await showCompleteLessonDialog();
+        if (mounted) {
+          context.read<ProgressBloc>().add(ProgressEvent.updateDailyProgress(dailyProgressRequest: DailyProgressRequest(stretching: true)));
+          context.pop();
+        }
         break;
     }
   }

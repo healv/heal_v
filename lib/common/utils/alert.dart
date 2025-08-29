@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_v/application.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
 import 'package:heal_v/res/images/app_icons.dart';
@@ -92,7 +93,8 @@ Future<void> showLogOutDialog(VoidCallback okClick) async {
             },
             style: OutlinedButton.styleFrom(
               backgroundColor: context.background,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: context.onBackground.withValues(alpha: 0.2))),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), side: BorderSide(color: context.onBackground.withValues(alpha: 0.2))),
               elevation: 0,
               minimumSize: const Size(129, 36),
             ),
@@ -200,7 +202,8 @@ Future<void> showDeleteJournalDialog(VoidCallback okClick) async {
             },
             style: OutlinedButton.styleFrom(
               backgroundColor: context.background,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: context.onBackground.withValues(alpha: 0.2))),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), side: BorderSide(color: context.onBackground.withValues(alpha: 0.2))),
               elevation: 0,
               minimumSize: const Size(129, 36),
             ),
@@ -480,6 +483,74 @@ Future<void> showCancelSubscriptionDialog(VoidCallback okClick) async {
               ],
             ),
           )
+        ],
+      );
+    },
+  );
+}
+
+Future<void> showCompleteLessonDialog() async {
+  return showDialog(
+    context: shellNavigatorGlobalKey.currentContext!,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: context.background,
+        surfaceTintColor: Colors.transparent,
+        icon: AppIcons.icCompleteLessonDialog.svgAsset(),
+        title: Text(
+          tr('congratulationYouHaveCompletedTheLesson'),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.3,
+            color: context.onBackground,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        contentPadding: const EdgeInsets.only(top: 8.0, left: 20.0, right: 20.0),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                textAlign: TextAlign.center,
+                tr('yourProgressTreeGrowsStronger'),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: context.onBackground.withValues(alpha: 0.3),
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actionsPadding: const EdgeInsets.only(top: 24.0, bottom: 20.0),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        actions: <Widget>[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                context.pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
+              child: Text(tr('continueJourney'),
+                  style: TextStyle(
+                    color: context.background,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 0.2,
+                  )),
+            ),
+          ),
         ],
       );
     },

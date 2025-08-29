@@ -144,5 +144,8 @@
   "yourSubscriptionWasActivatedSuccessfully": "Your subscription was activated successfully.",
   "validUntil": "Valid until",
   "nextBillingDate": "Next billing date",
-  "haveSomeQuestions": "Have some question?"
+  "haveSomeQuestions": "Have some question?",
+  "congratulationYouHaveCompletedTheLesson": "Congratulations! You’ve completed the lesson.",
+  "yourProgressTreeGrowsStronger": "Your progress tree grows stronger. \nKeep growing every day.",
+  "continueJourney": "Continue Journey"
 }

@@ -143,5 +143,6 @@
   "resumeSubscription": "Resume subscription",
   "yourSubscriptionWasActivatedSuccessfully": "Your subscription was activated successfully.",
   "validUntil": "Valid until",
-  "nextBillingDate": "Next billing date"
+  "nextBillingDate": "Next billing date",
+  "haveSomeQuestions": "Have some question?"
 }

@@ -12,6 +12,7 @@ import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/utils/alert.dart';
 import '../../../../common/utils/resource.dart';
@@ -87,8 +88,37 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 12.0),
             _divider(),
             _logOut(context),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 48.0),
+            _haveSomeQuestions(context),
+            const SizedBox(height: 48.0),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _haveSomeQuestions(BuildContext context) {
+    return Center(
+      child: GestureDetector(
+        onTap: () async {
+          final Uri emailLaunchUri = Uri(
+            scheme: 'mailto',
+            path: 'support@healvapp.com',
+          );
+
+          if (await canLaunchUrl(emailLaunchUri)) {
+            await launchUrl(emailLaunchUri);
+          }
+        },
+        child: Text(
+          tr('haveSomeQuestions'),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: context.primary,
+            decoration: TextDecoration.underline,
+            decorationColor: context.primary,
+          ),
         ),
       ),
     );

@@ -55,9 +55,9 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _progressCard(context),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 24.0),
             _dailyGoals(context),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 24.0),
             _cards(context),
           ],
         ),
@@ -116,12 +116,13 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 16),
         Text(
           tr('progress'),
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: context.primary.withValues(alpha: 0.5),
+            color: Colors.pink.shade500,
           ),
         ),
         Text(
@@ -129,7 +130,7 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: context.primary,
+            color: Colors.pink.shade500,
           ),
         ),
       ],
@@ -141,9 +142,8 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _legendItem(context, Colors.green, tr('in_progress')),
-        const SizedBox(width: 16),
         _legendItem(context, Colors.green, tr('growing')),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -175,14 +175,22 @@ class _HomePageState extends State<HomePage> {
   Widget _cards(BuildContext context) {
     return BlocBuilder<ProgressBloc, ProgressState>(
       buildWhen: (oldState, newState) =>
-          oldState.meditation != newState.meditation || oldState.breathing != newState.breathing || oldState.stretching != newState.stretching || oldState.journal != newState.journal,
+          oldState.meditation != newState.meditation ||
+          oldState.breathing != newState.breathing ||
+          oldState.stretching != newState.stretching ||
+          oldState.journal != newState.journal,
       builder: (BuildContext context, ProgressState state) {
         List<DailyGoalModel> items = [
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.meditation, title: tr('meditation'), icon: AppIcons.meditation, isCompleted: state.meditation ?? false),
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.breathing, title: tr('breathing'), icon: AppIcons.breathing, isCompleted: state.breathing ?? false),
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.stretching, title: tr('stretching'), icon: AppIcons.stretching, isCompleted: state.stretching ?? false),
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.journal, title: tr('journal'), icon: AppIcons.journal, isCompleted: state.journal?.isNotEmpty == true),
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.quiz, title: tr('dailyQuiz'), icon: AppIcons.dailyQuiz, isCompleted: state.quiz?.completed == true),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.meditation, title: tr('meditation'), icon: AppIcons.meditation, isCompleted: state.meditation ?? false),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.breathing, title: tr('breathing'), icon: AppIcons.breathing, isCompleted: state.breathing ?? false),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.stretching, title: tr('stretching'), icon: AppIcons.stretching, isCompleted: state.stretching ?? false),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.journal, title: tr('journal'), icon: AppIcons.journal, isCompleted: state.journal?.isNotEmpty == true),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.quiz, title: tr('dailyQuiz'), icon: AppIcons.dailyQuiz, isCompleted: state.quiz?.completed == true),
         ];
 
         return Column(
@@ -207,11 +215,11 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              height: 73,
+              height: 64,
               decoration: BoxDecoration(
                 border: _border(context, item, dailyGoalsCompleted == true),
                 color: context.background.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(1000),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

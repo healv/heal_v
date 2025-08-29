@@ -36,7 +36,10 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
       switch (response.status) {
         case ResourceStatusEnum.success:
           final isCompletedBefore = state.completed == true && state.journal?.isNotEmpty == true;
-          final isAllCompleted = response.data?.completed == true && response.data?.journal?.isNotEmpty == true;
+          final isAllCompleted = response.data?.meditation == true &&
+              response.data?.breathing == true &&
+              response.data?.stretching == true &&
+              response.data?.journal?.isNotEmpty == true;
           emitter(state.copyWith(
             meditation: Optional.value(response.data?.meditation),
             breathing: Optional.value(response.data?.breathing),
@@ -48,6 +51,7 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
           ));
           if (isAllCompleted == true && isAllCompleted != isCompletedBefore && state.quiz?.completed != true) {
             addSideEffect(ProgressEffect.dailyProgressFinished(ResourceStatusEnum.success));
+            emitter(state.copyWith(dailyGoalsCompleted: const Optional.value(true)));
           }
           break;
         case ResourceStatusEnum.error:

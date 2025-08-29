@@ -287,7 +287,7 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
             Expanded(
               child: ElevatedButton(
                 onPressed: state.currentQuestionIndex == 0
-                    ? null
+                    ? context.pop
                     : () async {
                         pageController.previousPage(duration: kTabScrollDuration, curve: Curves.ease);
                         bloc.add(QuizPageEvent.currentQuestionIndexChanged(index: state.currentQuestionIndex - 1));
@@ -386,7 +386,8 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
       case QuizCompleted():
         switch (effect.status) {
           case ResourceStatusEnum.success:
-            await showAlertDialog(title: tr('quizPassedDialogTitle'), message: tr('quizPassedDialogDescription'), icon: AppIcons.quizPassed.svgAsset());
+            await showAlertDialog(
+                title: tr('quizPassedDialogTitle'), message: tr('quizPassedDialogDescription'), icon: AppIcons.quizPassed.svgAsset());
             if (mounted) {
               context.read<ProgressBloc>().add(ProgressEvent.getDailyProgress());
               context.pop();

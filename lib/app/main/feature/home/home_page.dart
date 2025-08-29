@@ -71,18 +71,9 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context, TreeGrowthDto? treeGrowth) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Container(
+            child: SizedBox(
               width: double.infinity,
               height: 220,
-              // decoration: BoxDecoration(
-              //   gradient: LinearGradient(
-              //     colors: [
-              //       const Color(0xFFFFEDE5),
-              //       context.quizDialogItemColor.withValues(alpha: 0.8),
-              //     ],
-              //   ),
-              //   borderRadius: const BorderRadius.all(Radius.circular(24)),
-              // ),
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -90,11 +81,13 @@ class _HomePageState extends State<HomePage> {
                       height: 16.0,
                       width: 16.0,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            '${AuthConstants.baseHost}${treeGrowth?.progressImg}',
-                          ),
-                        ),
+                        image: treeGrowth?.progressImg != null
+                            ? DecorationImage(
+                                image: NetworkImage(
+                                  '${AuthConstants.baseHost}${treeGrowth?.progressImg}',
+                                ),
+                              )
+                            : null,
                       ),
                     ),
                   ),
@@ -206,7 +199,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _cardItem(BuildContext context, DailyGoalModel item, int index) {
     return BlocSelector<ProgressBloc, ProgressState, bool?>(
-      selector: (ProgressState state) => state.completed,
+      selector: (ProgressState state) => state.dailyGoalsCompleted,
       builder: (BuildContext context, bool? dailyGoalsCompleted) {
         return InkWell(
           onTap: () async => await _onCardItemTap(context, item, dailyGoalsCompleted == true),

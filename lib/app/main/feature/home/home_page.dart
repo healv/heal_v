@@ -73,16 +73,15 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SizedBox(
               width: double.infinity,
-              height: 220,
+              height: 200,
               child: Stack(
                 children: [
                   Positioned.fill(
                     child: Container(
-                      height: 16.0,
-                      width: 16.0,
                       decoration: BoxDecoration(
                         image: treeGrowth?.progressImg != null
                             ? DecorationImage(
+                                fit: BoxFit.fill,
                                 image: NetworkImage(
                                   '${AuthConstants.baseHost}${treeGrowth?.progressImg}',
                                 ),
@@ -93,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Positioned.fill(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

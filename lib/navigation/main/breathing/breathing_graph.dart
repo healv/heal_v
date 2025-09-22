@@ -35,9 +35,8 @@ base class BreathingRoute extends GoRouteData {
 @immutable
 base class BreathingAudioRoute extends GoRouteData {
   final String breathing;
-  final String weekId;
 
-  const BreathingAudioRoute({required this.breathing, required this.weekId});
+  const BreathingAudioRoute({required this.breathing});
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -51,7 +50,7 @@ base class BreathingAudioRoute extends GoRouteData {
               AudioPageEvent.initial(
                 lessonTypeEnum: LessonTypeEnum.breathing,
                 id: breathingLesson.id ?? emptyString,
-                weekId: weekId,
+                weekId: breathingLesson.weekId ?? emptyString,
                 title: breathingLesson.title ?? emptyString,
                 description: breathingLesson.description ?? emptyString,
                 previewUrl: '${AuthConstants.baseHost}${breathingLesson.preview?.url ?? emptyString}',

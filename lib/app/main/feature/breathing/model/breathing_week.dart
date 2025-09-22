@@ -13,6 +13,8 @@ class BreathingWeek {
   final int? order;
   final bool? isAccessible;
   final bool? isCompleted;
+  final bool? hasSubscriptionAccess;
+  final bool? requiresSubscription;
 
   const BreathingWeek({
     this.id,
@@ -20,6 +22,8 @@ class BreathingWeek {
     this.order,
     this.isAccessible,
     this.isCompleted,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   BreathingWeek copyWith({
@@ -28,6 +32,8 @@ class BreathingWeek {
     Optional<int>? order,
     Optional<bool>? isAccessible,
     Optional<bool>? isCompleted,
+    Optional<bool>? hasSubscriptionAccess,
+    Optional<bool>? requiresSubscription,
   }) {
     return BreathingWeek(
       id: id?.isValid == true ? id?.value : this.id,
@@ -35,6 +41,8 @@ class BreathingWeek {
       order: order?.isValid == true ? order?.value : this.order,
       isAccessible: isAccessible?.isValid == true ? isAccessible?.value : this.isAccessible,
       isCompleted: isAccessible?.isValid == true ? isCompleted?.value : this.isCompleted,
+      hasSubscriptionAccess: hasSubscriptionAccess?.isValid == true ? hasSubscriptionAccess?.value : this.hasSubscriptionAccess,
+      requiresSubscription: requiresSubscription?.isValid == true ? requiresSubscription?.value : this.requiresSubscription,
     );
   }
 
@@ -45,6 +53,8 @@ class BreathingWeek {
       order: map['order'] as int?,
       isAccessible: map['isAccessible'] as bool?,
       isCompleted: map['isCompleted'] as bool?,
+      hasSubscriptionAccess: map['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: map['requiresSubscription'] as bool?,
     );
   }
 

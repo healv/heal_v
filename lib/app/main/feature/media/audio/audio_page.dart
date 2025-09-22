@@ -14,7 +14,6 @@ import 'package:heal_v/theme/ext/extension.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../../../../common/flutter/widgets/framework.dart';
-import '../../../../../common/tools/localization_tools.dart';
 import '../../../../../common/utils/alert.dart';
 import '../../../../../common/widgets/media/audio/audio_player_widget.dart';
 
@@ -150,16 +149,16 @@ class _AudioPageState extends BlocDependentSideEffectState<AudioPage, AudioPageB
     switch (effect) {
       case LessonCompletedEffect():
         if (effect.loopMode == LoopMode.off) {
-          await showAlertDialog(title: tr('success'), message: tr('lessonCompleted'));
+          await showCompleteLessonDialog();
           if (mounted) {
             context.read<ProgressBloc>().add(
-                  ProgressEvent.updateDailyProgress(
-                    dailyProgressRequest: DailyProgressRequest(
-                      meditation: effect.lessonTypeEnum == LessonTypeEnum.meditation ? true : null,
-                      breathing: effect.lessonTypeEnum == LessonTypeEnum.breathing ? true : null,
-                    ),
-                  ),
-                );
+              ProgressEvent.updateDailyProgress(
+                dailyProgressRequest: DailyProgressRequest(
+                  meditation: effect.lessonTypeEnum == LessonTypeEnum.meditation ? true : null,
+                  breathing: effect.lessonTypeEnum == LessonTypeEnum.breathing ? true : null,
+                ),
+              ),
+            );
             context.pop(LessonResultTypeEnum.completed);
           }
         }

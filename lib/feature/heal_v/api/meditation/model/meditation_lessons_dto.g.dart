@@ -15,6 +15,8 @@ MeditationLessonsDto _$MeditationLessonsDtoFromJson(
       id: json['id'] as String?,
       title: json['title'] as String?,
       order: (json['order'] as num?)?.toInt(),
+      hasSubscriptionAccess: json['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: json['requiresSubscription'] as bool?,
     );
 
 Map<String, dynamic> _$MeditationLessonsDtoToJson(
@@ -24,6 +26,8 @@ Map<String, dynamic> _$MeditationLessonsDtoToJson(
       'title': instance.title,
       'order': instance.order,
       'lessons': instance.lessons,
+      'hasSubscriptionAccess': instance.hasSubscriptionAccess,
+      'requiresSubscription': instance.requiresSubscription,
     };
 
 MeditationLessonDto _$MeditationLessonDtoFromJson(Map<String, dynamic> json) =>
@@ -41,8 +45,11 @@ MeditationLessonDto _$MeditationLessonDtoFromJson(Map<String, dynamic> json) =>
           ? null
           : MeditationLessonMediaDto.fromJson(
               json['media'] as Map<String, dynamic>),
+      weekId: json['weekId'] as String?,
       isCompleted: json['isCompleted'] as bool?,
       isAccessible: json['isAccessible'] as bool?,
+      hasSubscriptionAccess: json['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: json['requiresSubscription'] as bool?,
     );
 
 Map<String, dynamic> _$MeditationLessonDtoToJson(
@@ -55,8 +62,11 @@ Map<String, dynamic> _$MeditationLessonDtoToJson(
       'description': instance.description,
       'preview': instance.preview,
       'media': instance.media,
+      'weekId': instance.weekId,
       'isCompleted': instance.isCompleted,
       'isAccessible': instance.isAccessible,
+      'hasSubscriptionAccess': instance.hasSubscriptionAccess,
+      'requiresSubscription': instance.requiresSubscription,
     };
 
 MeditationLessonPreviewDto _$MeditationLessonPreviewDtoFromJson(

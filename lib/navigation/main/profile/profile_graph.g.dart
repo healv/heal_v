@@ -10,6 +10,7 @@ List<RouteBase> get $appRoutes => [
       $profileRoute,
       $profileChangePasswordRoute,
       $profileLanguageRoute,
+      $profileManageSubscriptionsRoute,
       $profileProgressRoute,
       $profileJournalHistoryRoute,
     ];
@@ -70,6 +71,30 @@ extension $ProfileLanguageRouteExtension on ProfileLanguageRoute {
 
   String get location => GoRouteData.$location(
         '/language',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $profileManageSubscriptionsRoute => GoRouteData.$route(
+      path: '/manageSubscriptions',
+      factory: $ProfileManageSubscriptionsRouteExtension._fromState,
+    );
+
+extension $ProfileManageSubscriptionsRouteExtension
+    on ProfileManageSubscriptionsRoute {
+  static ProfileManageSubscriptionsRoute _fromState(GoRouterState state) =>
+      ProfileManageSubscriptionsRoute();
+
+  String get location => GoRouteData.$location(
+        '/manageSubscriptions',
       );
 
   void go(BuildContext context) => context.go(location);

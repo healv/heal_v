@@ -8,6 +8,7 @@ final class ProgressState extends BaseState {
   final String? journal;
   final DailyProgressQuizDto? quiz;
   final bool? completed;
+  final bool? dailyGoalsCompleted;
   final TreeGrowthDto? treeGrowth;
   final bool loading;
 
@@ -18,6 +19,7 @@ final class ProgressState extends BaseState {
     this.journal,
     this.quiz,
     this.completed,
+    this.dailyGoalsCompleted,
     this.treeGrowth,
     this.loading = false,
   });
@@ -25,7 +27,7 @@ final class ProgressState extends BaseState {
   factory ProgressState.initial() => const ProgressState._();
 
   @override
-  List<Object?> get props => [meditation, breathing, stretching, journal, quiz, completed, treeGrowth, loading];
+  List<Object?> get props => [meditation, breathing, stretching, journal, quiz, completed,dailyGoalsCompleted, treeGrowth, loading];
 
   ProgressState copyWith({
     Optional<bool?>? meditation,
@@ -34,6 +36,7 @@ final class ProgressState extends BaseState {
     Optional<String?>? journal,
     Optional<DailyProgressQuizDto?>? quiz,
     Optional<bool?>? completed,
+    Optional<bool?>? dailyGoalsCompleted,
     Optional<TreeGrowthDto?>? treeGrowth,
     Optional<bool?>? loading,
   }) {
@@ -44,6 +47,7 @@ final class ProgressState extends BaseState {
       journal: journal?.isValid == true ? journal?.value : this.journal,
       quiz: quiz?.isValid == true ? quiz?.value : this.quiz,
       completed: completed?.isValid == true ? completed?.value : this.completed,
+      dailyGoalsCompleted: dailyGoalsCompleted?.isValid == true ? dailyGoalsCompleted?.value : this.dailyGoalsCompleted,
       treeGrowth: treeGrowth?.isValid == true ? treeGrowth?.value : this.treeGrowth,
       loading: loading?.isValid == true ? loading?.value ?? false : this.loading,
     );

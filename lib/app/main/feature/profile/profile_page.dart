@@ -12,6 +12,7 @@ import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/res/images/app_icons.dart';
 import 'package:heal_v/shared/feature/auth/auth_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/utils/alert.dart';
 import '../../../../common/utils/resource.dart';
@@ -65,6 +66,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+            _manageSubscriptions(context),
+            const SizedBox(height: 12.0),
+            _divider(),
             _progress(context),
             const SizedBox(height: 12.0),
             _divider(),
@@ -84,8 +88,37 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 12.0),
             _divider(),
             _logOut(context),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 48.0),
+            _haveSomeQuestions(context),
+            const SizedBox(height: 48.0),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _haveSomeQuestions(BuildContext context) {
+    return Center(
+      child: GestureDetector(
+        onTap: () async {
+          final Uri emailLaunchUri = Uri(
+            scheme: 'mailto',
+            path: 'support@healvapp.com',
+          );
+
+          if (await canLaunchUrl(emailLaunchUri)) {
+            await launchUrl(emailLaunchUri);
+          }
+        },
+        child: Text(
+          tr('haveSomeQuestions'),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: context.primary,
+            decoration: TextDecoration.underline,
+            decorationColor: context.primary,
+          ),
         ),
       ),
     );
@@ -156,6 +189,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(width: 12),
                 Text(
                   tr('changePassword'),
+                  style: TextStyle(fontSize: 16, color: context.onBackground, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            AppIcons.arrowRight.svgAsset(colorFilter: ColorFilter.mode(context.onBackground.withValues(alpha: 0.2), BlendMode.srcIn))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _manageSubscriptions(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+      child: InkWell(
+        onTap: () => ProfileManageSubscriptionsRoute().push(context),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppIcons.manageSubscriptions.svgAsset(width: 18, height: 18),
+                const SizedBox(width: 12),
+                Text(
+                  tr('manageSubscriptions'),
                   style: TextStyle(fontSize: 16, color: context.onBackground, fontWeight: FontWeight.w500),
                 )
               ],

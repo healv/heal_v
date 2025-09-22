@@ -19,6 +19,7 @@ import 'package:heal_v/shared/feature/progress/progress_bloc.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 
 import '../../../../common/utils/alert.dart';
+import '../../../../feature/heal_v/api/auth/utils/auth_constants.dart';
 import '../../../../navigation/main/quiz/quiz_graph.dart';
 import 'model/daily_goal_model.dart';
 
@@ -54,9 +55,9 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _progressCard(context),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 24.0),
             _dailyGoals(context),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 24.0),
             _cards(context),
           ],
         ),
@@ -65,77 +66,71 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _progressCard(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        width: double.infinity,
-        height: 220,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color(0xFFFFEDE5),
-              context.quizDialogItemColor.withValues(alpha: 0.8),
-            ],
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(24)),
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _progressTitleColumn(context),
-                        _inProgressColumn(context),
-                      ],
+    return BlocSelector<ProgressBloc, ProgressState, TreeGrowthDto?>(
+        selector: (ProgressState state) => state.treeGrowth,
+        builder: (BuildContext context, TreeGrowthDto? treeGrowth) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 200,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: treeGrowth?.progressImg != null
+                            ? DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(
+                                  '${AuthConstants.baseHost}${treeGrowth?.progressImg}',
+                                ),
+                              )
+                            : null,
+                      ),
                     ),
-                    const Spacer(),
-                    AppIcons.tree.imageAsset(
-                      width: 203,
-                      height: 206,
+                  ),
+                  Positioned.fill(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _progressTitleColumn(context, treeGrowth),
+                          _inProgressColumn(context),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
-  Widget _progressTitleColumn(BuildContext context) {
+  Widget _progressTitleColumn(BuildContext context, TreeGrowthDto? treeGrowth) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 16),
         Text(
           tr('progress'),
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: context.primary.withValues(alpha: 0.5),
+            color: Colors.pink.shade500,
           ),
         ),
-        BlocSelector<ProgressBloc, ProgressState, TreeGrowthDto?>(
-          selector: (ProgressState state) => state.treeGrowth,
-          builder: (BuildContext context, TreeGrowthDto? treeGrowth) {
-            return Text(
-              '${treeGrowth?.progress ?? 0}%',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w700,
-                color: context.primary,
-              ),
-            );
-          },
+        Text(
+          '${treeGrowth?.progress ?? 0}%',
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            color: Colors.pink.shade500,
+          ),
         ),
       ],
     );
@@ -146,9 +141,8 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _legendItem(context, Colors.green, tr('in_progress')),
-        const SizedBox(width: 16),
         _legendItem(context, Colors.green, tr('growing')),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -180,14 +174,22 @@ class _HomePageState extends State<HomePage> {
   Widget _cards(BuildContext context) {
     return BlocBuilder<ProgressBloc, ProgressState>(
       buildWhen: (oldState, newState) =>
-          oldState.meditation != newState.meditation || oldState.breathing != newState.breathing || oldState.stretching != newState.stretching || oldState.journal != newState.journal,
+          oldState.meditation != newState.meditation ||
+          oldState.breathing != newState.breathing ||
+          oldState.stretching != newState.stretching ||
+          oldState.journal != newState.journal,
       builder: (BuildContext context, ProgressState state) {
         List<DailyGoalModel> items = [
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.meditation, title: tr('meditation'), icon: AppIcons.meditation, isCompleted: state.meditation ?? false),
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.breathing, title: tr('breathing'), icon: AppIcons.breathing, isCompleted: state.breathing ?? false),
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.stretching, title: tr('stretching'), icon: AppIcons.stretching, isCompleted: state.stretching ?? false),
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.journal, title: tr('journal'), icon: AppIcons.journal, isCompleted: state.journal?.isNotEmpty == true),
-          DailyGoalModel(dailyGoalEnum: DailyGoalEnum.quiz, title: tr('dailyQuiz'), icon: AppIcons.dailyQuiz, isCompleted: state.quiz?.completed == true),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.meditation, title: tr('meditation'), icon: AppIcons.meditation, isCompleted: state.meditation ?? false),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.breathing, title: tr('breathing'), icon: AppIcons.breathing, isCompleted: state.breathing ?? false),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.stretching, title: tr('stretching'), icon: AppIcons.stretching, isCompleted: state.stretching ?? false),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.journal, title: tr('journal'), icon: AppIcons.journal, isCompleted: state.journal?.isNotEmpty == true),
+          DailyGoalModel(
+              dailyGoalEnum: DailyGoalEnum.quiz, title: tr('dailyQuiz'), icon: AppIcons.dailyQuiz, isCompleted: state.quiz?.completed == true),
         ];
 
         return Column(
@@ -204,7 +206,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _cardItem(BuildContext context, DailyGoalModel item, int index) {
     return BlocSelector<ProgressBloc, ProgressState, bool?>(
-      selector: (ProgressState state) => state.completed,
+      selector: (ProgressState state) => state.dailyGoalsCompleted,
       builder: (BuildContext context, bool? dailyGoalsCompleted) {
         return InkWell(
           onTap: () async => await _onCardItemTap(context, item, dailyGoalsCompleted == true),
@@ -212,11 +214,11 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              height: 73,
+              height: 64,
               decoration: BoxDecoration(
                 border: _border(context, item, dailyGoalsCompleted == true),
                 color: context.background.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(1000),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

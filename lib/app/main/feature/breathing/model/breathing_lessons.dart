@@ -64,8 +64,11 @@ class BreathingLesson {
   final String? description;
   final BreathingLessonPreview? preview;
   final BreathingLessonMedia? media;
+  final String? weekId;
   final bool? isCompleted;
   final bool? isAccessible;
+  final bool? hasSubscriptionAccess;
+  final bool? requiresSubscription;
 
   const BreathingLesson({
     required this.id,
@@ -76,8 +79,11 @@ class BreathingLesson {
     required this.description,
     required this.preview,
     required this.media,
+    required this.weekId,
     required this.isCompleted,
     required this.isAccessible,
+    required this.hasSubscriptionAccess,
+    required this.requiresSubscription,
   });
 
   BreathingLesson copyWith({
@@ -89,8 +95,11 @@ class BreathingLesson {
     Optional<String?>? description,
     Optional<BreathingLessonPreview?>? preview,
     Optional<BreathingLessonMedia?>? media,
+    Optional<String>? weekId,
     Optional<bool>? isCompleted,
     Optional<bool>? isAccessible,
+    Optional<bool>? hasSubscriptionAccess,
+    Optional<bool>? requiresSubscription,
   }) {
     return BreathingLesson(
       id: id?.isValid == true ? id?.value : this.id,
@@ -101,8 +110,11 @@ class BreathingLesson {
       description: description?.isValid == true ? description?.value : this.description,
       preview: preview?.isValid == true ? preview?.value : this.preview,
       media: media?.isValid == true ? media?.value : this.media,
+      weekId: weekId?.isValid == true ? weekId?.value : this.weekId,
       isCompleted: isCompleted?.isValid == true ? isCompleted?.value : this.isCompleted,
       isAccessible: isAccessible?.isValid == true ? isAccessible?.value : this.isAccessible,
+      hasSubscriptionAccess: hasSubscriptionAccess?.isValid == true ? hasSubscriptionAccess?.value : this.hasSubscriptionAccess,
+      requiresSubscription: requiresSubscription?.isValid == true ? requiresSubscription?.value : this.requiresSubscription,
     );
   }
 
@@ -116,8 +128,11 @@ class BreathingLesson {
       description: map['description'] as String?,
       preview: BreathingLessonPreview.fromMap((map['preview'] as BreathingLessonPreviewDto?)?.toJson() ?? {}),
       media: BreathingLessonMedia.fromMap((map['media'] as BreathingLessonMediaDto?)?.toJson() ?? {}),
+      weekId: map['weekId'] as String?,
       isCompleted: map['isCompleted'] as bool?,
       isAccessible: map['isAccessible'] as bool?,
+      hasSubscriptionAccess: map['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: map['requiresSubscription'] as bool?,
     );
   }
 

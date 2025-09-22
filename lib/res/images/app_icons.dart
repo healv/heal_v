@@ -34,6 +34,7 @@ enum AppIcons {
   checkMark('assets/icons/ic_checkmark.svg'),
   greenCheckMark('assets/icons/ic_green_check_mark.svg'),
   progress('assets/icons/ic_progress.svg'),
+  manageSubscriptions('assets/icons/ic_manage_subscriptions.svg'),
   journalHistory('assets/icons/ic_journal_history.svg'),
   notifications('assets/icons/ic_notifications.svg'),
   logout('assets/icons/ic_logout.svg'),
@@ -50,7 +51,9 @@ enum AppIcons {
   circleStretching('assets/icons/ic_circle_stretching.svg'),
   quizLocked('assets/icons/ic_quiz_locked.svg'),
   quizPassed('assets/icons/ic_quiz_passed.svg'),
-  clock('assets/icons/ic_clock.svg');
+  clock('assets/icons/ic_clock.svg'),
+  icCompleteLessonDialog('assets/icons/ic_complete_lesson_dialog.svg'),
+  cancelSubscription('assets/icons/ic_cancel_subscription.svg');
 
   final String path;
 

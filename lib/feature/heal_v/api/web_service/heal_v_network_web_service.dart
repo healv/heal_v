@@ -12,6 +12,9 @@ import 'package:heal_v/feature/heal_v/api/progress/model/response/tree_growth_dt
 import 'package:heal_v/feature/heal_v/api/quiz/model/response/quiz_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_lessons_dto.dart';
 import 'package:heal_v/feature/heal_v/api/stretching/model/stretching_week_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/cancel_subscription_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/resume_subscription_dto.dart';
+import 'package:heal_v/feature/heal_v/api/subscription/model/set_subscription_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../auth/model/user/validate_user_dto.dart';
@@ -22,6 +25,11 @@ import '../progress/model/request/daily_progress_request.dart';
 import '../quiz/model/request/complete_quiz_request.dart';
 import '../quiz/model/response/complete_quiz_dto.dart';
 import '../stretching/model/stretching_complete_dto.dart';
+import '../subscription/model/request/set_subscription_request_dto.dart';
+import '../subscription/model/subscription_history_dto.dart';
+import '../subscription/model/subscription_plan_dto.dart';
+import '../subscription/model/subscription_plans_dto.dart';
+import '../subscription/model/subscription_status_dto.dart';
 
 part 'heal_v_network_web_service.g.dart';
 
@@ -105,4 +113,28 @@ abstract class HealVNetworkWebService {
 
   @POST('/api/quiz/complete')
   Future<HttpResponse<CompleteQuizDto?>> completeQuiz(@Body() CompleteQuizRequest completeQuizRequest);
+
+  @GET('/api/subscription/status')
+  Future<HttpResponse<SubscriptionStatusDto?>> getSubscriptionStatus();
+
+  @GET('/api/subscription/plans')
+  Future<HttpResponse<SubscriptionPlansDto?>> getSubscriptionPlans();
+
+  @GET('/api/subscription/plans/{subscriptionId}')
+  Future<HttpResponse<SubscriptionPlanDto?>> getSubscriptionPlan(@Path("subscriptionId") String subscriptionId);
+
+  @POST('/api/subscription/set')
+  Future<HttpResponse<SetSubscriptionDto?>> setSubscription(@Body() SetSubscriptionRequestDto createSubscriptionRequestDto);
+
+  @GET('/api/subscription/payment-history')
+  Future<HttpResponse<SubscriptionHistoryDto?>> getSubscriptionHistory(
+    @Query('limit') int? limit,
+    @Query('includeZero') bool? includeZero,
+  );
+
+  @POST('/api/subscription/cancel')
+  Future<HttpResponse<CancelSubscriptionDto?>> cancelSubscription();
+
+  @POST('/api/subscription/resume')
+  Future<HttpResponse<ResumeSubscriptionDto?>> resumeSubscription();
 }

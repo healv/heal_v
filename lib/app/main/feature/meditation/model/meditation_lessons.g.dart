@@ -40,8 +40,11 @@ MeditationLesson _$MeditationLessonFromJson(Map<String, dynamic> json) =>
           ? null
           : MeditationLessonMedia.fromJson(
               json['media'] as Map<String, dynamic>),
+      weekId: json['weekId'] as String?,
       isCompleted: json['isCompleted'] as bool?,
       isAccessible: json['isAccessible'] as bool?,
+      hasSubscriptionAccess: json['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: json['requiresSubscription'] as bool?,
     );
 
 Map<String, dynamic> _$MeditationLessonToJson(MeditationLesson instance) =>
@@ -54,8 +57,11 @@ Map<String, dynamic> _$MeditationLessonToJson(MeditationLesson instance) =>
       'description': instance.description,
       'preview': instance.preview,
       'media': instance.media,
+      'weekId': instance.weekId,
       'isCompleted': instance.isCompleted,
       'isAccessible': instance.isAccessible,
+      'hasSubscriptionAccess': instance.hasSubscriptionAccess,
+      'requiresSubscription': instance.requiresSubscription,
     };
 
 MeditationLessonPreview _$MeditationLessonPreviewFromJson(

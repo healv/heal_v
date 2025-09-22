@@ -8,6 +8,8 @@ class TreeGrowthDto {
   final int? progress;
   @JsonKey(name: "idealDayCount")
   final int? idealDayCount;
+  @JsonKey(name: "progressImg")
+  final String? progressImg;
   @JsonKey(name: "phase")
   final int? phase;
   @JsonKey(name: "dates")
@@ -26,6 +28,7 @@ class TreeGrowthDto {
   TreeGrowthDto({
     this.progress,
     this.idealDayCount,
+    this.progressImg,
     this.phase,
     this.dates,
     this.datesCount,

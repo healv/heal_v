@@ -64,8 +64,11 @@ class MeditationLesson {
   final String? description;
   final MeditationLessonPreview? preview;
   final MeditationLessonMedia? media;
+  final String? weekId;
   final bool? isCompleted;
   final bool? isAccessible;
+  final bool? hasSubscriptionAccess;
+  final bool? requiresSubscription;
 
   const MeditationLesson({
     required this.id,
@@ -76,8 +79,11 @@ class MeditationLesson {
     required this.description,
     required this.preview,
     required this.media,
+    required this.weekId,
     required this.isCompleted,
     required this.isAccessible,
+    required this.hasSubscriptionAccess,
+    required this.requiresSubscription,
   });
 
   MeditationLesson copyWith({
@@ -89,8 +95,11 @@ class MeditationLesson {
     Optional<String?>? description,
     Optional<MeditationLessonPreview?>? preview,
     Optional<MeditationLessonMedia?>? media,
+    Optional<String>? weekId,
     Optional<bool>? isCompleted,
     Optional<bool>? isAccessible,
+    Optional<bool>? hasSubscriptionAccess,
+    Optional<bool>? requiresSubscription,
   }) {
     return MeditationLesson(
       id: id?.isValid == true ? id?.value : this.id,
@@ -101,8 +110,11 @@ class MeditationLesson {
       description: description?.isValid == true ? description?.value : this.description,
       preview: preview?.isValid == true ? preview?.value : this.preview,
       media: media?.isValid == true ? media?.value : this.media,
+      weekId: weekId?.isValid == true ? weekId?.value : this.weekId,
       isCompleted: isCompleted?.isValid == true ? isCompleted?.value : this.isCompleted,
       isAccessible: isAccessible?.isValid == true ? isAccessible?.value : this.isAccessible,
+      hasSubscriptionAccess: hasSubscriptionAccess?.isValid == true ? hasSubscriptionAccess?.value : this.hasSubscriptionAccess,
+      requiresSubscription: requiresSubscription?.isValid == true ? requiresSubscription?.value : this.requiresSubscription,
     );
   }
 
@@ -116,8 +128,11 @@ class MeditationLesson {
       description: map['description'] as String?,
       preview: MeditationLessonPreview.fromMap((map['preview'] as MeditationLessonPreviewDto?)?.toJson() ?? {}),
       media: MeditationLessonMedia.fromMap((map['media'] as MeditationLessonMediaDto?)?.toJson() ?? {}),
+      weekId: map['weekId'] as String?,
       isCompleted: map['isCompleted'] as bool?,
       isAccessible: map['isAccessible'] as bool?,
+      hasSubscriptionAccess: map['hasSubscriptionAccess'] as bool?,
+      requiresSubscription: map['requiresSubscription'] as bool?,
     );
   }
 

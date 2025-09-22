@@ -16,3 +16,6 @@ const String svgType = '.svg';
 const String wrongPassword = 'wrong-password';
 const String userNotFound = 'user-not-found';
 const String invalidCredential = 'invalid-credential';
+
+const String publishableKey = 'pk_test_51RaiFPDYggJC1LS3XKqt9gYzjlRsJKHT2nYknJhtC6AIBwB8l0BnQAKtY1oWc4KVwm2cITGSjBu4OJbxciCKqltu00c684qbFp';
+const String publishableKeyDen = 'pk_test_51RVPJRD1LQcUBYcE5wJp5rOUM2yv3QcEbE8dnKQdxO1qewVCrIRCFcROjgGzJc454WUJr1SymKd4rW9vxa3cbFNu00EMCBR9az';

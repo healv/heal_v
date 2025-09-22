@@ -12,12 +12,18 @@ class MeditationLessonsDto {
   final int? order;
   @JsonKey(name: "lessons")
   final List<MeditationLessonDto>? lessons;
+  @JsonKey(name: "hasSubscriptionAccess")
+  final bool? hasSubscriptionAccess;
+  @JsonKey(name: "requiresSubscription")
+  final bool? requiresSubscription;
 
   MeditationLessonsDto({
     this.lessons,
     this.id,
     this.title,
     this.order,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   factory MeditationLessonsDto.fromJson(Map<String, dynamic> json) {
@@ -45,10 +51,16 @@ class MeditationLessonDto {
   final MeditationLessonPreviewDto? preview;
   @JsonKey(name: "media")
   final MeditationLessonMediaDto? media;
+  @JsonKey(name: "weekId")
+  final String? weekId;
   @JsonKey(name: "isCompleted")
   final bool? isCompleted;
   @JsonKey(name: "isAccessible")
   final bool? isAccessible;
+  @JsonKey(name: "hasSubscriptionAccess")
+  final bool? hasSubscriptionAccess;
+  @JsonKey(name: "requiresSubscription")
+  final bool? requiresSubscription;
 
   MeditationLessonDto({
     this.id,
@@ -58,8 +70,11 @@ class MeditationLessonDto {
     this.description,
     this.preview,
     this.media,
+    this.weekId,
     this.isCompleted,
     this.isAccessible,
+    this.hasSubscriptionAccess,
+    this.requiresSubscription,
   });
 
   factory MeditationLessonDto.fromJson(Map<String, dynamic> json) {

@@ -14,6 +14,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../common/utils/alert.dart';
 import '../../../../navigation/main/breathing/breathing_graph.dart';
+import '../../../../navigation/main/profile/profile_graph.dart';
 import '../../../../shared/feature/empty/empty_widget.dart';
 
 class BreathingPage extends StatefulWidget {
@@ -71,12 +72,24 @@ class _BreathingPageState extends State<BreathingPage> with TickerProviderStateM
             separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 12.0),
             itemBuilder: (_, index) {
               final isSelected = weeks[index].id == selectedWeekId;
+              final week = weeks[index];
               return InkWell(
-                onTap: () {
+                onTap: () async {
                   if (!isSelected) {
-                    if (weeks[index].isAccessible == true) {
-                      breathingPageBloc.add(BreathingPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString));
-                      _tabController.animateTo(index);
+                    if (week.isAccessible == true) {
+                      if (week.requiresSubscription == false || week.hasSubscriptionAccess == true) {
+                        breathingPageBloc.add(BreathingPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString));
+                        _tabController.animateTo(index);
+                      } else {
+                        await showSubscriptionLockedDialog(
+                          context,
+                          tr('meditation_locked'),
+                          tr('subscriptionLockedDialogDescription'),
+                          () {
+                            ProfileManageSubscriptionsRoute().push(context);
+                          },
+                        );
+                      }
                     } else {
                       showLockedDialog(context, tr('breathing_locked'), tr('breathing_locked_description'));
                     }
@@ -181,11 +194,22 @@ class _BreathingPageState extends State<BreathingPage> with TickerProviderStateM
 
   Widget _lessonItem(BuildContext context, BreathingPageBloc breathingPageBloc, BreathingWeek week, BreathingLesson lesson) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (lesson.isAccessible == true) {
-          BreathingAudioRoute(breathing: jsonEncode(lesson.toJson()), weekId: week.id ?? emptyString).push(context).then((value) {
-            breathingPageBloc.add(BreathingPageEvent.getBreathingWeeks(isLoading: false));
-          });
+          if (week.requiresSubscription == false || week.hasSubscriptionAccess == true) {
+            BreathingAudioRoute(breathing: jsonEncode(lesson.toJson())).push(context).then((value) {
+              breathingPageBloc.add(BreathingPageEvent.getBreathingWeeks(isLoading: false));
+            });
+          } else {
+            await showSubscriptionLockedDialog(
+              context,
+              tr('breathing_locked'),
+              tr('subscriptionLockedDialogDescription'),
+              () {
+                ProfileManageSubscriptionsRoute().push(context);
+              },
+            );
+          }
         } else {
           showLockedDialog(context, tr('breathing_locked'), tr('breathing_locked_description'));
         }

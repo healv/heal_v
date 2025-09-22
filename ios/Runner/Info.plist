@@ -6,6 +6,8 @@
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>NSAppleMusicUsageDescription</key>
+        <string>We need Apple Pay to process payments.</string>
 		<key>CFBundleDisplayName</key>
 		<string>Heal V</string>
 		<key>CFBundleExecutable</key>

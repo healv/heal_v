@@ -12,6 +12,7 @@ import 'package:heal_v/theme/ext/extension.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../common/utils/alert.dart';
+import '../../../../navigation/main/profile/profile_graph.dart';
 import '../../../../shared/feature/empty/empty_widget.dart';
 
 class StretchingPage extends StatefulWidget {
@@ -69,12 +70,24 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
             separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 12.0),
             itemBuilder: (_, index) {
               final isSelected = weeks[index].id == selectedWeekId;
+              final week = weeks[index];
               return InkWell(
-                onTap: () {
+                onTap: () async {
                   if (!isSelected) {
-                    if (weeks[index].isAccessible == true) {
-                      stretchingPageBloc.add(StretchingPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString, isLoading: true));
-                      _tabController.animateTo(index);
+                    if (week.isAccessible == true) {
+                      if (week.requiresSubscription == false || week.hasSubscriptionAccess == true) {
+                        stretchingPageBloc.add(StretchingPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString, isLoading: true));
+                        _tabController.animateTo(index);
+                      } else {
+                        await showSubscriptionLockedDialog(
+                          context,
+                          tr('stretching_locked'),
+                          tr('subscriptionLockedDialogDescription'),
+                          () {
+                            ProfileManageSubscriptionsRoute().push(context);
+                          },
+                        );
+                      }
                     } else {
                       showLockedDialog(context, tr('stretching_locked'), tr('stretching_locked_description'));
                     }
@@ -180,15 +193,26 @@ class _StretchingPageState extends State<StretchingPage> with TickerProviderStat
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: InkWell(
-        onTap: () {
+        onTap: () async {
           if (lesson.isAccessible == true) {
-            StretchingDetailsRoute(
-              weekTitle: week.title ?? emptyString,
-              weekId: week.id ?? emptyString,
-              lessonId: lesson.id ?? emptyString,
-            ).push(context).then((value) {
-              stretchingPageBloc.add(StretchingPageEvent.getStretchingWeeks(isLoading: false));
-            });
+            if (week.requiresSubscription == false || week.hasSubscriptionAccess == true) {
+              StretchingDetailsRoute(
+                weekTitle: week.title ?? emptyString,
+                weekId: week.id ?? emptyString,
+                lessonId: lesson.id ?? emptyString,
+              ).push(context).then((value) {
+                stretchingPageBloc.add(StretchingPageEvent.getStretchingWeeks(isLoading: false));
+              });
+            } else {
+              await showSubscriptionLockedDialog(
+                context,
+                tr('stretching_locked'),
+                tr('subscriptionLockedDialogDescription'),
+                () {
+                  ProfileManageSubscriptionsRoute().push(context);
+                },
+              );
+            }
           } else {
             showLockedDialog(context, tr('stretching_locked'), tr('stretching_locked_description'));
           }

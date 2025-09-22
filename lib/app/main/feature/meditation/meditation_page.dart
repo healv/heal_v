@@ -7,6 +7,7 @@ import 'package:heal_v/app/main/feature/meditation/meditation_page_bloc.dart';
 import 'package:heal_v/app/main/feature/meditation/model/meditation_lessons.dart';
 import 'package:heal_v/app/main/feature/meditation/model/meditation_week.dart';
 import 'package:heal_v/common/tools/localization_tools.dart';
+import 'package:heal_v/navigation/main/profile/profile_graph.dart';
 import 'package:heal_v/shared/feature/empty/empty_widget.dart';
 import 'package:heal_v/theme/ext/extension.dart';
 import 'package:shimmer/shimmer.dart';
@@ -71,12 +72,24 @@ class _MeditationPageState extends State<MeditationPage> with TickerProviderStat
             separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 12.0),
             itemBuilder: (_, index) {
               final isSelected = weeks[index].id == selectedWeekId;
+              final week = weeks[index];
               return InkWell(
-                onTap: () {
+                onTap: () async {
                   if (!isSelected) {
-                    if (weeks[index].isAccessible == true) {
-                      meditationPageBloc.add(MeditationPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString));
-                      _tabController.animateTo(index);
+                    if (week.isAccessible == true) {
+                      if (week.requiresSubscription == false || week.hasSubscriptionAccess == true) {
+                        meditationPageBloc.add(MeditationPageEvent.changeSelectedWeek(id: weeks[index].id ?? emptyString));
+                        _tabController.animateTo(index);
+                      } else {
+                        await showSubscriptionLockedDialog(
+                          context,
+                          tr('meditation_locked'),
+                          tr('subscriptionLockedDialogDescription'),
+                          () {
+                            ProfileManageSubscriptionsRoute().push(context);
+                          },
+                        );
+                      }
                     } else {
                       showLockedDialog(context, tr('meditation_locked'), tr('meditation_locked_description'));
                     }
@@ -159,11 +172,22 @@ class _MeditationPageState extends State<MeditationPage> with TickerProviderStat
 
   Widget _lessonItem(BuildContext context, MeditationPageBloc meditationPageBloc, MeditationWeek week, MeditationLesson? lesson) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (lesson?.isAccessible == true) {
-          MeditationAudioRoute(meditation: jsonEncode(lesson?.toJson()), weekId: week.id ?? emptyString).push(context).then((value) {
-            meditationPageBloc.add(MeditationPageEvent.getMeditationWeeks(isLoading: false));
-          });
+          if (lesson?.requiresSubscription == false || lesson?.hasSubscriptionAccess == true) {
+            MeditationAudioRoute(meditation: jsonEncode(lesson?.toJson())).push(context).then((value) {
+              meditationPageBloc.add(MeditationPageEvent.getMeditationWeeks(isLoading: false));
+            });
+          } else {
+            await showSubscriptionLockedDialog(
+              context,
+              tr('meditation_locked'),
+              tr('subscriptionLockedDialogDescription'),
+              () {
+                ProfileManageSubscriptionsRoute().push(context);
+              },
+            );
+          }
         } else {
           showLockedDialog(context, tr('meditation_locked'), tr('meditation_locked_description'));
         }
@@ -228,7 +252,7 @@ class _MeditationPageState extends State<MeditationPage> with TickerProviderStat
             ),
           ),
         ),
-        if (lesson?.isAccessible != true)
+        if (lesson?.isAccessible != true || (lesson?.requiresSubscription == true && lesson?.hasSubscriptionAccess != true))
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(

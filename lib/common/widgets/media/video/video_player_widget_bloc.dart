@@ -20,7 +20,6 @@ part 'video_player_widget_state.dart';
 class VideoPlayerWidgetBloc extends SideEffectBloc<VideoPlayerWidgetEvent, VideoPlayerWidgetState, VideoPlayerWidgetEffect> {
   final controller = BetterPlayerController(
     const BetterPlayerConfiguration(
-      aspectRatio: 1,
       controlsConfiguration: BetterPlayerControlsConfiguration(
         showControls: false,
       ),

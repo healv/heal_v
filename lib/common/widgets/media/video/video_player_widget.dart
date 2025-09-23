@@ -37,22 +37,22 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
   @override
   Widget build(BuildContext context) {
     final videoPlayerWidgetBloc = context.read<VideoPlayerWidgetBloc>();
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(borderRadius: BorderRadius.circular(16.0), child: BetterPlayer(controller: videoPlayerWidgetBloc.controller)),
-          Column(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BetterPlayer(controller: videoPlayerWidgetBloc.controller),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
             children: [
               _progressBar(context, videoPlayerWidgetBloc),
               const SizedBox(height: 40),
               _playerControl(context, videoPlayerWidgetBloc),
             ],
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 

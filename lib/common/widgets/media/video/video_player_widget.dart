@@ -116,12 +116,12 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> with WidgetsBindi
             videoPlayerWidgetBloc.add(VideoPlayerWidgetEvent.changeControllerVolume(volume != 0.0));
           },
           icon: volume == 0.0
-              ? AppIcons.volumeOn.svgAsset(
+              ? AppIcons.volumeOff.svgAsset(
                   width: 26,
                   height: 20,
                   colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
                 )
-              : AppIcons.volumeOff.svgAsset(
+              : AppIcons.volumeOn.svgAsset(
                   width: 26,
                   height: 20,
                   colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),

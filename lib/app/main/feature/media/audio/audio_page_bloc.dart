@@ -72,6 +72,8 @@ class AudioPageBloc extends SideEffectBloc<AudioPageEvent, AudioPageState, Audio
         case null:
           break;
       }
+    } else {
+      addSideEffect(AudioPageSideEffect.lessonCompleted(loopMode: event.loopMode, lessonTypeEnum: state.lessonTypeEnum));
     }
   }
 }

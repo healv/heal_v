@@ -51,6 +51,8 @@ class StretchingVideoPageBloc extends SideEffectBloc<StretchingVideoPageEvent, S
             break;
         }
       }
+    } else {
+      addSideEffect(StretchingVideoPageEffect.lessonCompleted());
     }
   }
 }

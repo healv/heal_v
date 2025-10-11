@@ -118,12 +118,12 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
             audioPlayerWidgetBloc.add(AudioPlayerWidgetEvent.changeVolumeState(volume != 0.0));
           },
           icon: volume == 0.0
-              ? AppIcons.volumeOn.svgAsset(
+              ? AppIcons.volumeOff.svgAsset(
                   width: 26,
                   height: 20,
                   colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),
                 )
-              : AppIcons.volumeOff.svgAsset(
+              : AppIcons.volumeOn.svgAsset(
                   width: 26,
                   height: 20,
                   colorFilter: ColorFilter.mode(context.primary, BlendMode.srcIn),

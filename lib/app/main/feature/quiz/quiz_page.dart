@@ -362,14 +362,15 @@ class _QuizPageState extends BlocDependentSideEffectState<QuizPage, QuizPageBloc
                       ),
                     ),
                     const SizedBox(width: 10),
-                    AppIcons.arrowRight.svgAsset(
-                      width: 7.35,
-                      height: 13.33,
-                      colorFilter: ColorFilter.mode(
-                        context.background,
-                        BlendMode.srcIn,
+                    if (state.currentQuestionIndex < (state.quiz?.questions?.length ?? 0))
+                      AppIcons.arrowRight.svgAsset(
+                        width: 7.35,
+                        height: 13.33,
+                        colorFilter: ColorFilter.mode(
+                          context.background,
+                          BlendMode.srcIn,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),

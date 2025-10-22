@@ -177,7 +177,8 @@ class _HomePageState extends State<HomePage> {
           oldState.meditation != newState.meditation ||
           oldState.breathing != newState.breathing ||
           oldState.stretching != newState.stretching ||
-          oldState.journal != newState.journal,
+          oldState.journal != newState.journal ||
+          oldState.quiz?.completed != newState.quiz?.completed,
       builder: (BuildContext context, ProgressState state) {
         List<DailyGoalModel> items = [
           DailyGoalModel(

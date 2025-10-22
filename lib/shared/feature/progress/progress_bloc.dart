@@ -54,6 +54,9 @@ class ProgressBloc extends SideEffectBloc<ProgressEvent, ProgressState, Progress
             addSideEffect(ProgressEffect.dailyProgressFinished(ResourceStatusEnum.success));
             emitter(state.copyWith(dailyGoalsCompleted: const Optional.value(true)));
           }
+          if (isAllCompleted == true && state.quiz?.completed == true && state.dailyGoalsCompleted != true) {
+            emitter(state.copyWith(dailyGoalsCompleted: const Optional.value(true)));
+          }
           break;
         case ResourceStatusEnum.error:
           emitter(state.copyWith(loading: const Optional.value(false)));

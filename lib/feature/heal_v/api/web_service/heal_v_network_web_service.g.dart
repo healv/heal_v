@@ -14,7 +14,7 @@ class _HealVNetworkWebService implements HealVNetworkWebService {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'http://13.51.69.176';
+    baseUrl ??= 'https://api.healvapp.com';
   }
 
   final Dio _dio;

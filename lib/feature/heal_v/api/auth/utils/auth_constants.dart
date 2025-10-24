@@ -1,3 +1,3 @@
 abstract class AuthConstants {
-  static const String baseHost = 'http://13.51.69.176';
+  static const String baseHost = 'https://api.healvapp.com';
 }
